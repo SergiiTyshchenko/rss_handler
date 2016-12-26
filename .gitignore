@@ -1,0 +1,24 @@
+*.class
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+*.class
+*.war
+*.ear
+*.jar
+
+# IDEA\Eclipse files and directories
+.externalToolBuilders
+.settings
+.cproject
+.project
+.classpath
+.pmd
+.idea
+.mvn
+
+classes/
+target/
+
+
