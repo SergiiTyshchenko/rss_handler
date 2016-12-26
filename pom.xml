@@ -6,7 +6,7 @@
 	<groupId>com.epam.asw.sty</groupId>
 	<artifactId>rss_handler_sb</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	<!--java -jar target/rss_handler_sb-0.0.1-SNAPSHOT.jar-->
 	<name>rss_handler_sb</name>
 	<description>Demo project for Spring Boot</description>
@@ -22,7 +22,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
-
+		<dbh2.version>1.4.193</dbh2.version>
 		<!-- The main class to start by executing java -jar -->
 		<start-class>com.epam.asw.sty.RssHandlerSbApplication</start-class>
 	</properties>
@@ -36,6 +36,16 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-jetty</artifactId>
 		</dependency>
 
 		<dependency>
@@ -59,6 +69,29 @@
 			<groupId>org.jdom</groupId>
 			<artifactId>jdom</artifactId>
 			<version>1.1</version>
+		</dependency>
+		<!-- H2 DB -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>${dbh2.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>4.3.3.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.4.187</version>
 		</dependency>
 
 	</dependencies>
@@ -137,6 +170,22 @@
 						<version>3.2.0</version>
 					</dependency>
 				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>9.2.3.v20140905</version>
+				<configuration>
+					<webApp>
+						<contextPath>/${project.artifactId}</contextPath>
+					</webApp>
+					<httpConnector>
+						<port>8888</port>
+					</httpConnector>
+					<stopKey>STOP</stopKey>
+					<stopPort>9999</stopPort>
+					<scanIntervalSeconds>5</scanIntervalSeconds>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
