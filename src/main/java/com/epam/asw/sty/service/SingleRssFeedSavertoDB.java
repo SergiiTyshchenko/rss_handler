@@ -31,10 +31,7 @@ public class SingleRssFeedSavertoDB {
         //channelDao = new ChannelDaoImpl();
         //Object result = channelDao.insertNewEntry("SSSS");
 
-                Object result = channelDao.insertNewSiteEntry(rssFeed.getTitle(),
-                rssFeed.getDescription(),
-                rssFeed.getLink(), rssFeed.getLanguage(), rssFeed.getLink(),
-                rssFeed.getLanguage(), rssFeed.getTitle());
+                Object result = channelDao.insertNewSiteEntry(rssFeed);
 
 
 /*        System.out.println(rssFeed.getTitle());

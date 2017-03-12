@@ -39,9 +39,6 @@ public class RequestDaoImpl implements RequestDao {
                     sql,
                     params,
                     new RequestMapper());
-                    
-        //new BeanPropertyRowMapper(Customer.class));
-        
         return requests;
         
 	}

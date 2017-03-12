@@ -19,7 +19,7 @@ public class IndexController {
 
     private static final String REQUEST_MANAGEMENT = "RequestManagement";
     private static final String HELLO_PAGE = "helloPage";
-    private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @RequestMapping(value="/", method = RequestMethod.GET)
     public String index() {

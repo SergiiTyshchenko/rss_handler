@@ -15,7 +15,7 @@ import java.io.IOException;
 
 public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
-    Logger logger = LoggerFactory.getLogger(CustomAccessDeniedHandler.class);
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public void handle(

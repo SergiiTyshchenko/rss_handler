@@ -1,6 +1,7 @@
 package com.epam.asw.sty.dao;
 
 import com.epam.asw.sty.model.Channel;
+import com.sun.syndication.feed.synd.SyndFeed;
 
 import java.util.List;
 
@@ -12,6 +13,5 @@ public interface ChannelDao {
 
 	Object insertNewEntry(String title);
 
-	Object insertNewSiteEntry(String title, String description, String link,
-							  String language, String dc_date, String dc_language, String item);
+	Object insertNewSiteEntry(SyndFeed rssfeed);
 }

@@ -1,6 +1,8 @@
 package com.epam.asw.sty.dao;
 
 import com.epam.asw.sty.model.Channel;
+import com.sun.syndication.feed.synd.SyndFeed;
+import com.sun.syndication.feed.synd.SyndFeedImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -75,20 +77,19 @@ public class ChannelDaoImpl implements ChannelDao {
 		}
 
 	@Override
-	public Object insertNewSiteEntry(String title, String description, String link,
-									 String language, String dc_date, String dc_language, String item) {
+	public Object insertNewSiteEntry(SyndFeed rssfeed) {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("id", 333);
-		params.put("title", title);
-		params.put("description", description);
-		params.put("link", link);
-		params.put("language", language);
-		params.put("dc_date", dc_date);
-		params.put("dc_language", dc_language);
-		params.put("item", item);
+		params.put("id", 3333);
+		params.put("title", rssfeed.getTitle());
+		params.put("description", rssfeed.getDescription());
+		params.put("link", rssfeed.getLink());
+		params.put("language", rssfeed.getLanguage());
+		params.put("dc_date", rssfeed.getPublishedDate());
+		params.put("dc_language", rssfeed.getLanguage());
+		params.put("item", rssfeed.getDescription());
 		String sql = "INSERT INTO CHANNEL " +
-				"(ID, TITLE, DESCRIPTION, LINK, LANGUAGE, DC_DATE, DC_LANGUAGE, ITEM) VALUES (:id, :title, :description, :link," +
-				" :language, :dc_date, :dc_language, :item)";
+				"(ID, TITLE, DESCRIPTION, LINK, LANGUAGE, DC_DATE, DC_LANGUAGE, ITEM) VALUES " +
+				"(:id, :title, :description, :link, :language, :dc_date, :dc_language, :item)";
 
 		Object result =  namedParameterJdbcTemplate.update(sql, params);
 		return result;

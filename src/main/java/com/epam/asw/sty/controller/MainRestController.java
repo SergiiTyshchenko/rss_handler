@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 public class MainRestController {
 
-    private static final Logger logger = LoggerFactory.getLogger(MainRestController.class);
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Resource(name="requestService")
     private RequestService requestService;  //Service which will do all data retrieval/manipulation work

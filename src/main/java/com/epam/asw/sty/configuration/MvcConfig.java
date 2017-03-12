@@ -13,7 +13,7 @@ import org.springframework.web.servlet.view.JstlView;
 @ComponentScan(basePackages = "com.epam.asw.sty")
 public class MvcConfig extends WebMvcConfigurerAdapter {
 
-    Logger logger = LoggerFactory.getLogger(SpringSecurityConfig.class);
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 /*    @Override
     public void addViewControllers(ViewControllerRegistry registry) {
