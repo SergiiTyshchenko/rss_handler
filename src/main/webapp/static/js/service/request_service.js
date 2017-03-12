@@ -5,8 +5,8 @@ App.factory('RequestService', ['$http', '$q', function($http, $q){
     return {
 
         fetchAllRequests: function() {
-            return $http.get('http://localhost:8888/rss_handler_sb/db/request/')
-                .then(
+            return $http.get('http://localhost:8888/rss_handler_sb/request/')
+                                      .then(
                     function(response){
                         return response.data;
                     },
@@ -19,7 +19,7 @@ App.factory('RequestService', ['$http', '$q', function($http, $q){
 
         createRequest: function(request){
             console.log('Creating request...', self.request);
-            return $http.post('http://localhost:8888/rss_handler_sb/db/request/', request)
+            return $http.post('http://localhost:8888/rss_handler_sb/request/', request)
                 .then(
                     function(response){
                         return response.data;
@@ -32,7 +32,7 @@ App.factory('RequestService', ['$http', '$q', function($http, $q){
         },
 
         updateRequest: function(request, id){
-            return $http.put('http://localhost:8888/rss_handler_sb/db/request/'+id, request)
+            return $http.put('http://localhost:8888/rss_handler_sb/request/'+id, request)
                 .then(
                     function(response){
                         return response.data;
@@ -45,7 +45,7 @@ App.factory('RequestService', ['$http', '$q', function($http, $q){
         },
 
         deleteRequest: function(id){
-            return $http.delete('http://localhost:8888/rss_handler_sb/db/request/'+id)
+            return $http.delete('http://localhost:8888/rss_handler_sb/request/'+id)
                 .then(
                     function(response){
                         return response.data;

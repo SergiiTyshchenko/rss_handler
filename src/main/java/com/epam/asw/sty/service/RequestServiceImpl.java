@@ -20,20 +20,29 @@ public class RequestServiceImpl implements RequestService {
     RequestDao requestDao;
 
     private static final AtomicLong counter = new AtomicLong();
+    private List<Request> requests;
 
-
-    private static List<Request> requests;
-
-    static{
-        requests = populateDummyRequests();
+    public RequestServiceImpl() {
+        this.requests = new ArrayList<Request>();
     }
+
+    //private static List<Request> requests;
+
+
+/*    static{
+        requests = populateDummyRequests();
+    }*/
+
+
+
 
     public List<Request> findAllRequests() {
-        return requests;
+        return populateRequestsFromDB();
     }
 
+
     public Request findById(long id) {
-        for(Request request : requests){
+        for(Request request : populateRequestsFromDB()){
             if(request.getId() == id){
                 return request;
             }
@@ -42,7 +51,7 @@ public class RequestServiceImpl implements RequestService {
     }
 
     public Request findByRequestor(String requestor) {
-        for(Request request : requests){
+        for(Request request : populateRequestsFromDB()){
             if(request.getRequestor().equalsIgnoreCase(requestor)){
                 return request;
             }
@@ -52,22 +61,25 @@ public class RequestServiceImpl implements RequestService {
 
     public void saveRequest(Request request) {
         RequestRulesChecker checker = new RequestRulesChecker();
+        requests = populateRequestsFromDB();
+        counter.set(requests.get(requests.size()-1).getId());
         request.setId(counter.incrementAndGet());
         checker.superRequestCheck(request);
-        requests.add(request);
+        requestDao.insertNewEntry(request);
     }
 
     public void updateRequest(Request request) {
-        int index = requests.indexOf(request);
-        requests.set(index, request);
+        requestDao.updateEntry(request);
     }
 
     public void deleteRequestById(long id) {
 
+        requests = populateRequestsFromDB();
         for (Iterator<Request> iterator = requests.iterator(); iterator.hasNext(); ) {
             Request request = iterator.next();
             if (request.getId() == id) {
-                iterator.remove();
+                requestDao.removeEntryByID(id);
+                break;
             }
         }
     }
@@ -77,7 +89,7 @@ public class RequestServiceImpl implements RequestService {
     }
 
     public void deleteAllRequests(){
-        requests.clear();
+        populateRequestsFromDB().clear();
     }
 
     private static List<Request> populateDummyRequests(){
@@ -94,8 +106,11 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public Object insertEntrytoDB(String requestor) {
-         Object result = requestDao.insertNewEntry(requestor);
+    public Object insertEntrytoDB(Request request) {
+        requests = populateRequestsFromDB();
+        counter.set(requests.get(requests.size()-1).getId());
+        request.setId(counter.incrementAndGet());
+        Object result = requestDao.insertNewEntry(request);
         return result;
     }
 

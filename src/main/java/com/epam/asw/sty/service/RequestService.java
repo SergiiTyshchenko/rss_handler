@@ -25,6 +25,6 @@ public interface RequestService {
 
     List<Request> populateRequestsFromDB();
 
-    Object insertEntrytoDB(String requestor);
+    Object insertEntrytoDB(Request request);
 
 }

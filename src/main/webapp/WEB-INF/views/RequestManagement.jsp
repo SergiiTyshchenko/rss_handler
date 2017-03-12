@@ -35,6 +35,8 @@
         <div class="formcontainer">
             <form ng-submit="ctrl.submit()" name="myForm" class="form-horizontal">
                 <input type="hidden" ng-model="ctrl.request.id" />
+                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                <!--<span>CSRF - "${_csrf.parameterName}" - "${_csrf.token}"</span> -->
                 <div class="row">
                     <div class="form-group col-md-12">
                         <label class="col-md-2 control-lable" for="reqname">Requestor</label>
@@ -106,6 +108,7 @@
                 <div class="row">
                     <div class="form-actions floatRight">
                         <input type="submit"  value="{{!ctrl.request.id ? 'Add' : 'Update'}}" class="btn btn-primary btn-sm" ng-disabled="myForm.$invalid">
+                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                         <button type="button" ng-click="ctrl.reset()" class="btn btn-warning btn-sm" ng-disabled="myForm.$pristine">Reset Form</button>
                     </div>
                 </div>
@@ -147,6 +150,7 @@
         </div>
     </div>
 </div>
+
 
 <%--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>--%>
 <%--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.js"></script>--%>

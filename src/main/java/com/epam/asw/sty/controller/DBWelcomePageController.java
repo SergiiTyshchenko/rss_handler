@@ -60,32 +60,7 @@ public class DBWelcomePageController {
 
 	}
 
-	//-------------------Retrieve All Requests--------------------------------------------------------
-
-
-	@RequestMapping(value = "/db/request/", method = RequestMethod.GET)
-	public ResponseEntity<List<Request>> listAllDBRequests() {
-		List<Request> requests = requestService.populateRequestsFromDB();
-		if(requests.isEmpty()){
-			return new ResponseEntity<List<Request>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
-		}
-		return new ResponseEntity<List<Request>>(requests, HttpStatus.OK);
-	}
-
-	//-------------------Retrieve Single Request--------------------------------------------------------
-
-	@RequestMapping(value = "/request/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Request> getRequest(@PathVariable("id") long id) {
-		System.out.println("Fetching Request with id " + id);
-		Request request = requestService.findById(id);
-		if (request == null) {
-			System.out.println("Request with id " + id + " not found");
-			return new ResponseEntity<Request>(HttpStatus.NOT_FOUND);
-		}
-		return new ResponseEntity<Request>(request, HttpStatus.OK);
-	}
-
-	//-------------------Retrieve All Requests--------------------------------------------------------
+	//-------------------Retrieve Requests Statistic Data--------------------------------------------------------
 
 	@RequestMapping(value = "/db/request/stats", method = RequestMethod.GET)
 	public ResponseEntity<Map<String,Object>> DBRequestsStats() {
@@ -107,19 +82,21 @@ public class DBWelcomePageController {
 	}
 
 
-	//-------------------Retrieve All Requests--------------------------------------------------------
+	//-------------------Add New Request--------------------------------------------------------
 
 
 	@RequestMapping(value = "/db/request/insert", method = RequestMethod.GET)
 	public ResponseEntity<Object> DBRequestsInsert() {
-		Object result = requestService.insertEntrytoDB("NEW_ONE");
+		Request request = new Request();
+		request.setRequestor("SERGIIIIIII");
+		Object result = requestService.insertEntrytoDB(request);
 		if(result==null){
 			return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
 		}
 		return new ResponseEntity<Object>(result, HttpStatus.OK);
 	}
 
-	//-------------------Retrieve All Requests--------------------------------------------------------
+	//-------------------Retrieve All RSS feeds--------------------------------------------------------
 
 	@RequestMapping(value = "/db/rss/", method = RequestMethod.GET)
 	public ResponseEntity<List<Channel>> listAllDBRssFeeds() {
@@ -131,7 +108,7 @@ public class DBWelcomePageController {
 		return new ResponseEntity<List<Channel>>(channels, HttpStatus.OK);
 	}
 
-	//-------------------Retrieve All Requests--------------------------------------------------------
+	//-------------------Add New RSS Feed--------------------------------------------------------
 
 
 	@RequestMapping(value = "/db/rss/insert", method = RequestMethod.GET)

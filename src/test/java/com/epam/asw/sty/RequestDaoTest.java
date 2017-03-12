@@ -84,7 +84,11 @@ public class RequestDaoTest {
 		RequestDaoImpl requestDao = new RequestDaoImpl();
 		requestDao.setNamedParameterJdbcTemplate(template);
 
-		Object result = requestDao.insertNewEntry("TEST");
+		Request requestTest = new Request();
+		requestTest.setId(111);
+		requestTest.setRequestor("TEST");
+		requestTest.setStatus("");
+		Object result = requestDao.insertNewEntry(requestTest);
 		List<Request> request = requestDao.findAll();
 
 		Assert.assertNotNull(result);

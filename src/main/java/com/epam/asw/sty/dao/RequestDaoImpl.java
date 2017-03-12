@@ -61,22 +61,52 @@ public class RequestDaoImpl implements RequestDao {
 	}
 
     @Override
-    public Object insertNewEntry(String requestor) {
+    public Object insertNewEntry(Request request) {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("id", 111);
-		params.put("requestor", requestor);
-		params.put("description", "TEST");
-		params.put("email", "");
-		params.put("assignee", "");
-		params.put("status", "");
-		params.put("priority", 1);
+		params.put("id", request.getId());
+		params.put("requestor", request.getRequestor());
+		params.put("description", request.getDescription());
+		params.put("email", request.getEmail());
+		params.put("assignee", request.getAssignee());
+		params.put("status", request.getStatus());
+		params.put("priority", request.getPriority());
 		String sql = "INSERT INTO REQUESTS " +
-				"(ID, REQUESTOR, DESCRIPTION, EMAIL, ASSIGNEE, STATUS, PRIORITY) VALUES (:id, :requestor, :description, :email," +
-				" :assignee, :status, :priority)";
+				"(ID, REQUESTOR, DESCRIPTION, EMAIL, ASSIGNEE, STATUS, PRIORITY) VALUES " +
+				"(:id, :requestor, :description, :email, :assignee, :status, :priority)";
 
 		Object result =  namedParameterJdbcTemplate.update(sql, params);
 		return result;
     }
+
+	@Override
+	public Object removeEntryByID(long id) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", id);
+		String sql = "DELETE FROM REQUESTS " +
+				"WHERE ID=:id";
+
+		Object result =  namedParameterJdbcTemplate.update(sql, params);
+		return result;
+	}
+
+	@Override
+	public Object updateEntry(Request request) {
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", request.getId());
+		params.put("requestor", request.getRequestor());
+		params.put("description", request.getDescription());
+		params.put("email", request.getEmail());
+		params.put("assignee", request.getAssignee());
+		params.put("status", request.getStatus());
+		params.put("priority", request.getPriority());
+		String sql = "UPDATE REQUESTS " +
+				"SET (REQUESTOR, DESCRIPTION, EMAIL, ASSIGNEE, STATUS, PRIORITY) = " +
+				"(:requestor, :description, :email, :assignee, :status, :priority) " +
+				"WHERE ID=:id";
+
+		Object result =  namedParameterJdbcTemplate.update(sql, params);
+		return result;
+	}
 
     private static final class RequestMapper implements RowMapper<Request> {
 

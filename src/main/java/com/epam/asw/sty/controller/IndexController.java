@@ -7,7 +7,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 
 import java.security.Principal;
 import java.util.HashMap;
@@ -16,22 +15,21 @@ import java.util.UUID;
 
 
 @Controller
-public class HelloController {
+public class IndexController {
 
-    private static final String REQUSET_MANAGEMENT = "RequestManagement";
-    Logger logger = LoggerFactory.getLogger(HelloController.class);
+    private static final String REQUEST_MANAGEMENT = "RequestManagement";
+    private static final String HELLO_PAGE = "helloPage";
+    private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
+
+    @RequestMapping(value="/", method = RequestMethod.GET)
+    public String index() {
+        return HELLO_PAGE;
+    }
 
     @RequestMapping(value="/my", method = RequestMethod.GET)
     public String getIndexPage() {
-            return "RequestManagement";
-
+            return REQUEST_MANAGEMENT;
         }
-
-
-    @RequestMapping("/")
-    public String index() {
-        return "helloPage";
-    }
 
     @ResponseBody
     @RequestMapping("/admin")
@@ -71,6 +69,12 @@ public class HelloController {
 
     }
 
+    @RequestMapping(value = "/accessDenied")
+    public String accessDenied() {
+        logger.info("INFO message: you are at: accessDenied page.");
+        return "accessDenied"; // logical view name
+    }
+
     // for 403 access denied page
     @RequestMapping(value = "/403", method = RequestMethod.GET)
     public ModelAndView accesssDenied(Principal user) {
@@ -91,9 +95,5 @@ public class HelloController {
         return model;
     }
 
-    @RequestMapping(value = "/accessDenied")
-    public String accessDenied() {
-        logger.info("INFO message: you are at: accessDenied page.");
-        return "accessDenied"; // logical view name
-    }
+
 }
