@@ -1,4 +1,4 @@
-package com.epam.asw.sty.rssSaver;
+package com.epam.asw.sty.service;
 
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.FeedException;

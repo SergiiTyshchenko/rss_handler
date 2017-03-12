@@ -1,4 +1,4 @@
-package com.epam.asw.sty.rssReader;
+package com.epam.asw.sty.service;
 
 
 import com.sun.syndication.feed.synd.SyndEntry;

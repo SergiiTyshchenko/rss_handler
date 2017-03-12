@@ -3,6 +3,8 @@ package com.epam.asw.sty;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
@@ -11,10 +13,16 @@ import java.util.Arrays;
 
 
 @SpringBootApplication
-public class RssHandlerSbApplication {
+public class RssHandlerSbApplication extends SpringBootServletInitializer {
 
 	public static void main(String[] args) {
 		SpringApplication.run(RssHandlerSbApplication.class, args);
+	}
+
+	//for tomcat and jetty - WARs, JAR was working
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+		return application.sources(RssHandlerSbApplication.class);
 	}
 
 	//https://spring.io/guides/gs/spring-boot/

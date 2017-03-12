@@ -11,13 +11,15 @@ import javax.sql.DataSource;
 
 @ComponentScan({ "com.epam.asw.sty" })
 @Configuration
-public class SpringRootConfig {
+public class SpringDBConfig {
 
-    @Autowired
+/*    @Autowired
     DataSource dataSource;
 
     @Bean
     public JdbcTemplate getJdbcTemplate() {
         return new JdbcTemplate(dataSource);
     }
+
+  */
 }

@@ -10,4 +10,6 @@ public interface RequestDao {
 	
 	List<Request> findAll();
 
+	Object insertNewEntry(String requestor);
+
 }
