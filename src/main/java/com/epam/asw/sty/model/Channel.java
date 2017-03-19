@@ -1,41 +1,24 @@
 package com.epam.asw.sty.model;
 
-public class Channel {
+public class Channel extends com.sun.syndication.feed.rss.Channel {
 
 
     private long id;
 
-    private String title;
+    private String user;
 
-    private String link;
-
-    private String description;
-
-    private String language;
-
-    private String pubDate;
-
-    private String dcDate;
-
-    private String dcLanguage;
-
-    private String item;
 
     public Channel(){
         id=0;
     }
 
-    public Channel(long id, String title, String description, String link, String language, String pubDate, String dcDate, String dcLanguage, String item) {
+
+    public Channel(String type, long id, String user) {
+        super(type);
         this.id = id;
-        this.title = title;
-        this.description = description;
-        this.language = language;
-        this.pubDate = pubDate;
-        this.dcDate = dcDate;
-        this.dcLanguage = dcLanguage;
-        this.item = item;
-        this.link = link;
+        this.user = user;
     }
+
 
     public long getId() {
         return id;
@@ -45,68 +28,15 @@ public class Channel {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getUser() {
+        return user;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setUser(String user) {
+        this.user = user;
     }
 
-    public String getDescription() {
-        return description;
-    }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getLink() {
-        return link;
-    }
-
-    public void setLink(String link) {
-        this.link = link;
-    }
-    public String getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(String language) {
-        this.language = language;
-    }
-
-    public String getPubDate() {
-        return pubDate;
-    }
-
-    public void setPubDate(String pubDate) {
-        this.pubDate = pubDate;
-    }
-
-    public String getDcDate() {
-        return dcDate;
-    }
-
-    public void setDcDate(String dcDate) {
-        this.dcDate = dcDate;
-    }
-
-    public String getDcLanguage() {
-        return dcLanguage;
-    }
-
-    public void setDcLanguage(String dcLanguage) {
-        this.dcLanguage = dcLanguage;
-    }
-
-    public String getItem() {
-        return item;
-    }
-
-    public void setItem(String item) {
-        this.item = item;
-    }
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -131,9 +61,9 @@ public class Channel {
 
     @Override
     public String toString() {
-        return "Request [id=" + id + ", title=" + title + ", description=" + description
-                + ", link=" + link + ", language=" + language + ", pubDate=" + pubDate
-                + ", item=" + item + "]";
+        return "Request [id=" + id + ", user=" + user + ", description=" + super.getDescription()
+                + ", link=" + super.getLink() + ", language=" + super.getLanguage() + ", pubDate=" + super.getPubDate()
+                + ", item=" + super.getItems() + "]";
     }
 
 

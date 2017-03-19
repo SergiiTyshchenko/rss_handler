@@ -1,25 +1,15 @@
 package com.epam.asw.sty.service;
 
 import com.epam.asw.sty.dao.ChannelDao;
-import com.epam.asw.sty.dao.ChannelDaoImpl;
-import com.epam.asw.sty.model.Channel;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.FeedException;
-import com.sun.syndication.io.SyndFeedOutput;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Writer;
-import java.util.List;
 
 
-@Service("channelService")
-@Transactional
 public class SingleRssFeedSavertoDB {
 
     @Resource(name="channelDaoImpl")

@@ -13,14 +13,15 @@ CREATE TABLE requests (
 
 CREATE TABLE channel (
     id         INTEGER PRIMARY KEY,
+    user VARCHAR(300),
     title VARCHAR(300),
-    link VARCHAR(100),
     description VARCHAR(300),
+    link VARCHAR(100),
     language  VARCHAR(30),
     pubDate VARCHAR(100),
-    dc_date VARCHAR(100),
-    dc_language VARCHAR(30),
-    item VARCHAR(300)
+    lastBuildDate VARCHAR(100),
+    items VARCHAR(300)
 );
+
 
 

@@ -15,7 +15,7 @@ import java.util.UUID;
 
 
 @Controller
-public class IndexController {
+public class MainPagesController {
 
     private static final String REQUEST_MANAGEMENT = "RequestManagement";
     private static final String HELLO_PAGE = "helloPage";

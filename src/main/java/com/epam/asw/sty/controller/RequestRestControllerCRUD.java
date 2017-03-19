@@ -15,7 +15,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
-public class MainRestController {
+public class RequestRestControllerCRUD {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 

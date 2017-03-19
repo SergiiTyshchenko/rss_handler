@@ -23,6 +23,8 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -64,16 +66,16 @@ public class RequestDaoTest {
     }
 
 	@Test
-	public void testFindChannelbyTitle() {
+	public void testFindChannelbyUser() {
 		NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(db);
 		ChannelDaoImpl channelDao = new ChannelDaoImpl();
 		channelDao.setNamedParameterJdbcTemplate(template);
 
-		List<Channel> channel = channelDao.findByTitle("title:DOU");
+		List<Channel> channel = channelDao.findByUser("Sergii");
 
 		Assert.assertNotNull(channel);
 		Assert.assertEquals(1, channel.get(0).getId());
-		Assert.assertEquals("title:DOU", channel.get(0).getTitle());
+		Assert.assertEquals("Sergii", channel.get(0).getUser());
 		Assert.assertEquals("link: dou lenta", channel.get(0).getLink());
 
 	}
@@ -104,13 +106,27 @@ public class RequestDaoTest {
 		ChannelDaoImpl channelDao = new ChannelDaoImpl();
 		channelDao.setNamedParameterJdbcTemplate(template);
 
-		Object result = channelDao.insertNewEntry("DOU");
+/*		Channel channelTest = new Channel();
+		channelTest.setId(111);
+		channelTest.setUser("TEST");
+		channelTest.setTitle("DOU");
+		channelTest.setDescription("");
+		channelTest.setLink("");
+		channelTest.setLanguage("");
+		Date testDate = new Date(2016, 03, 03, 01, 01, 01);
+		channelTest.setPubDate(testDate);
+		channelTest.setLastBuildDate(testDate);
+		List<String> list = new ArrayList<>();
+		list.add("");
+		channelTest.setItems(list);
+
+		Object result = channelDao.insertNewEntry(channelTest);*/
 		List<Channel> channel = channelDao.findAll();
 
-		Assert.assertNotNull(result);
-		Assert.assertEquals(111, channel.get(1).getId());
-		Assert.assertEquals("DOU", channel.get(1).getTitle());
-		Assert.assertEquals("TEST", channel.get(1).getDescription());
+		Assert.assertNotNull(channel);
+		Assert.assertEquals(1, channel.get(0).getId());
+		Assert.assertEquals("DOU", channel.get(0).getTitle());
+		Assert.assertEquals("Developers", channel.get(0).getDescription());
 
 	}
 
