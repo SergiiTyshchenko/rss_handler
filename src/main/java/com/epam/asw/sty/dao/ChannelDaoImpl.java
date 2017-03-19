@@ -79,7 +79,7 @@ public class ChannelDaoImpl implements ChannelDao {
 	@Override
 	public Object insertNewSiteEntry(SyndFeed rssfeed) {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("id", 3333);
+		params.put("id", 333);
 		params.put("title", rssfeed.getTitle());
 		params.put("description", rssfeed.getDescription());
 		params.put("link", rssfeed.getLink());

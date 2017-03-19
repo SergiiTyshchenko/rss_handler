@@ -7,8 +7,16 @@ import org.slf4j.LoggerFactory;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.support.SpringBootServletInitializer;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.concurrent.ConcurrentMapCacheManager;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 
 
@@ -21,13 +29,18 @@ import java.util.Set;
 
 import static org.springframework.boot.context.config.ConfigFileApplicationListener.ACTIVE_PROFILES_PROPERTY;
 
-@SpringBootApplication
-public class UsersByJPA {
+
+@Profile("dev")
+@Configuration
+@ComponentScan
+@EnableAutoConfiguration
+public class UsersByJPA  extends SpringBootServletInitializer {
 
     private static final Logger log = LoggerFactory.getLogger(UsersByJPA.class);
 
+
     public static void main(String[] args) {
-        //SpringApplication.run(UsersByJPA.class);
+        //SpringApplication.run(UsersByJPA.class, args);
         SpringApplication app = new SpringApplication(UsersByJPA.class);
         addDefaultProfile(app);
         Environment env = app.run(args).getEnvironment();
@@ -45,6 +58,11 @@ public class UsersByJPA {
         }
     }
 
+    @Override
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(UsersByJPA.class);
+    }
+
     protected static void addDefaultProfile(SpringApplication app) {
         Map<String, Object> defProperties =  new HashMap<>();
         /*
@@ -58,6 +76,7 @@ public class UsersByJPA {
         defProperties.put("spring.profiles.active", "dev");
         app.setDefaultProperties(defProperties);
     }
+
     @Bean
     public CommandLineRunner demo(UserRepository repository) {
         return (args) -> {
@@ -89,6 +108,12 @@ public class UsersByJPA {
             }
             log.info("");
         };
+    }
+
+    @Bean
+    public CacheManager concurrentMapCacheManager() {
+        log.debug("Cache manager is concurrentMapCacheManager");
+        return new ConcurrentMapCacheManager("movieFindCache");
     }
 
 }

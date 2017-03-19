@@ -18,9 +18,10 @@
 <script type="text/javascript">
     var contents= [{"id":1,"requestor":"Me"}];
     //var jsonfile={json:JSON.stringify(contents)};
-    var myURL="testAjax";
+    var myURL="login";
 	function closeAndSubmit(urlTo) {
-	$.ajax({
+	window.location = myURL;
+    /*	$.ajax({
         type: 'GET',
         url: myURL,
         //data: jsonfile,
@@ -31,6 +32,6 @@
             failure: function(errMsg) {
              alert("FAILURE");
         }
-    });
+    });*/
     }
 </script>
