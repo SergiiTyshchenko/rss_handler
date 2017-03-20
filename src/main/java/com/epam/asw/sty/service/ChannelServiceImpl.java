@@ -53,7 +53,12 @@ public class ChannelServiceImpl implements ChannelService {
     public void saveChannel(Channel channel) {
         //ChannelRulesChecker checker = new ChannelRulesChecker();
         channels = populateChannelsFromDB();
-        counter.set(channels.get(channels.size()-1).getId());
+        if (channels.size() == 0) {
+            counter.set(0);
+        }
+        else {
+            counter.set(channels.get(channels.size()-1).getId());
+        }
         channel.setId((int) counter.incrementAndGet());
         //checker.superChannelCheck(channel);
         channelDao.insertNewEntry(channel);

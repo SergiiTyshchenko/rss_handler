@@ -36,11 +36,17 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/" , "login" , "imgs").permitAll().anyRequest();
-        http.authorizeRequests().antMatchers("/admin").hasRole("ADMIN");
-        http.authorizeRequests().antMatchers("*//**").hasRole("USER")
-                .and().formLogin();
+        http.authorizeRequests().antMatchers("/" , "login").permitAll().anyRequest();
+        http.authorizeRequests().antMatchers("*//**")
+                .hasRole("USER")
+                .and().formLogin()
+                .defaultSuccessUrl("/ChannelsForUser");
+        http.authorizeRequests().antMatchers("/admin")
+                .hasRole("ADMIN");
         http.authorizeRequests().antMatchers("*//**").hasRole("ADMIN")
+                .and().formLogin()
+                .defaultSuccessUrl("/ChannelsForAdmin")
+                .failureUrl("/403")
                 .and().csrf()
                 .csrfTokenRepository(csrfTokenRepository()).and()
                 .addFilterAfter(csrfHeaderFilter(), CsrfFilter.class);

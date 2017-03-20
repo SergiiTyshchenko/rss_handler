@@ -8,6 +8,8 @@ import com.epam.asw.sty.service.ChannelService;
 import com.epam.asw.sty.service.SingleRSSFeedReader;
 import com.epam.asw.sty.service.SingleRssFeedSavertoDB;
 
+import com.sun.syndication.feed.synd.Converter;
+import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.FeedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +37,7 @@ public class ChannelRestControllerMain {
 
 	@Resource(name="channelServiceImpl")
 	private ChannelService channelService;
+
 
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -81,7 +84,7 @@ public class ChannelRestControllerMain {
 
 
 
-	//-------------------Retrieve All RSS feeds--------------------------------------------------------
+	//-------------------Retrieve All Channels--------------------------------------------------------
 
 	@RequestMapping(value = "/db/rss/", method = RequestMethod.GET)
 	public ResponseEntity<List<Channel>> listAllDBRssFeeds() {
@@ -96,17 +99,18 @@ public class ChannelRestControllerMain {
 	//-------------------Add New RSS Feed--------------------------------------------------------
 
 
-	@RequestMapping(value = "/db/rss/insert", method = RequestMethod.GET)
+/*	@RequestMapping(value = "/db/rss/insert", method = RequestMethod.GET)
 	public ResponseEntity<Object> DBchannelInsert() throws IOException, FeedException {
 		String url = "https://dou.ua/feed/";
 		SingleRSSFeedReader singleRSSFeedReader = new SingleRSSFeedReader(url);
 		SingleRssFeedSavertoDB singleRssFeedSavertoDB = new SingleRssFeedSavertoDB();
-		Object result = singleRssFeedSavertoDB.saveRssFeedtoDB(singleRSSFeedReader.obtainRSSFeed(url), channelDao);
+		SyndFeed rssFeed = singleRSSFeedReader.obtainRSSFeed(url);
+		Object result = singleRssFeedSavertoDB.saveRssFeedtoDB(rssFeed);
 		//Object result = null;
 		if(result==null){
 			return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
 		}
 		return new ResponseEntity<Object>(result, HttpStatus.OK);
-	}
+	}*/
 
 }

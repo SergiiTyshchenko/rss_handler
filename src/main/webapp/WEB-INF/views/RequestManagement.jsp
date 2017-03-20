@@ -11,6 +11,7 @@
             background-color: red;
         }
         .requestor.ng-dirty.ng-invalid-minlength {
+        .requestor.ng-dirty.ng-invalid-minlength {
             background-color: yellow;
         }
 

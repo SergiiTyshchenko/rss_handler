@@ -2,7 +2,7 @@
 
 App.controller('RequestController', ['$scope', 'RequestService', function($scope, RequestService) {
     var self = this;
-    self.request={id:null,user:'',description:'',link:'',title:'',language:'',title:''};
+    self.request={id:null,requestor:'',description:'',email:'',assignee:'',status:'',priority:''};
     self.requests=[];
 
     self.fetchAllRequests = function(){
@@ -80,7 +80,7 @@ App.controller('RequestController', ['$scope', 'RequestService', function($scope
 
 
     self.reset = function(){
-    self.request={id:null,user:'',description:'',link:'',title:'',language:'',title:''};
+    self.request={id:null,requestor:'',description:'',email:'',assignee:'',status:'',priority:''};
         $scope.myForm.$setPristine(); //reset Form
     };
 

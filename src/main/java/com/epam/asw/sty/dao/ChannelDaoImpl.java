@@ -69,11 +69,12 @@ public class ChannelDaoImpl implements ChannelDao {
 		params.put("link", channel.getLink());
 		params.put("language", channel.getLanguage());
 		params.put("pubDate", channel.getPubDate());
-		params.put("lastBuildDate", channel.getLastBuildDate());
-		params.put("items", channel.getItems());
+		params.put("lastBuildDate", channel.getPubDate());
+		params.put("items", channel.getLink());
 		String sql = "INSERT INTO CHANNEL " +
 				"(ID, USER, TITLE, DESCRIPTION, LINK, LANGUAGE, PUBDATE, LASTBUILDDATE, ITEMS) VALUES " +
 				"(:id, :user, :title, :description, :link, :language, :pubDate, :lastBuildDate, :items)";
+				//"(2, 's', 's', 's', 's', 's', '2017-03-03', '2017-03-03', '')";
 
 		Object result =  namedParameterJdbcTemplate.update(sql, params);
 		return result;
@@ -95,12 +96,13 @@ public class ChannelDaoImpl implements ChannelDao {
 	public Object insertNewSiteEntry(SyndFeed rssfeed) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", 333);
+		params.put("user", "RSS");
 		params.put("title", rssfeed.getTitle());
 		params.put("description", rssfeed.getDescription());
 		params.put("link", rssfeed.getLink());
 		params.put("language", rssfeed.getLanguage());
 		params.put("pubDate", rssfeed.getPublishedDate());
-		params.put("lastBuildDate", rssfeed.getLanguage());
+		params.put("lastBuildDate", rssfeed.getPublishedDate());
 		params.put("items", rssfeed.getDescription());
 		String sql = "INSERT INTO CHANNEL " +
 				"(ID, USER, TITLE, DESCRIPTION, LINK, LANGUAGE, PUBDATE, LASTBUILDDATE, ITEMS) VALUES (:id, :user, :title," +

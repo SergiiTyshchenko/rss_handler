@@ -1,6 +1,7 @@
 package com.epam.asw.sty.service;
 
 import com.epam.asw.sty.dao.ChannelDao;
+import com.epam.asw.sty.model.Channel;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.FeedException;
 import org.springframework.stereotype.Service;
@@ -9,19 +10,23 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.annotation.Resource;
 import java.io.IOException;
 
+import com.sun.syndication.feed.synd.Converter;
 
 public class SingleRssFeedSavertoDB {
 
     @Resource(name="channelDaoImpl")
-    private ChannelDao channelDao;
+    ChannelDao channelDao;
 
+    @Resource(name="converterForRSS20")
+    Converter converter;
 
-
-    public Object saveRssFeedtoDB(SyndFeed rssFeed, ChannelDao channelDao) throws IOException, FeedException {
+    public Object saveRssFeedtoDB(SyndFeed rssFeed) throws IOException, FeedException {
         //channelDao = new ChannelDaoImpl();
         //Object result = channelDao.insertNewEntry("SSSS");
 
-                Object result = channelDao.insertNewSiteEntry(rssFeed);
+        //Channel channel = (Channel) converter.createRealFeed(rssFeed);
+        //Object result = channelDao.insertNewEntry(channel);
+        Object result = channelDao.insertNewSiteEntry(rssFeed);
 
 
 /*        System.out.println(rssFeed.getTitle());

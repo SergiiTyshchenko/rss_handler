@@ -18,6 +18,8 @@ import java.util.UUID;
 public class MainPagesController {
 
     private static final String REQUEST_MANAGEMENT = "RequestManagement";
+    private static final String CHANNEL_MANAGEMENT_ADMIN = "ChannelManagementForAdmin";
+    private static final String CHANNEL_MANAGEMENT_USER = "ChannelManagementForUser";
     private static final String HELLO_PAGE = "helloPage";
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -30,6 +32,16 @@ public class MainPagesController {
     public String getIndexPage() {
             return REQUEST_MANAGEMENT;
         }
+
+    @RequestMapping(value="/ChannelsForUser", method = RequestMethod.GET)
+    public String getUserChannelIndexPage() {
+        return CHANNEL_MANAGEMENT_USER;
+    }
+
+    @RequestMapping(value="/ChannelsForAdmin", method = RequestMethod.GET)
+    public String getAdminChannelIndexPage() {
+        return CHANNEL_MANAGEMENT_ADMIN;
+    }
 
     @ResponseBody
     @RequestMapping("/admin")
