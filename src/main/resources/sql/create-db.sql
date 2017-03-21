@@ -1,4 +1,5 @@
 DROP TABLE channel IF EXISTS;
+DROP TABLE item IF EXISTS;
 
 CREATE TABLE channel (
     id         INTEGER PRIMARY KEY,
@@ -9,8 +10,19 @@ CREATE TABLE channel (
     language  VARCHAR(30),
     pubDate VARCHAR(100),
     lastBuildDate VARCHAR(100),
-    items VARCHAR(300)
+    items INTEGER
 );
+
+CREATE TABLE item (
+    id         INTEGER PRIMARY KEY,
+    channelID  INTEGER,
+    title VARCHAR(300),
+    description CLOB,
+    link VARCHAR(100),
+    pubDate VARCHAR(100)
+);
+
+ALTER TABLE item ADD FOREIGN KEY ( channelID ) REFERENCES channel( items ) ;
 
 
 

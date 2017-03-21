@@ -48,18 +48,18 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("*//**").hasRole("USER")
                 .and().formLogin()
-                .defaultSuccessUrl("/сhannelsForUser");
+                .defaultSuccessUrl("/channelsForUser");
         http
                 .authorizeRequests()
-                .antMatchers("*//**", "admin").hasRole("ADMIN")
-                //https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/
+                .antMatchers("*//**", "/admin").hasRole("ADMIN")
                 .and().formLogin()
-                .defaultSuccessUrl("/сhannelsForAdmin")
+                .defaultSuccessUrl("/channelsForAdmin")
                 .failureUrl("/403")
                 .and().csrf()
                 .csrfTokenRepository(csrfTokenRepository()).and()
                 .addFilterAfter(csrfHeaderFilter(), CsrfFilter.class);
                 //.and().exceptionHandling().accessDeniedPage("/403");
+                //https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/
         http
                 .exceptionHandling().accessDeniedHandler(accessDeniedHandler());
 

@@ -1,11 +1,11 @@
-package com.epam.asw.sty.service;
+package com.epam.asw.sty.service.channel;
 
 
 import com.epam.asw.sty.model.Channel;
 
 public class ChannelRulesChecker {
 
-    public Channel superRequestCheck(Channel channel){
+    public Channel superChannelCheck(Channel channel){
         if (channel.getUser().equals("Sergii")){
             channel.setUser(channel.getUser());
         }

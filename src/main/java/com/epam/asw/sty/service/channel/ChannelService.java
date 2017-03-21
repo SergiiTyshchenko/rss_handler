@@ -1,4 +1,4 @@
-package com.epam.asw.sty.service;
+package com.epam.asw.sty.service.channel;
 
 
 
@@ -11,7 +11,7 @@ public interface ChannelService {
 
     Channel findById(long id);
 
-    Channel findByUser(String user);
+    List<Channel> findByUser(String user);
 
     void saveChannel(Channel channel);
 

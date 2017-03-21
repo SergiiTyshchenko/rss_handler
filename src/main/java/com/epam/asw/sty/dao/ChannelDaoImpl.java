@@ -70,13 +70,14 @@ public class ChannelDaoImpl implements ChannelDao {
 		params.put("language", channel.getLanguage());
 		params.put("pubDate", channel.getPubDate());
 		params.put("lastBuildDate", channel.getPubDate());
-		params.put("items", channel.getLink());
+		params.put("items", channel.getId());
 		String sql = "INSERT INTO CHANNEL " +
 				"(ID, USER, TITLE, DESCRIPTION, LINK, LANGUAGE, PUBDATE, LASTBUILDDATE, ITEMS) VALUES " +
 				"(:id, :user, :title, :description, :link, :language, :pubDate, :lastBuildDate, :items)";
 				//"(2, 's', 's', 's', 's', 's', '2017-03-03', '2017-03-03', '')";
 
 		Object result =  namedParameterJdbcTemplate.update(sql, params);
+
 		return result;
 	}
 
@@ -103,7 +104,7 @@ public class ChannelDaoImpl implements ChannelDao {
 		params.put("language", rssfeed.getLanguage());
 		params.put("pubDate", rssfeed.getPublishedDate());
 		params.put("lastBuildDate", rssfeed.getPublishedDate());
-		params.put("items", rssfeed.getDescription());
+		params.put("items", 3333);
 		String sql = "INSERT INTO CHANNEL " +
 				"(ID, USER, TITLE, DESCRIPTION, LINK, LANGUAGE, PUBDATE, LASTBUILDDATE, ITEMS) VALUES (:id, :user, :title," +
 				" :description, :link, :language, :pubDate, :lastBuildDate, :items)";
@@ -124,7 +125,7 @@ public class ChannelDaoImpl implements ChannelDao {
 		params.put("language", channel.getLanguage());
 		params.put("pubDate", channel.getPubDate());
 		params.put("lastBuildDate", channel.getLastBuildDate());
-		params.put("items", channel.getItems());
+		params.put("items", channel.getId());
 		String sql = "UPDATE CHANNEL " +
 				"SET (USER, TITLE, DESCRIPTION, LINK, LANGUAGE, PUBDATE, LASTBUILDDATE, ITEMS) = " +
 				"(:user, :title, :description, :link, :language, :pubDate, :lastBuildDate, :items) " +

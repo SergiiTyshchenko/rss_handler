@@ -5,8 +5,8 @@ package com.epam.asw.sty;
 import com.epam.asw.sty.dao.ChannelDao;
 import com.epam.asw.sty.dao.ChannelDaoImpl;
 import com.epam.asw.sty.model.Channel;
-import com.epam.asw.sty.service.SingleRSSFeedReader;
-import com.epam.asw.sty.service.SingleRssFeedSavertoDB;
+import com.epam.asw.sty.service.rss.RSSFeedReader;
+import com.epam.asw.sty.service.rss.RSSFeedSavertoDB;
 import com.sun.syndication.feed.synd.Converter;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.feed.synd.impl.ConverterForRSS20;
@@ -21,10 +21,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
-import javax.annotation.Resource;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -37,7 +34,7 @@ public class ChannelDaoTest {
 	ChannelDao channelDao;
 
 	@InjectMocks
-	SingleRssFeedSavertoDB singleRssFeedSavertoDB;
+	RSSFeedSavertoDB RSSFeedSavertoDB;
 
 	@Mock
 	Converter converter;
@@ -114,12 +111,12 @@ public class ChannelDaoTest {
 		ConverterForRSS20 converter = new ConverterForRSS20();
 
 		String url = "https://dou.ua/feed/";
-		SingleRSSFeedReader singleRSSFeedReader = new SingleRSSFeedReader(url);
-		SyndFeed rssFeed = singleRSSFeedReader.obtainRSSFeed(url);
+		RSSFeedReader RSSFeedReader = new RSSFeedReader(url);
+		SyndFeed rssFeed = RSSFeedReader.obtainRSSFeed(url);
 
 
-		//SingleRssFeedSavertoDB singleRssFeedSavertoDB = new SingleRssFeedSavertoDB();
-		Object result = singleRssFeedSavertoDB.saveRssFeedtoDB(rssFeed);
+		//RSSFeedSavertoDB RSSFeedSavertoDB = new RSSFeedSavertoDB();
+		Object result = RSSFeedSavertoDB.saveRssFeedtoDB(rssFeed);
 		//Object result = saveRssFeedtoDB(rssFeed);
 		//Object result = channelDao.insertNewEntry("DOU");
 		List<Channel> channel = channelDao.findAll();

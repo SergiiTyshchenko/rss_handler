@@ -2,11 +2,11 @@ package com.epam.asw.sty.controller;
 
 
 import com.epam.asw.sty.model.Channel;
-import com.epam.asw.sty.service.ChannelDBtStats;
-import com.epam.asw.sty.service.ChannelService;
+import com.epam.asw.sty.service.channel.ChannelDBtStats;
+import com.epam.asw.sty.service.channel.ChannelService;
 
-import com.epam.asw.sty.service.SingleRSSFeedReader;
-import com.epam.asw.sty.service.SingleRssFeedSavertoDB;
+import com.epam.asw.sty.service.rss.RSSFeedReader;
+import com.epam.asw.sty.service.rss.RSSFeedSavertoDB;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.FeedException;
 import org.slf4j.Logger;
@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-public class MainRestController {
+public class ChannelRestController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -47,15 +47,16 @@ public class MainRestController {
 
     //-------------------Retrieve Channels For User--------------------------------------------------------
 
-    @RequestMapping(value = "/channel/?user={id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String getChannelForUser(Model model) {
+    @ResponseBody
+    @RequestMapping(value = "/user={user}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String getChannelForUser(@PathVariable("user") String user, Model model) {
 
-        String logDebugMessage = "Getting channel for user";
+        String logDebugMessage = "Getting channel for user " + user;
         logger.debug("{}.", logDebugMessage);
-        Channel channel = channelService.findByUser("Sergii");
-        logger.info("{}.", channel);
+        List<Channel> channel = channelService.findByUser(user);
+        logger.info("{}.",  channel);
         model.addAttribute("channel", channel);
-        return "dbViewPage";
+        return "dbChannelViewPage";
 
     }
     //-------------------Retrieve Single Channel--------------------------------------------------------
@@ -81,10 +82,10 @@ public class MainRestController {
     public ResponseEntity<Void> createChannel(@RequestBody Channel channel, UriComponentsBuilder ucBuilder) {
         System.out.println("Creating Channel " + channel.getUser());
 
-/*        if (channelService.isChannelExist(channel)) {
+        if (channelService.isChannelExist(channel)) {
             System.out.println("User " + channel.getUser() + " already exist");
             return new ResponseEntity<Void>(HttpStatus.CONFLICT);
-        }*/
+        }
 
         channelService.saveChannel(channel);
 
@@ -155,7 +156,7 @@ public class MainRestController {
 
     //-------------------Retrieve Channels Statistic Data--------------------------------------------------------
 
-    @RequestMapping(value = "/db/channel/stats", method = RequestMethod.GET)
+    @RequestMapping(value = "/channel/stats", method = RequestMethod.GET)
     public ResponseEntity<Map<String,Object>> DBChannelsStats() {
         List<Channel> channels = channelService.populateChannelsFromDB();
         Integer channels_count;
@@ -169,7 +170,7 @@ public class MainRestController {
             stats.put("DB Channel count: ", channels_count);
             List<String> channel_count_per_user = new ArrayList<String>();
             channel_count_per_user=statsTest.ChannelsPerUser(channels);
-            stats.put("DB Channel count per user: ",channel_count_per_user);
+            stats.put("DB Channel count per user: ", channel_count_per_user);
             return new ResponseEntity<Map<String,Object>>(stats, HttpStatus.OK);
         }
     }
@@ -177,13 +178,13 @@ public class MainRestController {
     //-------------------Create Single Channel from Web--------------------------------------------------------
 
 
-	@RequestMapping(value = "/db/rss/insert", method = RequestMethod.GET)
+	@RequestMapping(value = "/channel/insert", method = RequestMethod.GET)
 	public ResponseEntity<Object> DBchannelInsert() throws IOException, FeedException {
 		String url = "https://dou.ua/feed/";
-		SingleRSSFeedReader singleRSSFeedReader = new SingleRSSFeedReader(url);
-		SingleRssFeedSavertoDB singleRssFeedSavertoDB = new SingleRssFeedSavertoDB();
-		SyndFeed rssFeed = singleRSSFeedReader.obtainRSSFeed(url);
-		Object result = singleRssFeedSavertoDB.saveRssFeedtoDB(rssFeed);
+		RSSFeedReader RSSFeedReader = new RSSFeedReader(url);
+		RSSFeedSavertoDB RSSFeedSavertoDB = new RSSFeedSavertoDB();
+		SyndFeed rssFeed = RSSFeedReader.obtainRSSFeed(url);
+		Object result = RSSFeedSavertoDB.saveRssFeedtoDB(rssFeed);
 		//Object result = null;
 		if(result==null){
 			return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND

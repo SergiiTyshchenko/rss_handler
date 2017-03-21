@@ -18,8 +18,8 @@ public class IndexPagesController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    private static final String CHANNEL_MANAGEMENT_ADMIN = "сhannelManagementForAdmin";
-    private static final String CHANNEL_MANAGEMENT_USER = "сhannelManagementForUser";
+    private static final String CHANNEL_MANAGEMENT_ADMIN = "channelManagementForAdmin";
+    private static final String CHANNEL_MANAGEMENT_USER = "channelManagementForUser";
     private static final String HELLO_PAGE = "helloPage";
     private static final String ACCESS_DENIED = "accessDenied";
 
@@ -30,13 +30,13 @@ public class IndexPagesController {
     }
 
 
-    @RequestMapping(value="/сhannelsForUser", method = RequestMethod.GET)
+    @RequestMapping(value="/channelsForUser", method = RequestMethod.GET)
     public String getUserChannelIndexPage() {
         return CHANNEL_MANAGEMENT_USER;
     }
 
 
-    @RequestMapping(value="/сhannelsForAdmin", method = RequestMethod.GET)
+    @RequestMapping(value="/channelsForAdmin", method = RequestMethod.GET)
     public String getAdminChannelIndexPage() {
         return CHANNEL_MANAGEMENT_ADMIN;
     }
@@ -44,7 +44,7 @@ public class IndexPagesController {
 
     //https://spring.io/blog/2015/01/12/spring-and-angular-js-a-secure-single-page-application
     @ResponseBody
-    @RequestMapping("/admin")
+    @RequestMapping(value="/admin", method = RequestMethod.GET)
     public  Map<String,Object> adminIndex() {
         Map<String,Object> model = new HashMap<String,Object>();
         model.put("id", UUID.randomUUID().toString());
@@ -59,9 +59,9 @@ public class IndexPagesController {
     }
 
 
-    @RequestMapping(value = "/accessDenied")
+    @RequestMapping(value = "/accessDenied", method = RequestMethod.GET)
     public String accessDeniedIndex() {
-        logger.info("You are at: _{} page.", ACCESS_DENIED);
+        logger.info("You are at: {} page.", ACCESS_DENIED);
         return ACCESS_DENIED;
     }
 

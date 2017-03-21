@@ -1,4 +1,4 @@
-package com.epam.asw.sty.service;
+package com.epam.asw.sty.service.rss;
 
 
 import com.sun.syndication.feed.synd.SyndEntry;
@@ -11,12 +11,12 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 
-public class SingleRSSFeedReader {
+public class RSSFeedReader {
 
     private SyndFeed rssFeed;
     private String feedURL;
 
-    public SingleRSSFeedReader(String feedURL) {
+    public RSSFeedReader(String feedURL) {
         this.feedURL = feedURL;
     }
 

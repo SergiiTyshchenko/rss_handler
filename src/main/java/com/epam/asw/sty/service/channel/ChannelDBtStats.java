@@ -1,4 +1,4 @@
-package com.epam.asw.sty.service;
+package com.epam.asw.sty.service.channel;
 
 import com.epam.asw.sty.model.Channel;
 

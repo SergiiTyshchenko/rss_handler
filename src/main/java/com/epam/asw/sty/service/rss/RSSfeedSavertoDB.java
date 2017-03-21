@@ -1,4 +1,4 @@
-package com.epam.asw.sty.service;
+package com.epam.asw.sty.service.rss;
 
 import com.epam.asw.sty.dao.ChannelDao;
 import com.epam.asw.sty.model.Channel;
@@ -12,7 +12,7 @@ import java.io.IOException;
 
 import com.sun.syndication.feed.synd.Converter;
 
-public class SingleRssFeedSavertoDB {
+public class RSSFeedSavertoDB {
 
     @Resource(name="channelDaoImpl")
     ChannelDao channelDao;

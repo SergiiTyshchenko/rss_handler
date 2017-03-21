@@ -1,4 +1,4 @@
-package com.epam.asw.sty.service;
+package com.epam.asw.sty.service.user;
 
 import java.util.List;
 
