@@ -17,7 +17,6 @@ import java.util.UUID;
 @Controller
 public class MainPagesController {
 
-    private static final String REQUEST_MANAGEMENT = "RequestManagement";
     private static final String CHANNEL_MANAGEMENT_ADMIN = "ChannelManagementForAdmin";
     private static final String CHANNEL_MANAGEMENT_USER = "ChannelManagementForUser";
     private static final String HELLO_PAGE = "helloPage";
@@ -28,10 +27,6 @@ public class MainPagesController {
         return HELLO_PAGE;
     }
 
-    @RequestMapping(value="/my", method = RequestMethod.GET)
-    public String getIndexPage() {
-            return REQUEST_MANAGEMENT;
-        }
 
     @RequestMapping(value="/ChannelsForUser", method = RequestMethod.GET)
     public String getUserChannelIndexPage() {

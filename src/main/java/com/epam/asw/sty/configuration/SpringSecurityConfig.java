@@ -36,14 +36,20 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/" , "login").permitAll().anyRequest();
-        http.authorizeRequests().antMatchers("*//**")
-                .hasRole("USER")
+
+        http
+                .authorizeRequests()
+                .antMatchers("/" , "/login").permitAll();
+
+        http
+                .authorizeRequests()
+                .antMatchers("*//**").hasRole("USER")
                 .and().formLogin()
                 .defaultSuccessUrl("/ChannelsForUser");
-        http.authorizeRequests().antMatchers("/admin")
-                .hasRole("ADMIN");
-        http.authorizeRequests().antMatchers("*//**").hasRole("ADMIN")
+        http
+                .authorizeRequests()
+                .antMatchers("*//**", "admin").hasRole("ADMIN")
+                //https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/
                 .and().formLogin()
                 .defaultSuccessUrl("/ChannelsForAdmin")
                 .failureUrl("/403")
@@ -51,7 +57,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrfTokenRepository(csrfTokenRepository()).and()
                 .addFilterAfter(csrfHeaderFilter(), CsrfFilter.class);
                 //.and().exceptionHandling().accessDeniedPage("/403");
-        http.exceptionHandling().accessDeniedHandler(accessDeniedHandler());
+        http
+                .exceptionHandling().accessDeniedHandler(accessDeniedHandler());
 
         // add this line to use H2 web console
         http.headers().frameOptions().disable();

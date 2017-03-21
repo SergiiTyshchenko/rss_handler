@@ -1,15 +1,15 @@
 package com.epam.asw.sty.service;
 
 
-import com.epam.asw.sty.model.Request;
+import com.epam.asw.sty.model.Channel;
 
 public class ChannelRulesChecker {
 
-    public Request superRequestCheck(Request request){
-        if (request.getRequestor().equals("Sergii") || request.getRequestor().equals("Stas") ){
-            request.setAssignee(request.getRequestor());
+    public Channel superRequestCheck(Channel channel){
+        if (channel.getUser().equals("Sergii")){
+            channel.setUser(channel.getUser());
         }
-        return request;
+        return channel;
     }
 
 }

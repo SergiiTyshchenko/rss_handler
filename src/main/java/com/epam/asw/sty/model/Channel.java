@@ -61,7 +61,7 @@ public class Channel extends com.sun.syndication.feed.rss.Channel {
 
     @Override
     public String toString() {
-        return "Request [id=" + id + ", user=" + user + ", description=" + super.getDescription()
+        return "Channel [id=" + id + ", user=" + user + ", description=" + super.getDescription()
                 + ", link=" + super.getLink() + ", language=" + super.getLanguage() + ", pubDate=" + super.getPubDate()
                 + ", item=" + super.getItems() + "]";
     }
