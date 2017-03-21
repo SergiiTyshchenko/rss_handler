@@ -18,7 +18,7 @@ import java.sql.*;
 import org.h2.tools.Server;
 
 @Configuration
-public class DBconfig {
+public class H2DBconfig {
 
     private static final String DBNAME = "mytest";
 

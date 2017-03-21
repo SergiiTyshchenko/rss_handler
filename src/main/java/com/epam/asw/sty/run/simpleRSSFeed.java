@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 
-public class simpleRSSFeed {
+public class SimpleRSSFeed {
     public static void main(String[] args) throws IOException, FeedException {
 
         //KB

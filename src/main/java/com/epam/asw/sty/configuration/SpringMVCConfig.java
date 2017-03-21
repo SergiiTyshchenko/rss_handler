@@ -11,7 +11,7 @@ import org.springframework.web.servlet.view.JstlView;
 @Configuration
 @EnableWebMvc
 @ComponentScan(basePackages = "com.epam.asw.sty")
-public class MvcConfig extends WebMvcConfigurerAdapter {
+public class SpringMVCConfig extends WebMvcConfigurerAdapter {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
