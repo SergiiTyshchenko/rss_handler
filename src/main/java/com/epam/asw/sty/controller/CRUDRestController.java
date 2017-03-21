@@ -17,7 +17,7 @@ import javax.annotation.Resource;
 import java.util.List;
 
 @RestController
-public class ChannelRestControllerCRUD {
+public class CRUDRestController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -98,6 +98,7 @@ public class ChannelRestControllerCRUD {
         channelService.updateChannel(currentChannel);
         return new ResponseEntity<Channel>(currentChannel, HttpStatus.OK);
     }
+
 
 
 

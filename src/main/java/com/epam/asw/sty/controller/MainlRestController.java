@@ -28,7 +28,7 @@ import java.util.Map;
 
 
 @Controller
-public class ChannelRestControllerMain {
+public class MainlRestController {
 
 
 
