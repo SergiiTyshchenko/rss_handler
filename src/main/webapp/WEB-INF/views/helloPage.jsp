@@ -16,7 +16,7 @@
 </html>
 
 <script type="text/javascript">
-    var contents= [{"id":1,"requestor":"Me"}];
+    var contents= [{"id":1,"user":"Me"}];
     //var jsonfile={json:JSON.stringify(contents)};
     var myURL="login";
 	function closeAndSubmit(urlTo) {

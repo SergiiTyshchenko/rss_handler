@@ -1,8 +1,8 @@
 package com.epam.asw.sty.run;
 
 
-import com.epam.asw.sty.service.SingleRSSFeedReader;
-import static com.epam.asw.sty.service.SingleRssFeedSavertoFile.saveRssFeed;
+import com.epam.asw.sty.service.rss.RSSFeedReader;
+import static com.epam.asw.sty.service.rss.RSSFeedSavertoFile.saveRssFeed;
 
 import com.sun.syndication.feed.synd.*;
 import com.sun.syndication.io.*;
@@ -13,18 +13,18 @@ import java.util.Date;
 import java.util.List;
 
 
-public class simpleRSSFeed {
+public class SimpleRSSFeed {
     public static void main(String[] args) throws IOException, FeedException {
 
         //KB
         //http://www.javaworld.com/article/2077795/java-se/manage-rss-feeds-with-the-rome-api.html?page=2
 
         String url = "https://dou.ua/feed/";
-        SingleRSSFeedReader singleRSSFeedReader = new SingleRSSFeedReader(url);
+        RSSFeedReader RSSFeedReader = new RSSFeedReader(url);
         List <SyndEntry> entries;
-        entries = singleRSSFeedReader.readRSSFeed();
+        entries = RSSFeedReader.readRSSFeed();
         System.out.println(entries);
-        saveRssFeed(singleRSSFeedReader.obtainRSSFeed(url));
+        saveRssFeed(RSSFeedReader.obtainRSSFeed(url));
 
 /*       SyndFeed feed = createFeed();
         List <SyndEntry> entries = feed.getEntries();

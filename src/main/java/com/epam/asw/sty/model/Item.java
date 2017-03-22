@@ -1,22 +1,21 @@
 package com.epam.asw.sty.model;
 
-public class Channel extends com.sun.syndication.feed.rss.Channel {
+public class Item extends com.sun.syndication.feed.rss.Item {
 
 
     private long id;
 
-    private String user;
+    private long channelID;
 
 
-    public Channel(){
+    public Item(){
         id=0;
     }
 
 
-    public Channel(String type, long id, String user) {
-        super(type);
+    public Item(long id, long channelID) {
         this.id = id;
-        this.user = user;
+        this.channelID = channelID;
     }
 
 
@@ -28,12 +27,12 @@ public class Channel extends com.sun.syndication.feed.rss.Channel {
         this.id = id;
     }
 
-    public String getUser() {
-        return user;
+    public long getChannelID() {
+        return channelID;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setChannelID(long channelID) {
+        this.channelID = channelID;
     }
 
 
@@ -51,9 +50,9 @@ public class Channel extends com.sun.syndication.feed.rss.Channel {
             return true;
         if (obj == null)
             return false;
-        if (!(obj instanceof Channel))
+        if (!(obj instanceof Item))
             return false;
-        Channel other = (Channel) obj;
+        Item other = (Item) obj;
         if (id != other.id)
             return false;
         return true;
@@ -61,9 +60,8 @@ public class Channel extends com.sun.syndication.feed.rss.Channel {
 
     @Override
     public String toString() {
-        return "Channel [id=" + id + ", user=" + user + ", description=" + super.getDescription()
-                + ", link=" + super.getLink() + ", language=" + super.getLanguage() + ", pubDate=" + super.getPubDate()
-                + ", item=" + super.getItems() + "]";
+        return "Channel [id=" + id + ", channelID=" + channelID + ", description=" + super.getDescription()
+                + ", link=" + super.getLink() + ", pubDate=" + super.getPubDate() + "]";
     }
 
 

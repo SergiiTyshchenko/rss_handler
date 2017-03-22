@@ -5,10 +5,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfToken;
@@ -36,22 +39,29 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/" , "login").permitAll().anyRequest();
-        http.authorizeRequests().antMatchers("*//**")
-                .hasRole("USER")
+
+        http
+                .authorizeRequests()
+                .antMatchers("/" , "/login").permitAll();
+
+        http
+                .authorizeRequests()
+                .antMatchers("*//**").hasRole("USER")
                 .and().formLogin()
-                .defaultSuccessUrl("/ChannelsForUser");
-        http.authorizeRequests().antMatchers("/admin")
-                .hasRole("ADMIN");
-        http.authorizeRequests().antMatchers("*//**").hasRole("ADMIN")
+                .defaultSuccessUrl("/channelsForUser");
+        http
+                .authorizeRequests()
+                .antMatchers("*//**", "/admin").hasRole("ADMIN")
                 .and().formLogin()
-                .defaultSuccessUrl("/ChannelsForAdmin")
+                .defaultSuccessUrl("/channelsForAdmin")
                 .failureUrl("/403")
                 .and().csrf()
                 .csrfTokenRepository(csrfTokenRepository()).and()
                 .addFilterAfter(csrfHeaderFilter(), CsrfFilter.class);
                 //.and().exceptionHandling().accessDeniedPage("/403");
-        http.exceptionHandling().accessDeniedHandler(accessDeniedHandler());
+                //https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/
+        http
+                .exceptionHandling().accessDeniedHandler(accessDeniedHandler());
 
         // add this line to use H2 web console
         http.headers().frameOptions().disable();
@@ -96,5 +106,27 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
         repository.setHeaderName("X-XSRF-TOKEN");
         return repository;
+    }
+
+    public static class CustomAccessDeniedHandler implements AccessDeniedHandler {
+
+        private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+        @Override
+        public void handle(
+                HttpServletRequest request,
+                HttpServletResponse response,
+                AccessDeniedException exc) throws IOException, ServletException {
+
+            Authentication auth
+                    = SecurityContextHolder.getContext().getAuthentication();
+            if (auth != null) {
+                logger.warn("User: " + auth.getName()
+                        + " attempted to access the protected URL: "
+                        + request.getMethod() + ":"
+                        + request.getRequestURI());
+            }
+            response.sendRedirect(request.getContextPath() + "/accessDenied");
+        }
     }
 }
