@@ -100,22 +100,20 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>ID</th>
                     <th>Title</th>
+                    <th>Description</th>
                     <th>Link</th>
                     <th>Language</th>
-                    <th>Description</th>
                     <th>PubDate</th>
                     <th width="20%"></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="u in ctrl.channels">
-                    <td><span ng-bind="u.id"></span></td>
+                    <td><span ng-bind="u.title"></span></td>
                     <td><span ng-bind="u.description"></span></td>
                     <td><span ng-bind="u.link"></span></td>
                      <td><span ng-bind="u.language"></span></td>
-                     <td><span ng-bind="u.description"></span></td>
                       <td><span ng-bind="u.pubDate"></span></td>
                     <td>
                         <button type="button" ng-click="ctrl.edit(u.id)" class="btn btn-success custom-width">Edit</button>  <button type="button" ng-click="ctrl.remove(u.id)" class="btn btn-danger custom-width">Remove</button>

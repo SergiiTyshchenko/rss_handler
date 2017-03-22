@@ -14,9 +14,11 @@ import com.sun.syndication.io.FeedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -96,6 +98,21 @@ public class ChannelRestControllerMain {
 		return new ResponseEntity<List<Channel>>(channels, HttpStatus.OK);
 	}
 
+
+	//-------------------Retrieve All Channels for User--------------------------------------------------------
+
+	@RequestMapping(value = "/channel/user&={user}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Channel> getChannelbyUser(@PathVariable("user") String user) {
+		String logDebugMessage = "Fetching Channel for user: " + user;
+		logger.debug("DEBUG message {}.", logDebugMessage);
+		Channel channel = channelService.findByUser(user);
+		if (channel == null) {
+			logDebugMessage = "Channels for user " + user + " not found";
+			logger.debug("DEBUG message {}.", logDebugMessage);
+			return new ResponseEntity<Channel>(HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<Channel>(channel, HttpStatus.OK);
+	}
 	//-------------------Add New RSS Feed--------------------------------------------------------
 
 

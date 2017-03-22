@@ -58,7 +58,7 @@ public class ChannelRestControllerCRUD {
 
     @RequestMapping(value = "/channel/", method = RequestMethod.POST)
     public ResponseEntity<Void> createChannel(@RequestBody Channel channel, UriComponentsBuilder ucBuilder) {
-        System.out.println("Creating Channel " + channel.getUser());
+        System.out.println("Creating Channel for user: " + channel.getUser());
 
 /*        if (channelService.isChannelExist(channel)) {
             System.out.println("User " + channel.getUser() + " already exist");
