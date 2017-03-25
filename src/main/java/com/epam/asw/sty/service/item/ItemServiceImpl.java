@@ -27,6 +27,7 @@ public class ItemServiceImpl implements ItemService {
     @Resource(name="itemDaoImpl")
     ItemDao itemDao;
 
+    private static final AtomicLong counter = new AtomicLong();
 
     private List<Item> items;
 
@@ -45,14 +46,39 @@ public class ItemServiceImpl implements ItemService {
     }
 
 
-    public List<Item> findByChannel(long channelID) {
+    public List<Item> findByChannel(String  channelID) {
         List<Item> items = new ArrayList<Item>();
         for(Item item : populateItemsFromDB()){
-            if(item.getChannelID() == (channelID)){
+            if(item.getChannelID().equals(channelID)){
                 items.add(item);
             }
         }
         return items;
+    }
+
+    public void saveItem(Item item) {
+
+        item.setId(new Item().getId());
+     //   items = populateItemsFromDB();
+/*        if (items.size() == 0) {
+            counter.set(0);
+        } else {
+            counter.set(items.get(items.size() - 1).getId());
+        }
+        item.setId((int) counter.incrementAndGet());*/
+        itemDao.insertNewEntry(item);
+    }
+
+    public void deleteItemByChannelID(String  id) {
+
+        items = populateItemsFromDB();
+        for (Iterator<Item> iterator = items.iterator(); iterator.hasNext(); ) {
+            Item item = iterator.next();
+            if (item.getChannelID().equals(id)) {
+                itemDao.removeEntryByChannelID(id);
+                break;
+            }
+        }
     }
 
 

@@ -2,11 +2,11 @@ package com.epam.asw.sty.controller;
 
 
 import com.epam.asw.sty.model.Channel;
-import com.epam.asw.sty.service.channel.ChannelDBtStats;
+import com.epam.asw.sty.service.channel.ChannelDBStats;
 import com.epam.asw.sty.service.channel.ChannelService;
 
 import com.epam.asw.sty.service.rss.RSSFeedReader;
-import com.epam.asw.sty.service.rss.RSSFeedSavertoDB;
+import com.epam.asw.sty.service.rss.RSSfeedSavertoDB;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.FeedException;
 import org.slf4j.Logger;
@@ -62,7 +62,7 @@ public class ChannelRestController {
     //-------------------Retrieve Single Channel--------------------------------------------------------
 
     @RequestMapping(value = "/channel/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Channel> getChannelbyID(@PathVariable("id") long id) {
+    public ResponseEntity<Channel> getChannelbyID(@PathVariable("id") String id) {
         String logDebugMessage = "Fetching Channel with id " + id;
         logger.debug("DEBUG message {}.", logDebugMessage);
         Channel channel = channelService.findById(id);
@@ -80,10 +80,10 @@ public class ChannelRestController {
 
     @RequestMapping(value = "/channel/", method = RequestMethod.POST)
     public ResponseEntity<Void> createChannel(@RequestBody Channel channel, UriComponentsBuilder ucBuilder) {
-        System.out.println("Creating Channel for user: " + channel.getUser());
+        System.out.println("Creating Channel with url: " + channel.getLink());
 
         if (channelService.isChannelExist(channel)) {
-            System.out.println("User " + channel.getUser() + " already exist");
+            System.out.println("Channel with link " + channel.getLink() + " already exist");
             return new ResponseEntity<Void>(HttpStatus.CONFLICT);
         }
 
@@ -99,7 +99,7 @@ public class ChannelRestController {
     //------------------- Update Single Channel --------------------------------------------------------
 
     @RequestMapping(value = "/channel/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Channel> updateChannel(@PathVariable("id") long id, @RequestBody Channel channel) {
+    public ResponseEntity<Channel> updateChannel(@PathVariable("id") String  id, @RequestBody Channel channel) {
         String logDebugMessage = "Updating Channel " + id;
         logger.debug("DEBUG message {}.", logDebugMessage);
         Channel currentChannel = channelService.findById(id);
@@ -127,7 +127,7 @@ public class ChannelRestController {
     //------------------- Delete Single Channel --------------------------------------------------------
 
     @RequestMapping(value = "/channel/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Channel> deleteChannel(@PathVariable("id") long id) {
+    public ResponseEntity<Channel> deleteChannel(@PathVariable("id") String id) {
         String logDebugMessage = "Fetching & Deleting Channel with id " + id;
         logger.debug("DEBUG message {}.", logDebugMessage);
         Channel channel = channelService.findById(id);
@@ -136,6 +136,7 @@ public class ChannelRestController {
             logger.debug("DEBUG message {}.", logDebugMessage);
             return new ResponseEntity<Channel>(HttpStatus.NOT_FOUND);
         }
+
 
         channelService.deleteChannelById(id);
         return new ResponseEntity<Channel>(HttpStatus.NO_CONTENT);
@@ -164,7 +165,7 @@ public class ChannelRestController {
             return new ResponseEntity<Map<String,Object>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
         }
         else {
-            ChannelDBtStats statsTest = new ChannelDBtStats();
+            ChannelDBStats statsTest = new ChannelDBStats();
             Map<String,Object> stats = new java.util.HashMap<>();
             channels_count = statsTest.DBChannelCount(channels);
             stats.put("DB Channel count: ", channels_count);
@@ -182,7 +183,7 @@ public class ChannelRestController {
 	public ResponseEntity<Object> DBchannelInsert() throws IOException, FeedException {
 		String url = "https://dou.ua/feed/";
 		RSSFeedReader RSSFeedReader = new RSSFeedReader(url);
-		RSSFeedSavertoDB RSSFeedSavertoDB = new RSSFeedSavertoDB();
+		RSSfeedSavertoDB RSSFeedSavertoDB = new RSSfeedSavertoDB();
 		SyndFeed rssFeed = RSSFeedReader.obtainRSSFeed(url);
 		Object result = RSSFeedSavertoDB.saveRssFeedtoDB(rssFeed);
 		//Object result = null;

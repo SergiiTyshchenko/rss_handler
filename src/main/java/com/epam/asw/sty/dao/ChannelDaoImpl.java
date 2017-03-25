@@ -82,7 +82,7 @@ public class ChannelDaoImpl implements ChannelDao {
 	}
 
 	@Override
-	public Object removeEntryByID(long id) {
+	public Object removeEntryByID(String  id) {
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", id);
@@ -140,7 +140,7 @@ public class ChannelDaoImpl implements ChannelDao {
 
 		public Channel mapRow(ResultSet rs, int rowNum) throws SQLException {
 			Channel channel = new Channel();
-			channel.setId(rs.getInt("id"));
+			channel.setId(rs.getString("id"));
 			channel.setUser(rs.getString("user"));
 			channel.setTitle(rs.getString("title"));
 			channel.setDescription(rs.getString("description"));

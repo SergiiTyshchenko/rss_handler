@@ -2,7 +2,8 @@ package com.epam.asw.sty.run;
 
 
 import com.epam.asw.sty.service.rss.RSSFeedReader;
-import static com.epam.asw.sty.service.rss.RSSFeedSavertoFile.saveRssFeed;
+import static com.epam.asw.sty.service.rss.RSSfeedSavertoFile.saveRssFeed;
+
 
 import com.sun.syndication.feed.synd.*;
 import com.sun.syndication.io.*;

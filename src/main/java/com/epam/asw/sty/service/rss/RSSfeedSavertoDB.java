@@ -12,7 +12,7 @@ import java.io.IOException;
 
 import com.sun.syndication.feed.synd.Converter;
 
-public class RSSFeedSavertoDB {
+public class RSSfeedSavertoDB {
 
     @Resource(name="channelDaoImpl")
     ChannelDao channelDao;

@@ -1,30 +1,32 @@
 package com.epam.asw.sty.model;
 
+import java.util.UUID;
+
 public class Channel extends com.sun.syndication.feed.rss.Channel {
 
 
-    private long id;
+    private String id;
 
     private String user;
 
 
     public Channel(){
-        id=0;
+        id=UUID.randomUUID().toString();
     }
 
 
-    public Channel(String type, long id, String user) {
+    public Channel(String type, String id, String user) {
         super(type);
         this.id = id;
         this.user = user;
     }
 
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -41,7 +43,7 @@ public class Channel extends com.sun.syndication.feed.rss.Channel {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (int) (id ^ (id >>> 32));
+        result = prime * result + id.hashCode();
         return result;
     }
 

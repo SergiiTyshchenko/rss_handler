@@ -6,7 +6,7 @@ import com.epam.asw.sty.dao.ChannelDao;
 import com.epam.asw.sty.dao.ChannelDaoImpl;
 import com.epam.asw.sty.model.Channel;
 import com.epam.asw.sty.service.rss.RSSFeedReader;
-import com.epam.asw.sty.service.rss.RSSFeedSavertoDB;
+import com.epam.asw.sty.service.rss.RSSfeedSavertoDB;
 import com.sun.syndication.feed.synd.Converter;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.feed.synd.impl.ConverterForRSS20;
@@ -34,7 +34,7 @@ public class ChannelDaoTest {
 	ChannelDao channelDao;
 
 	@InjectMocks
-	RSSFeedSavertoDB RSSFeedSavertoDB;
+	RSSfeedSavertoDB RSSfeedSavertoDB;
 
 	@Mock
 	Converter converter;
@@ -62,16 +62,15 @@ public class ChannelDaoTest {
 		List<Channel> channel = channelDao.findByUser("Sergii");
 
 		Assert.assertNotNull(channel);
-		Assert.assertEquals(1, channel.get(0).getId());
 		Assert.assertEquals("Sergii", channel.get(0).getUser());
-		Assert.assertEquals("link: dou lenta", channel.get(0).getLink());
+		Assert.assertEquals("https://dou.ua/feed/", channel.get(0).getLink());
 
 	}
 
 
 
 	@Test
-	public void testInsertNewchannel() {
+	public void testChannelExist() {
 		NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(db);
 		ChannelDaoImpl channelDao = new ChannelDaoImpl();
 		channelDao.setNamedParameterJdbcTemplate(template);
@@ -94,7 +93,7 @@ public class ChannelDaoTest {
 		List<Channel> channel = channelDao.findAll();
 
 		Assert.assertNotNull(channel);
-		Assert.assertEquals(1, channel.get(0).getId());
+		//Assert.assertEquals(1, channel.get(0).getId());
 		Assert.assertEquals("DOU", channel.get(0).getTitle());
 		Assert.assertEquals("Developers", channel.get(0).getDescription());
 
@@ -116,13 +115,13 @@ public class ChannelDaoTest {
 
 
 		//RSSFeedSavertoDB RSSFeedSavertoDB = new RSSFeedSavertoDB();
-		Object result = RSSFeedSavertoDB.saveRssFeedtoDB(rssFeed);
+		Object result = RSSfeedSavertoDB.saveRssFeedtoDB(rssFeed);
 		//Object result = saveRssFeedtoDB(rssFeed);
 		//Object result = channelDao.insertNewEntry("DOU");
 		List<Channel> channel = channelDao.findAll();
 
 		Assert.assertNotNull(result);
-		Assert.assertEquals(333, channel.get(1).getId());
+		//Assert.assertEquals(333, channel.get(1).getId());
 		System.out.println(channel.get(1).getTitle());
 	}
     @After

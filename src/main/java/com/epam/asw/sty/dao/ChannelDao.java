@@ -15,7 +15,7 @@ public interface ChannelDao {
 
 	Object insertNewEntry(Channel channel);
 
-	Object removeEntryByID(long id);
+	Object removeEntryByID(String id);
 
 	Object insertNewSiteEntry(SyndFeed rssfeed);
 

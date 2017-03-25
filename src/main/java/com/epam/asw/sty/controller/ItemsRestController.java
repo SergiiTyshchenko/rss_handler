@@ -1,30 +1,19 @@
 package com.epam.asw.sty.controller;
 
 
-import com.epam.asw.sty.model.Channel;
 import com.epam.asw.sty.model.Item;
-import com.epam.asw.sty.service.channel.ChannelDBtStats;
-import com.epam.asw.sty.service.channel.ChannelService;
 import com.epam.asw.sty.service.item.ItemService;
-import com.epam.asw.sty.service.rss.RSSFeedReader;
-import com.epam.asw.sty.service.rss.RSSFeedSavertoDB;
-import com.sun.syndication.feed.synd.SyndFeed;
-import com.sun.syndication.io.FeedException;
+import com.epam.asw.sty.service.rss.RSSfeedSavertoDB;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.annotation.Resource;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class ItemsRestController {
@@ -50,7 +39,7 @@ public class ItemsRestController {
 
     @ResponseBody
     @RequestMapping(value = "/item/channelID={channelID}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String getChannelForUser(@PathVariable("user") long channelID, Model model) {
+    public String getChannelForUser(@PathVariable("channelID") String channelID, Model model) {
 
         String logDebugMessage = "Getting items for channel " + channelID;
         logger.debug("{}.", logDebugMessage);

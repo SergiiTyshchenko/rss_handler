@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ChannelService {
 
-    Channel findById(long id);
+    Channel findById(String id);
 
     List<Channel> findByUser(String user);
 
@@ -17,7 +17,7 @@ public interface ChannelService {
 
     void updateChannel(Channel channel);
 
-    void deleteChannelById(long id);
+    void deleteChannelById(String id);
 
     List<Channel> findAllChannels();
 

@@ -8,7 +8,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 
-public class RSSFeedSavertoFile {
+public class RSSfeedSavertoFile {
 
     public static void saveRssFeed(SyndFeed rssFeed) throws IOException, FeedException {
         String feedFileName = rssFeed.getLink();

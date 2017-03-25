@@ -5,7 +5,7 @@ import com.epam.asw.sty.model.Channel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChannelDBtStats {
+public class ChannelDBStats {
 
     public Integer DBChannelCount(List<Channel> channels){
         Integer count = 0;

@@ -1,37 +1,40 @@
 package com.epam.asw.sty.model;
 
+import java.util.Arrays;
+import java.util.UUID;
+
 public class Item extends com.sun.syndication.feed.rss.Item {
 
 
-    private long id;
+    private String id;
 
-    private long channelID;
+    private String channelID;
 
 
     public Item(){
-        id=0;
+        id=UUID.randomUUID().toString();
     }
 
 
-    public Item(long id, long channelID) {
+    public Item(String id, String channelID) {
         this.id = id;
         this.channelID = channelID;
     }
 
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public long getChannelID() {
+    public String getChannelID() {
         return channelID;
     }
 
-    public void setChannelID(long channelID) {
+    public void setChannelID(String channelID) {
         this.channelID = channelID;
     }
 
@@ -40,7 +43,7 @@ public class Item extends com.sun.syndication.feed.rss.Item {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + (int) (id ^ (id >>> 32));
+        result = prime * result + id.hashCode();
         return result;
     }
 
@@ -60,7 +63,7 @@ public class Item extends com.sun.syndication.feed.rss.Item {
 
     @Override
     public String toString() {
-        return "Channel [id=" + id + ", channelID=" + channelID + ", description=" + super.getDescription()
+        return "Item [id=" + id + ", channelID=" + channelID + ", description=" + super.getDescription()
                 + ", link=" + super.getLink() + ", pubDate=" + super.getPubDate() + "]";
     }
 

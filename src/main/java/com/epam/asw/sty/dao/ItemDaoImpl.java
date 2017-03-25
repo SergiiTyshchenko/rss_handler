@@ -37,10 +37,7 @@ public class ItemDaoImpl implements ItemDao {
 
 		String sql = "SELECT * FROM item WHERE CHANNELID=:channelID";
 
-		List<Item> items = namedParameterJdbcTemplate.query(
-				sql,
-				params,
-				new RequestMapper());
+		List<Item> items = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
 
 		//new BeanPropertyRowMapper(Customer.class));
 
@@ -67,7 +64,7 @@ public class ItemDaoImpl implements ItemDao {
 		params.put("id",item.getId());
 		params.put("channelID", item.getChannelID());
 		params.put("title",  item.getTitle());
-		params.put("description", item.getDescription());
+		params.put("description", item.getDescription().getValue());
 		params.put("link", item.getLink());
 		params.put("pubDate", item.getPubDate());
 		String sql = "INSERT INTO ITEM " +
@@ -80,14 +77,24 @@ public class ItemDaoImpl implements ItemDao {
 	}
 
 
+	@Override
+	public Object removeEntryByChannelID(String  id) {
 
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("channelID", id);
+		String sql = "DELETE FROM ITEM " +
+				"WHERE CHANNELID=:channelID";
+
+		Object result =  namedParameterJdbcTemplate.update(sql, params);
+		return result;
+	}
 
 	private static final class RequestMapper implements RowMapper<Item> {
 
 		public Item mapRow(ResultSet rs, int rowNum) throws SQLException {
 			Item item = new Item();
-			item.setId(rs.getInt("id"));
-			item.setChannelID(rs.getInt("channelID"));
+			item.setId(rs.getString("id"));
+			item.setChannelID(rs.getString("channelID"));
 			item.setTitle(rs.getString("title"));
 			Description itemDescription = new Description();
 			itemDescription.setValue(rs.getString("description"));;
