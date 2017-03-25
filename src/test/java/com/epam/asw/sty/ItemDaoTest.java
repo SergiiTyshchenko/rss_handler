@@ -1,18 +1,12 @@
 package com.epam.asw.sty;
 
 
-
-import com.epam.asw.sty.dao.ChannelDao;
 import com.epam.asw.sty.dao.ItemDao;
 import com.epam.asw.sty.dao.ItemDaoImpl;
 import com.epam.asw.sty.model.Channel;
 import com.epam.asw.sty.model.Item;
-import com.epam.asw.sty.service.rss.RSSFeedReader;
 import com.epam.asw.sty.service.rss.RSSfeedSavertoDB;
 import com.sun.syndication.feed.synd.Converter;
-import com.sun.syndication.feed.synd.SyndFeed;
-import com.sun.syndication.feed.synd.impl.ConverterForRSS20;
-import com.sun.syndication.io.FeedException;
 import org.junit.*;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -23,7 +17,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
-import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -64,13 +58,13 @@ public class ItemDaoTest {
 		itemDao.setNamedParameterJdbcTemplate(template);
 
 		Channel channel = new Channel();
-		/*List<Item> itemsTest = new ArrayList<Item>();
+		channel.setShortid(0);
+/*		List<Item> itemsTest = new ArrayList<Item>();
 		Item itemTest = new Item();
 		itemTest.setLink("https://dou.ua/feed/");
-		itemTest.setChannelID(channel.getId());
+		itemTest.setChannelID(channel.getShortid());
 		itemsTest.add(itemTest);
 		channel.setItems(itemsTest);*/
-		channel.setId("111");
 		List<Item> item = itemDao.findByChannel(channel);
 
 		Assert.assertNotNull(item);

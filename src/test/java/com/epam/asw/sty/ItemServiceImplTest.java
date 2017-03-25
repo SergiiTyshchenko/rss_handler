@@ -16,12 +16,9 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
-import sun.security.krb5.internal.crypto.Des;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static org.junit.Assert.*;
@@ -56,7 +53,7 @@ public class ItemServiceImplTest {
 
         Item itemTest = new Item();
         itemTest.setLink("https://dou.ua/feed/");
-        itemTest.setChannelID("111");
+        itemTest.setChannelID(0);
         itemTest.setTitle("TEST_ITEM_TITLE");
         Description description = new Description();
         description.setValue("TEST_ITEM_DESCRIPTION");

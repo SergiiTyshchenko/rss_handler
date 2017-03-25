@@ -21,6 +21,8 @@ public interface ChannelService {
 
     List<Channel> findAllChannels();
 
+    Channel findByShortID(long shortid);
+
     void deleteAllChannels();
 
     public boolean isChannelExist(Channel channel);

@@ -13,14 +13,16 @@ public interface ItemService {
 
 
 
-    List<Item> findByChannel(String  channelID);
+    List<Item> findByChannel(long  channelID);
 
     List<Item> findAllItems();
+
+    List<Item> findByChannelLink(long shortid);
 
     List<Item> populateItemsFromDB();
 
     void saveItem(Item item);
 
-    void deleteItemByChannelID(String id);
+    void deleteItemByChannelID(long id);
 
 }

@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Service("channelServiceImpl")
@@ -63,25 +62,34 @@ public class ChannelServiceImpl implements ChannelService {
     public List<Channel> findByUser(String user) {
         List<Channel> channels = new ArrayList<Channel>();
         for(Channel channel : populateChannelsFromDB()){
-            if(channel.getLink().equalsIgnoreCase(user)){
+            if(channel.getUser().equalsIgnoreCase(user)){
                 channels.add(channel);
             }
         }
         return channels;
     }
 
+    public Channel findByShortID(long shortid) {
+        for(Channel channel : populateChannelsFromDB()){
+            if(channel.getShortid() == shortid){
+                return channel;
+            }
+        }
+        return null;
+    }
+
     public void saveChannel(Channel channel) {
         ChannelRulesChecker checker = new ChannelRulesChecker();
         channel.setId(new Channel().getId());
-/*        channels = populateChannelsFromDB();
+        channels = populateChannelsFromDB();
         if (channels.size() == 0) {
             counter.set(0);
         }
         else {
-            counter.set(channels.get(channels.size()-1).getId());
+            counter.set(channels.get(channels.size()-1).getShortid());
         }
-        channel.setId((int) counter.incrementAndGet());*/
-        //channel.setId();
+        channel.setShortid((int) counter.incrementAndGet());
+
         channel = checker.superChannelCheck(channel);
 
         RSSFeedReader RSSFeedReader = new RSSFeedReader(channel.getLink());
@@ -125,7 +133,7 @@ public class ChannelServiceImpl implements ChannelService {
         List<SyndEntryImpl> items = channel.getItems();
         for (SyndEntryImpl item: items) {
             Item customizedItem = new Item();
-            customizedItem.setChannelID(channel.getId());
+            customizedItem.setChannelID(channel.getShortid());
             customizedItem.setPubDate(item.getPublishedDate());
             Description itemDescription = new Description();
             itemDescription.setValue(item.getDescription().getValue());
@@ -147,7 +155,7 @@ public class ChannelServiceImpl implements ChannelService {
         for (Iterator<Channel> iterator = channels.iterator(); iterator.hasNext(); ) {
             Channel channel = iterator.next();
             if (channel.getId().equals(id)) {
-                itemService.deleteItemByChannelID(id);
+                itemService.deleteItemByChannelID(channel.getShortid());
                 channelDao.removeEntryByID(id);
                 break;
             }
@@ -155,7 +163,7 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     public boolean isChannelExist(Channel channel) {
-        return findByUser(channel.getLink()).size() !=0;
+        return findByShortID(channel.getShortid()) != null;
     }
 
     public void deleteAllChannels(){
@@ -172,8 +180,8 @@ public class ChannelServiceImpl implements ChannelService {
     public Object insertEntrytoDB(Channel channel) {
         channels = populateChannelsFromDB();
         //channel.setId(new Channel().getId());
-        /*counter.set(channels.get(channels.size()-1).getId());
-        channel.setId((int) counter.incrementAndGet());*/
+        counter.set(channels.get(channels.size()-1).getShortid());
+        channel.setShortid((int) counter.incrementAndGet());
         Object result = channelDao.insertNewEntry(channel);
         return result;
     }

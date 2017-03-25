@@ -33,7 +33,7 @@ public class ItemDaoImpl implements ItemDao {
 	public List<Item> findByChannel(Channel channel) {
 
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("channelID", channel.getId());
+		params.put("channelID", channel.getShortid());
 
 		String sql = "SELECT * FROM item WHERE CHANNELID=:channelID";
 
@@ -78,7 +78,7 @@ public class ItemDaoImpl implements ItemDao {
 
 
 	@Override
-	public Object removeEntryByChannelID(String  id) {
+	public Object removeEntryByChannelID(long  id) {
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("channelID", id);
@@ -94,7 +94,7 @@ public class ItemDaoImpl implements ItemDao {
 		public Item mapRow(ResultSet rs, int rowNum) throws SQLException {
 			Item item = new Item();
 			item.setId(rs.getString("id"));
-			item.setChannelID(rs.getString("channelID"));
+			item.setChannelID(rs.getLong("channelID"));
 			item.setTitle(rs.getString("title"));
 			Description itemDescription = new Description();
 			itemDescription.setValue(rs.getString("description"));;

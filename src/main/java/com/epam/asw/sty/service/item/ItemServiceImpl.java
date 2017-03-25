@@ -46,10 +46,21 @@ public class ItemServiceImpl implements ItemService {
     }
 
 
-    public List<Item> findByChannel(String  channelID) {
+    public List<Item> findByChannel(long  channelID) {
         List<Item> items = new ArrayList<Item>();
         for(Item item : populateItemsFromDB()){
-            if(item.getChannelID().equals(channelID)){
+            //if(item.getChannelID().equals(channelID)){
+            if(item.getChannelID() == channelID){
+                items.add(item);
+            }
+        }
+        return items;
+    }
+
+    public List<Item> findByChannelLink(long shortid) {
+        List<Item> items = new ArrayList<Item>();
+        for(Item item : populateItemsFromDB()){
+            if(item.getChannelID() == shortid){
                 items.add(item);
             }
         }
@@ -69,12 +80,13 @@ public class ItemServiceImpl implements ItemService {
         itemDao.insertNewEntry(item);
     }
 
-    public void deleteItemByChannelID(String  id) {
+    public void deleteItemByChannelID(long  id) {
 
         items = populateItemsFromDB();
         for (Iterator<Item> iterator = items.iterator(); iterator.hasNext(); ) {
             Item item = iterator.next();
-            if (item.getChannelID().equals(id)) {
+            //if (item.getChannelID().equals(id)) {
+            if (item.getChannelID() == id) {
                 itemDao.removeEntryByChannelID(id);
                 break;
             }

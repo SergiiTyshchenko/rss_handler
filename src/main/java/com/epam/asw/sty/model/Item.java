@@ -8,7 +8,7 @@ public class Item extends com.sun.syndication.feed.rss.Item {
 
     private String id;
 
-    private String channelID;
+    private long channelID;
 
 
     public Item(){
@@ -16,7 +16,7 @@ public class Item extends com.sun.syndication.feed.rss.Item {
     }
 
 
-    public Item(String id, String channelID) {
+    public Item(String id, long channelID) {
         this.id = id;
         this.channelID = channelID;
     }
@@ -30,11 +30,11 @@ public class Item extends com.sun.syndication.feed.rss.Item {
         this.id = id;
     }
 
-    public String getChannelID() {
+    public long getChannelID() {
         return channelID;
     }
 
-    public void setChannelID(String channelID) {
+    public void setChannelID(long channelID) {
         this.channelID = channelID;
     }
 

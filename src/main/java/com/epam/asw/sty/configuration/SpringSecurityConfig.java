@@ -45,8 +45,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         return new CustomAccessDeniedHandler();
     }
 
-    @Autowired
-    CustomSuccessHandler customSuccessHandler;
+/*    @Autowired
+    CustomSuccessHandler customSuccessHandler;*/
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -70,16 +70,35 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().loginPage("/login").failureUrl("/login?error=true").usernameParameter("username").passwordParameter("password").loginProcessingUrl("/security_check")
                 .successHandler(new MyAuthenticationSuccessHandler(this.mongoTemplate));
         */
+
+
+        http.authorizeRequests()
+                .antMatchers("/" , "/login").permitAll()
+                .antMatchers("*//**", "/admin").hasRole("ADMIN")
+                .antMatchers("*//**").hasAnyRole("USER", "SERG", "ADMIN")
+                .and().formLogin()
+                .defaultSuccessUrl("/channelsForUser")
+                //.failureUrl("/403")
+                .and().csrf()
+                .csrfTokenRepository(csrfTokenRepository()).and()
+                .addFilterAfter(csrfHeaderFilter(), CsrfFilter.class)
+                .exceptionHandling().accessDeniedHandler(accessDeniedHandler())
+                .and().headers().frameOptions().disable();
+        //.and().exceptionHandling().accessDeniedPage("/403");
+
+        // add this line to use H2 web console
+
+
+/*
         http
                 .authorizeRequests()
                 .antMatchers("/" , "/login").permitAll()
-                .antMatchers("*//**").hasAnyRole("USER", "ADMIN")
-                //.antMatchers("*//**", "/admin").hasRole("ADMIN")
+                .antMatchers("*//**//**").hasAnyRole("USER", "ADMIN")
                 .anyRequest().authenticated()
                 .and().formLogin().defaultSuccessUrl("/channelsForUser")//.successHandler(customSuccessHandler) //.loginPage("/login")
                 .and().csrf().csrfTokenRepository(csrfTokenRepository()).and().addFilterAfter(csrfHeaderFilter(), CsrfFilter.class)
                 .exceptionHandling().accessDeniedHandler(accessDeniedHandler())
-                .and().headers().frameOptions().disable(); // add this line to use H2 web console
+                .and().headers().frameOptions().disable(); // add this line to use H2 web console*/
 
                 // .failureUrl("/403")
                 //.defaultSuccessUrl("/channelsForUser")
@@ -94,7 +113,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .inMemoryAuthentication()
                 .withUser("user").password("password").roles("USER")
                 .and()
-                .withUser("admin").password("admin").roles("ADMIN");
+                .withUser("admin").password("admin").roles("ADMIN")
+                .and()
+                .withUser("serg").password("password").roles("SERG");
     }
 
     private OncePerRequestFilter csrfHeaderFilter() {

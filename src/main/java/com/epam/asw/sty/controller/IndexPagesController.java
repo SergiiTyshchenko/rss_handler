@@ -20,6 +20,7 @@ public class IndexPagesController {
 
     private static final String CHANNEL_MANAGEMENT_ADMIN = "channelManagementForAdmin";
     private static final String CHANNEL_MANAGEMENT_USER = "channelManagementForUser";
+    private static final String ITEM_FOR_CHANNEL_VIEW = "itemsForChannelView";
     private static final String HELLO_PAGE = "helloPage";
     private static final String ACCESS_DENIED = "accessDenied";
 
@@ -39,6 +40,11 @@ public class IndexPagesController {
     @RequestMapping(value="/channelsForAdmin", method = RequestMethod.GET)
     public String getAdminChannelIndexPage() {
         return CHANNEL_MANAGEMENT_ADMIN;
+    }
+
+    @RequestMapping(value="/itemsForChannel", method = RequestMethod.GET)
+    public String getItemsForChannelIndexPage() {
+        return ITEM_FOR_CHANNEL_VIEW;
     }
 
 

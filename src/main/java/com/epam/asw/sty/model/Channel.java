@@ -7,6 +7,8 @@ public class Channel extends com.sun.syndication.feed.rss.Channel {
 
     private String id;
 
+    private long shortid;
+
     private String user;
 
 
@@ -15,9 +17,10 @@ public class Channel extends com.sun.syndication.feed.rss.Channel {
     }
 
 
-    public Channel(String type, String id, String user) {
+    public Channel(String type, String id, long shortid, String user) {
         super(type);
         this.id = id;
+        this.shortid = shortid;
         this.user = user;
     }
 
@@ -38,6 +41,13 @@ public class Channel extends com.sun.syndication.feed.rss.Channel {
         this.user = user;
     }
 
+    public long getShortid() {
+        return shortid;
+    }
+
+    public void setShortid(long shortid) {
+        this.shortid = shortid;
+    }
 
     @Override
     public int hashCode() {

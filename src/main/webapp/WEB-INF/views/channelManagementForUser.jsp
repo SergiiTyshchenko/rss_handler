@@ -65,23 +65,6 @@
                     </div>
                 </div>
 
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label class="col-md-2 control-lable" for="language">Language</label>
-                        <div class="col-md-7">
-                            <input type="text" ng-model="ctrl.channel.language" id="language" class="form-control input-sm" placeholder="Enter channel language. [This field is validation free]"/>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="form-group col-md-12">
-                        <label class="col-md-2 control-lable" for="pubDate">PubDate</label>
-                        <div class="col-md-7">
-                            <input type="text" ng-model="ctrl.channel.pubDate" id="pubDate" class="form-control input-sm" placeholder="Enter pubDate. [This field is validation free]"/>
-                        </div>
-                    </div>
-                </div>
 
                 <div class="row">
                     <div class="form-actions floatRight">
@@ -100,6 +83,7 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
+                    <th>ShortID</th>
                     <th>Title</th>
                     <th>Description</th>
                     <th>Link</th>
@@ -110,6 +94,7 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="u in ctrl.channels">
+                    <td><span ng-bind="u.shortid"></span></td>
                     <td><span ng-bind="u.title"></span></td>
                     <td><span ng-bind="u.description"></span></td>
                     <td><span ng-bind="u.link"></span></td>

@@ -63,6 +63,7 @@ public class ChannelDaoImpl implements ChannelDao {
 	public Object insertNewEntry(Channel channel) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id",channel.getId());
+		params.put("shortid",channel.getShortid());
 		params.put("user", channel.getUser());
 		params.put("title",  channel.getTitle());
 		params.put("description", channel.getDescription());
@@ -72,8 +73,8 @@ public class ChannelDaoImpl implements ChannelDao {
 		params.put("lastBuildDate", channel.getPubDate());
 		params.put("items", channel.getId());
 		String sql = "INSERT INTO CHANNEL " +
-				"(ID, USER, TITLE, DESCRIPTION, LINK, LANGUAGE, PUBDATE, LASTBUILDDATE, ITEMS) VALUES " +
-				"(:id, :user, :title, :description, :link, :language, :pubDate, :lastBuildDate, :items)";
+				"(ID, SHORTID, USER, TITLE, DESCRIPTION, LINK, LANGUAGE, PUBDATE, LASTBUILDDATE, ITEMS) VALUES " +
+				"(:id, :shortid, :user, :title, :description, :link, :language, :pubDate, :lastBuildDate, :items)";
 				//"(2, 's', 's', 's', 's', 's', '2017-03-03', '2017-03-03', '')";
 
 		Object result =  namedParameterJdbcTemplate.update(sql, params);
@@ -97,6 +98,7 @@ public class ChannelDaoImpl implements ChannelDao {
 	public Object insertNewSiteEntry(SyndFeed rssfeed) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", 333);
+		params.put("shortid",0);
 		params.put("user", "RSS");
 		params.put("title", rssfeed.getTitle());
 		params.put("description", rssfeed.getDescription());
@@ -106,8 +108,8 @@ public class ChannelDaoImpl implements ChannelDao {
 		params.put("lastBuildDate", rssfeed.getPublishedDate());
 		params.put("items", 3333);
 		String sql = "INSERT INTO CHANNEL " +
-				"(ID, USER, TITLE, DESCRIPTION, LINK, LANGUAGE, PUBDATE, LASTBUILDDATE, ITEMS) VALUES (:id, :user, :title," +
-				" :description, :link, :language, :pubDate, :lastBuildDate, :items)";
+				"(ID, ,SHORTID, USER, TITLE, DESCRIPTION, LINK, LANGUAGE, PUBDATE, LASTBUILDDATE, ITEMS) " +
+				"VALUES (:id, :shortid, :user, :title, :description, :link, :language, :pubDate, :lastBuildDate, :items)";
 
 		Object result =  namedParameterJdbcTemplate.update(sql, params);
 		return result;
@@ -118,6 +120,7 @@ public class ChannelDaoImpl implements ChannelDao {
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id",channel.getId());
+		params.put("shortid",channel.getShortid());
 		params.put("user", channel.getUser());
 		params.put("title",  channel.getTitle());
 		params.put("description", channel.getDescription());
@@ -127,8 +130,8 @@ public class ChannelDaoImpl implements ChannelDao {
 		params.put("lastBuildDate", channel.getLastBuildDate());
 		params.put("items", channel.getId());
 		String sql = "UPDATE CHANNEL " +
-				"SET (USER, TITLE, DESCRIPTION, LINK, LANGUAGE, PUBDATE, LASTBUILDDATE, ITEMS) = " +
-				"(:user, :title, :description, :link, :language, :pubDate, :lastBuildDate, :items) " +
+				"SET (SHORTID, USER, TITLE, DESCRIPTION, LINK, LANGUAGE, PUBDATE, LASTBUILDDATE, ITEMS) = " +
+				"(:shortid, :user, :title, :description, :link, :language, :pubDate, :lastBuildDate, :items) " +
 				"WHERE ID=:id";
 
 		Object result =  namedParameterJdbcTemplate.update(sql, params);
@@ -141,6 +144,7 @@ public class ChannelDaoImpl implements ChannelDao {
 		public Channel mapRow(ResultSet rs, int rowNum) throws SQLException {
 			Channel channel = new Channel();
 			channel.setId(rs.getString("id"));
+			channel.setShortid(rs.getInt("shortid"));
 			channel.setUser(rs.getString("user"));
 			channel.setTitle(rs.getString("title"));
 			channel.setDescription(rs.getString("description"));

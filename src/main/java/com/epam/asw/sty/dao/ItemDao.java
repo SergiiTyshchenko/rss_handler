@@ -15,7 +15,7 @@ public interface ItemDao {
 
 	Object insertNewEntry(Item items);
 
-	Object removeEntryByChannelID(String id);
+	Object removeEntryByChannelID(long id);
 
 }
 

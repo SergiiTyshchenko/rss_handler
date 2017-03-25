@@ -15,6 +15,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-@RestController
+@Controller
 public class ChannelRestController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -47,7 +48,7 @@ public class ChannelRestController {
 
     //-------------------Retrieve Channels For User--------------------------------------------------------
 
-    @ResponseBody
+
     @RequestMapping(value = "/user={user}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public String getChannelForUser(@PathVariable("user") String user, Model model) {
 
@@ -61,13 +62,13 @@ public class ChannelRestController {
     }
     //-------------------Retrieve Single Channel--------------------------------------------------------
 
-    @RequestMapping(value = "/channel/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Channel> getChannelbyID(@PathVariable("id") String id) {
-        String logDebugMessage = "Fetching Channel with id " + id;
+    @RequestMapping(value = "/channel/{shortid}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Channel> getChannelbyID(@PathVariable("shortid") long shortid) {
+        String logDebugMessage = "Fetching Channel with id " + shortid;
         logger.debug("DEBUG message {}.", logDebugMessage);
-        Channel channel = channelService.findById(id);
+        Channel channel = channelService.findByShortID(shortid);
         if (channel == null) {
-            logDebugMessage = "Channel with id " + id + " not found";
+            logDebugMessage = "Channel with id " + shortid + " not found";
             logger.debug("DEBUG message {}.", logDebugMessage);
             return new ResponseEntity<Channel>(HttpStatus.NOT_FOUND);
         }
@@ -82,14 +83,18 @@ public class ChannelRestController {
     public ResponseEntity<Void> createChannel(@RequestBody Channel channel, UriComponentsBuilder ucBuilder) {
         System.out.println("Creating Channel with url: " + channel.getLink());
 
+        HttpHeaders headers = new HttpHeaders();
+
         if (channelService.isChannelExist(channel)) {
-            System.out.println("Channel with link " + channel.getLink() + " already exist");
-            return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+            final String msg = "Channel with link " + channel.getLink() + " already exist";
+            System.out.println(msg);
+            headers.setLocation(ucBuilder.path("/403").buildAndExpand(msg).toUri());
+            return new ResponseEntity<Void>(headers, HttpStatus.CONFLICT);
         }
 
         channelService.saveChannel(channel);
 
-        HttpHeaders headers = new HttpHeaders();
+
         headers.setLocation(ucBuilder.path("/channel/{id}").buildAndExpand(channel.getId()).toUri());
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
     }

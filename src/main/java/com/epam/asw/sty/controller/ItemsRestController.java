@@ -9,13 +9,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
 
-@RestController
+@Controller
 public class ItemsRestController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -35,15 +36,14 @@ public class ItemsRestController {
         return new ResponseEntity<List<Item>>(items, HttpStatus.OK);
     }
 
-    //-------------------Retrieve Items For Channel--------------------------------------------------------
+    //-------------------Retrieve Items For Channel by Link--------------------------------------------------------
 
-    @ResponseBody
-    @RequestMapping(value = "/item/channelID={channelID}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String getChannelForUser(@PathVariable("channelID") String channelID, Model model) {
+    @RequestMapping(value = "/item/{shortid}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String getChannelForUser(@PathVariable("shortid") long shortid, Model model) {
 
-        String logDebugMessage = "Getting items for channel " + channelID;
+        String logDebugMessage = "Getting items for channel with shotr ID" + shortid;
         logger.debug("{}.", logDebugMessage);
-        List<Item> items = itemService.findByChannel(channelID);
+        List<Item> items = itemService.findByChannelLink(shortid);
         logger.info("{}.",  items);
         model.addAttribute("channel", items);
         return "dbItemViewPage";
