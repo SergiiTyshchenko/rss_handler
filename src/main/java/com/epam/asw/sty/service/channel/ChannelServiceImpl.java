@@ -78,6 +78,16 @@ public class ChannelServiceImpl implements ChannelService {
         return null;
     }
 
+
+    public Channel findByLink(String link) {
+        for(Channel channel : populateChannelsFromDB()){
+            if(channel.getLink().equalsIgnoreCase(link)){
+                return channel;
+            }
+        }
+        return null;
+    }
+
     public void saveChannel(Channel channel) {
         ChannelRulesChecker checker = new ChannelRulesChecker();
         channel.setId(new Channel().getId());
@@ -106,8 +116,8 @@ public class ChannelServiceImpl implements ChannelService {
         channel.setLanguage(rssFeed.getLanguage());
         channel.setPubDate(rssFeed.getPublishedDate());
         channel.setLastBuildDate(rssFeed.getPublishedDate());
-        channel.setItems(rssFeed.getEntries());
-        channel.setUser("Sergii");
+        //channel.setItems(rssFeed.getEntries());
+        //channel.setUser("Sergii");
 
 
             String url = channel.getLink();
@@ -127,10 +137,11 @@ public class ChannelServiceImpl implements ChannelService {
         channel.setTitle(rssFeed.getTitle());
         channel.setLanguage(rssFeed.getLanguage());
         channel.setPubDate(rssFeed.getPublishedDate());
-        channel.setUser("Sergii");
+        //channel.setUser("Sergii");
         channel.setLastBuildDate(rssFeed.getPublishedDate());
+        List<SyndEntryImpl> items = rssFeed.getEntries();
+        channel.setItemsCount(items.size());
         channelDao.insertNewEntry(channel);
-        List<SyndEntryImpl> items = channel.getItems();
         for (SyndEntryImpl item: items) {
             Item customizedItem = new Item();
             customizedItem.setChannelID(channel.getShortid());
@@ -141,7 +152,6 @@ public class ChannelServiceImpl implements ChannelService {
             customizedItem.setTitle(item.getTitle());
             customizedItem.setLink(item.getLink());
             itemService.saveItem(customizedItem);
-
         }
     }
 
@@ -163,7 +173,7 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
     public boolean isChannelExist(Channel channel) {
-        return findByShortID(channel.getShortid()) != null;
+        return findByLink(channel.getLink()) != null;
     }
 
     public void deleteAllChannels(){

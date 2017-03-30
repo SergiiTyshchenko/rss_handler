@@ -9,7 +9,7 @@
 <h1>RSS Feed App DB Item View</h1>
 
 <h2>${msg}</h2>
-<h2>${items}</h2>
+<h2 ng-repeat-start="item in items">${items}</h2>
 
 <div id="log">
   <h3>Content:</h3>

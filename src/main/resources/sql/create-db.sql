@@ -7,11 +7,11 @@ CREATE TABLE channel (
     user VARCHAR(300),
     title VARCHAR(300),
     description VARCHAR(300),
-    link VARCHAR(100),
+    link VARCHAR(500),
     language  VARCHAR(30),
-    pubDate VARCHAR(100),
-    lastBuildDate VARCHAR(100),
-    items UUID
+    pubDate TIMESTAMP,
+    lastBuildDate TIMESTAMP,
+    items INTEGER
 );
 
 CREATE TABLE item (
@@ -19,7 +19,7 @@ CREATE TABLE item (
     channelID  INTEGER,
     title VARCHAR(300),
     description CLOB,
-    link VARCHAR(100),
+    link VARCHAR(500),
     pubDate VARCHAR(100)
 );
 

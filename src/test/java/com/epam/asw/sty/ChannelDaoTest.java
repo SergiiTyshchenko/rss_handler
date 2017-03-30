@@ -58,11 +58,11 @@ public class ChannelDaoTest {
 		NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(db);
 		ChannelDaoImpl channelDao = new ChannelDaoImpl();
 		channelDao.setNamedParameterJdbcTemplate(template);
-
-		List<Channel> channel = channelDao.findByUser("Sergii");
+		String userTest = "user";
+		List<Channel> channel = channelDao.findByUser(userTest);
 
 		Assert.assertNotNull(channel);
-		Assert.assertEquals("Sergii", channel.get(0).getUser());
+		Assert.assertEquals(userTest, channel.get(0).getUser());
 		Assert.assertEquals("https://dou.ua/feed/", channel.get(0).getLink());
 
 	}

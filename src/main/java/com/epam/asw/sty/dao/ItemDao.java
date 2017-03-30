@@ -13,6 +13,8 @@ public interface ItemDao {
 	
 	List<Item> findAll();
 
+	List<Item> findForUserByDate(String user, int count);
+
 	Object insertNewEntry(Item items);
 
 	Object removeEntryByChannelID(long id);

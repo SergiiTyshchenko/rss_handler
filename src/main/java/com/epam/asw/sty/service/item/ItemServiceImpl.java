@@ -93,6 +93,11 @@ public class ItemServiceImpl implements ItemService {
         }
     }
 
+    public List<Item> findItemsForUserByDate(String user, int count) {
+        List<Item> items = itemDao.findForUserByDate(user, count);
+        return items;
+    }
+
 
 
 

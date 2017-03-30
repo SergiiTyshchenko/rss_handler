@@ -22,6 +22,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.annotation.Resource;
 import java.io.IOException;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -46,20 +47,41 @@ public class ChannelRestController {
         return new ResponseEntity<List<Channel>>(channels, HttpStatus.OK);
     }
 
-    //-------------------Retrieve Channels For User--------------------------------------------------------
+    //-------------------Retrieve Channels For Current User--------------------------------------------------------
 
 
-    @RequestMapping(value = "/user={user}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String getChannelForUser(@PathVariable("user") String user, Model model) {
+    @RequestMapping(value = "/channel/my", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String getChannelForCurrentUser(Model model, Principal user) {
 
-        String logDebugMessage = "Getting channel for user " + user;
+        String currentUser = user.getName();
+        String logDebugMessage = "Getting channel for user " + currentUser;
         logger.debug("{}.", logDebugMessage);
-        List<Channel> channel = channelService.findByUser(user);
+        List<Channel> channel = channelService.findByUser(currentUser);
         logger.info("{}.",  channel);
+        String msg = "There are " + channel.size() + " channels found for user: " + currentUser;
+        model.addAttribute("message", msg);
         model.addAttribute("channel", channel);
         return "dbChannelViewPage";
 
     }
+
+    //-------------------Retrieve Channels For Specific User--------------------------------------------------------
+
+
+    @RequestMapping(value = "/user={currentUser}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String getChannelForSpecificUser(@PathVariable("currentUser") String currentUser, Model model, Principal user) {
+
+        String logDebugMessage = "Getting channel for user " + currentUser;
+        logger.debug("{}.", logDebugMessage);
+        List<Channel> channel = channelService.findByUser(currentUser);
+        logger.info("{}.",  channel);
+        String msg = "There are " + channel.size() + " channels found for user: " + currentUser;
+        model.addAttribute("message", msg);
+        model.addAttribute("channel", channel);
+        return "dbChannelViewPage";
+
+    }
+
     //-------------------Retrieve Single Channel--------------------------------------------------------
 
     @RequestMapping(value = "/channel/{shortid}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -80,18 +102,19 @@ public class ChannelRestController {
     //-------------------Create Single Channel--------------------------------------------------------
 
     @RequestMapping(value = "/channel/", method = RequestMethod.POST)
-    public ResponseEntity<Void> createChannel(@RequestBody Channel channel, UriComponentsBuilder ucBuilder) {
-        System.out.println("Creating Channel with url: " + channel.getLink());
+    public ResponseEntity<Void> createChannel(@RequestBody Channel channel, UriComponentsBuilder ucBuilder, Model model, Principal user) {
+        logger.info("Creating Channel with url: " + channel.getLink());
 
         HttpHeaders headers = new HttpHeaders();
 
         if (channelService.isChannelExist(channel)) {
             final String msg = "Channel with link " + channel.getLink() + " already exist";
-            System.out.println(msg);
-            headers.setLocation(ucBuilder.path("/403").buildAndExpand(msg).toUri());
+            logger.info(msg);
+            model.addAttribute("msg", msg);
+            headers.setLocation(ucBuilder.path("/alreadyExist").buildAndExpand(channel.getId()).toUri());
             return new ResponseEntity<Void>(headers, HttpStatus.CONFLICT);
         }
-
+        channel.setUser(user.getName());
         channelService.saveChannel(channel);
 
 
@@ -163,7 +186,7 @@ public class ChannelRestController {
     //-------------------Retrieve Channels Statistic Data--------------------------------------------------------
 
     @RequestMapping(value = "/channel/stats", method = RequestMethod.GET)
-    public ResponseEntity<Map<String,Object>> DBChannelsStats() {
+    public ResponseEntity<Map<String,Object>> DBChannelsStats(Principal user) {
         List<Channel> channels = channelService.populateChannelsFromDB();
         Integer channels_count;
         if(channels.isEmpty()){
@@ -175,7 +198,7 @@ public class ChannelRestController {
             channels_count = statsTest.DBChannelCount(channels);
             stats.put("DB Channel count: ", channels_count);
             List<String> channel_count_per_user = new ArrayList<String>();
-            channel_count_per_user=statsTest.ChannelsPerUser(channels);
+            channel_count_per_user=statsTest.ChannelsPerUser(channels, user.getName());
             stats.put("DB Channel count per user: ", channel_count_per_user);
             return new ResponseEntity<Map<String,Object>>(stats, HttpStatus.OK);
         }

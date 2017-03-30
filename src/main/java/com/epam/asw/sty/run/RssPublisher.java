@@ -46,7 +46,7 @@ public class RssPublisher implements Serializable {
             items = new ArrayList();
         }
         items.add(item);
-        channel.setItems(items);
+        //channel.setItems(items);
         return channel;
     }
 

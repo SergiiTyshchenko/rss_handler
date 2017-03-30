@@ -3,6 +3,7 @@ package com.epam.asw.sty.dao;
 
 
 import com.epam.asw.sty.model.Channel;
+import com.epam.asw.sty.model.Item;
 import com.sun.syndication.feed.synd.SyndFeed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
@@ -71,7 +72,7 @@ public class ChannelDaoImpl implements ChannelDao {
 		params.put("language", channel.getLanguage());
 		params.put("pubDate", channel.getPubDate());
 		params.put("lastBuildDate", channel.getPubDate());
-		params.put("items", channel.getId());
+		params.put("items", channel.getItemsCount());
 		String sql = "INSERT INTO CHANNEL " +
 				"(ID, SHORTID, USER, TITLE, DESCRIPTION, LINK, LANGUAGE, PUBDATE, LASTBUILDDATE, ITEMS) VALUES " +
 				"(:id, :shortid, :user, :title, :description, :link, :language, :pubDate, :lastBuildDate, :items)";
@@ -106,7 +107,7 @@ public class ChannelDaoImpl implements ChannelDao {
 		params.put("language", rssfeed.getLanguage());
 		params.put("pubDate", rssfeed.getPublishedDate());
 		params.put("lastBuildDate", rssfeed.getPublishedDate());
-		params.put("items", 3333);
+		params.put("items", 3);
 		String sql = "INSERT INTO CHANNEL " +
 				"(ID, ,SHORTID, USER, TITLE, DESCRIPTION, LINK, LANGUAGE, PUBDATE, LASTBUILDDATE, ITEMS) " +
 				"VALUES (:id, :shortid, :user, :title, :description, :link, :language, :pubDate, :lastBuildDate, :items)";
@@ -128,7 +129,7 @@ public class ChannelDaoImpl implements ChannelDao {
 		params.put("language", channel.getLanguage());
 		params.put("pubDate", channel.getPubDate());
 		params.put("lastBuildDate", channel.getLastBuildDate());
-		params.put("items", channel.getId());
+		params.put("items", channel.getItemsCount());
 		String sql = "UPDATE CHANNEL " +
 				"SET (SHORTID, USER, TITLE, DESCRIPTION, LINK, LANGUAGE, PUBDATE, LASTBUILDDATE, ITEMS) = " +
 				"(:shortid, :user, :title, :description, :link, :language, :pubDate, :lastBuildDate, :items) " +
@@ -159,6 +160,7 @@ public class ChannelDaoImpl implements ChannelDao {
 				list.add(i.toString());
 			}
 			channel.setItems(list);
+			channel.setItemsCount(rs.getInt("items"));
 			return channel;
 
 		}

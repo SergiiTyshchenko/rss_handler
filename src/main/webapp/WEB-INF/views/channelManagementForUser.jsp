@@ -22,7 +22,15 @@
 <body ng-app="myApp" class="ng-cloak">
 <div class="generic-container" ng-controller="ChannelController as ctrl">
     <div class="panel panel-default">
-        <div class="panel-heading"><span class="lead">Channel Registration Form </span></div>
+        <div class="panel-heading"><span class="lead">Channel Registration Form </span>
+        <div class="span2 pull-right">
+                	<input id="button-continue" type="button" onclick="closeAndSubmit();"
+                		class="btn-submit"
+                		value="Logout"/>
+                </div>
+        </div>
+
+
         <div class="formcontainer">
             <form ng-submit="ctrl.submit()" name="myForm" class="form-horizontal">
                 <input type="hidden" ng-model="ctrl.channel.id" />
@@ -34,7 +42,7 @@
                     <div class="form-group col-md-12">
                         <label class="col-md-2 control-lable" for="title">Title</label>
                         <div class="col-md-7">
-                            <input type="text" ng-model="ctrl.channel.title" id="title" class="form-control input-sm" placeholder="Enter your title" required/>
+                            <input type="text" ng-model="ctrl.channel.title" id="title" class="form-control input-sm" placeholder="Enter channel title, if you want to use your custom title"/>
                         </div>
                           <div class="has-error" ng-show="myForm.$dirty">
                                <span ng-show="myForm.title.$error.required">This is a required field</span>
@@ -47,7 +55,7 @@
                     <div class="form-group col-md-12">
                         <label class="col-md-2 control-lable" for="description">Description</label>
                         <div class="col-md-7">
-                            <input type="text" ng-model="ctrl.channel.description" id="description" class="form-control input-sm" placeholder="Enter channel description. [This field is validation free]"/>
+                            <input type="text" ng-model="ctrl.channel.description" id="description" class="form-control input-sm" placeholder="Enter channel description, if you want to use your custom description"/>
                         </div>
                     </div>
                 </div>
@@ -56,7 +64,7 @@
                     <div class="form-group col-md-12">
                         <label class="col-md-2 control-lable" for="link">Link</label>
                         <div class="col-md-7">
-                            <input type="link" ng-model="ctrl.channel.link" id="link" class="link form-control input-sm" placeholder="Enter your Link" required/>
+                            <input type="link" ng-model="ctrl.channel.link" id="link" class="link form-control input-sm" placeholder="Enter channel Link" required/>
                             <div class="has-error" ng-show="myForm.$dirty">
                                 <span ng-show="myForm.link.$error.required">This is a required field</span>
                                 <span ng-show="myForm.link.$invalid">This field is invalid </span>
@@ -89,6 +97,7 @@
                     <th>Link</th>
                     <th>Language</th>
                     <th>PubDate</th>
+                    <th>ItemsCount</th>
                     <th width="20%"></th>
                 </tr>
                 </thead>
@@ -98,8 +107,9 @@
                     <td><span ng-bind="u.title"></span></td>
                     <td><span ng-bind="u.description"></span></td>
                     <td><span ng-bind="u.link"></span></td>
-                     <td><span ng-bind="u.language"></span></td>
-                      <td><span ng-bind="u.pubDate"></span></td>
+                    <td><span ng-bind="u.language"</span></td>
+                    <td><span>{{u.pubDate | date:'dd-MM-yyyy'}}</span></td>
+                    <td><span ng-bind="u.itemsCount"></span></td>
                     <td>
                         <button type="button" ng-click="ctrl.edit(u.id)" class="btn btn-success custom-width">Edit</button>  <button type="button" ng-click="ctrl.remove(u.id)" class="btn btn-danger custom-width">Remove</button>
                     </td>
@@ -108,6 +118,8 @@
             </table>
         </div>
     </div>
+   <!--<div ng-bind="ctrl.parseDate()">DDDD</div>-->
+   <!--<div>{{ctrl.parseDate() | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>-->
 </div>
 
 
@@ -118,5 +130,16 @@
 <script src="<c:url value='/static/js/app.js' />"></script>
 <script src="<c:url value='/static/js/service/channel_service.js' />"></script>
 <script src="<c:url value='/static/js/controller/channel_controller.js' />"></script>
+<script type="text/javascript">
+     var myURL="logout";
+     function closeAndSubmit(urlTo) {
+        window.location = myURL;
+        /*$form=$("<form>").attr({"action":"${pageContext.request.contextPath}"+"/logout","method":"post"})
+            .append($("<input>").attr({"type":"hidden","name":"${_csrf.parameterName}","value":"${_csrf.token}"}))
+            $("#Logout").append($form);
+            $form.submit();*/
+     }
+</script>
+
 </body>
 </html>

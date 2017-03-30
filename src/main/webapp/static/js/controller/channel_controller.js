@@ -2,7 +2,7 @@
 
 App.controller('ChannelController', ['$scope', 'ChannelService', function($scope, ChannelService) {
     var self = this;
-    self.channel={id:null,shortid:'',user:'',title:'',description:'',link:'',language:'',pubDate:''};
+    self.channel={id:null,shortid:'',user:'',title:'',description:'',link:'',language:'',pubDate:'',itemsCount:''};
     self.channels=[];
 
     self.fetchAllChannels = function(){
@@ -78,9 +78,11 @@ App.controller('ChannelController', ['$scope', 'ChannelService', function($scope
         self.deleteChannel(id);
     };
 
-
+/*    self.parseDate = function(){
+                         return Date.parse(new Date());
+                         }*/
     self.reset = function(){
-    self.channel={id:null,shortid:'',user:'',title:'',description:'',link:'',language:'',pubDate:''};
+    self.channel={id:null,shortid:'',user:'',title:'',description:'',link:'',language:'',pubDate:'',itemsCount:''};
         $scope.myForm.$setPristine(); //reset Form
     };
 

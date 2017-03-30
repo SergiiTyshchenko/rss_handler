@@ -5,11 +5,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +23,7 @@ import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.util.WebUtils;
@@ -35,7 +38,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-//@Configuration
+@Configuration
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -75,10 +78,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/" , "/login").permitAll()
                 .antMatchers("*//**", "/admin").hasRole("ADMIN")
-                .antMatchers("*//**").hasAnyRole("USER", "SERG", "ADMIN")
+                .antMatchers("*//**").hasAnyRole("USER", "ADMIN")
                 .and().formLogin()
                 .defaultSuccessUrl("/channelsForUser")
-                //.failureUrl("/403")
+                .failureUrl("/403")
                 .and().csrf()
                 .csrfTokenRepository(csrfTokenRepository()).and()
                 .addFilterAfter(csrfHeaderFilter(), CsrfFilter.class)
@@ -105,17 +108,26 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 //.and().exceptionHandling().accessDeniedPage("/403");
                 //https://docs.spring.io/spring-security/site/docs/current/reference/htmlsingle/
 
+
+        http.logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/").deleteCookies("JSESSIONID")
+                .invalidateHttpSession(true);
+
     }
 
 
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
                 .inMemoryAuthentication()
+                .withUser("user1").password("password").roles("USER")
+                .and()
                 .withUser("user").password("password").roles("USER")
                 .and()
                 .withUser("admin").password("admin").roles("ADMIN")
                 .and()
-                .withUser("serg").password("password").roles("SERG");
+                .withUser("admin1").password("admin").roles("ADMIN")
+                .and()
+                .withUser("serg").password("admin").roles("ADMIN");
     }
 
     private OncePerRequestFilter csrfHeaderFilter() {
@@ -240,4 +252,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         }
 
     }
+
+
 }

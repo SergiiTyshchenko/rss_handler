@@ -11,17 +11,20 @@ public class Channel extends com.sun.syndication.feed.rss.Channel {
 
     private String user;
 
+    private int itemsCount;
+
 
     public Channel(){
         id=UUID.randomUUID().toString();
     }
 
 
-    public Channel(String type, String id, long shortid, String user) {
+    public Channel(String type, String id, long shortid, String user, int itemsCount) {
         super(type);
         this.id = id;
         this.shortid = shortid;
         this.user = user;
+        this.itemsCount = itemsCount;
     }
 
 
@@ -47,6 +50,14 @@ public class Channel extends com.sun.syndication.feed.rss.Channel {
 
     public void setShortid(long shortid) {
         this.shortid = shortid;
+    }
+
+    public int getItemsCount() {
+        return itemsCount;
+    }
+
+    public void setItemsCount(int itemsCount) {
+        this.itemsCount = itemsCount;
     }
 
     @Override
@@ -75,7 +86,7 @@ public class Channel extends com.sun.syndication.feed.rss.Channel {
     public String toString() {
         return "Channel [id=" + id + ", user=" + user + ", description=" + super.getDescription()
                 + ", link=" + super.getLink() + ", language=" + super.getLanguage() + ", pubDate=" + super.getPubDate()
-                + ", item=" + super.getItems() + "]";
+                + ", itemsCount=" + itemsCount + ", item=" + super.getItems() + "]";
     }
 
 

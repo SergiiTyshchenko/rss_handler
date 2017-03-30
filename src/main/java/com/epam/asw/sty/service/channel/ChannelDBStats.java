@@ -15,15 +15,15 @@ public class ChannelDBStats {
         return count;
     }
 
-    public List<String> ChannelsPerUser(List<Channel> channels){
+    public List<String> ChannelsPerUser(List<Channel> channels, String user){
         List<String> stats = new ArrayList<String>();
-        Integer count_sergii=0;
+        Integer countChannelsForUser=0;
         for (Channel channel : channels){
-            if (channel.getUser().equals("Sergii")){
-                count_sergii++;
+            if (channel.getUser().equalsIgnoreCase(user)){
+                countChannelsForUser++;
             }
         }
-        stats.add(0,"Sergii Channels: " + count_sergii);
+        stats.add(0,user + " Channels: " + countChannelsForUser);
         return stats;
     }
 }

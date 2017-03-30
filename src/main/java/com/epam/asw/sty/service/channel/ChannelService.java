@@ -27,6 +27,8 @@ public interface ChannelService {
 
     public boolean isChannelExist(Channel channel);
 
+    public Channel findByLink(String link);
+
     List<Channel> populateChannelsFromDB();
 
     Object insertEntrytoDB(Channel channel);

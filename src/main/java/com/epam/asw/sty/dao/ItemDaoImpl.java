@@ -89,6 +89,20 @@ public class ItemDaoImpl implements ItemDao {
 		return result;
 	}
 
+	@Override
+	public List<Item> findForUserByDate(String user, int count){
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("user", user);
+		params.put("count", count);
+		String sql = "SELECT i.* FROM ITEM AS i JOIN CHANNEL AS c ON i.CHANNELID=c.SHORTID " +
+				"WHERE c.USER=:user " +
+				"ORDER BY i.PUBDATE " +
+				"LIMIT :count";
+
+		List<Item> items = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
+		return items;
+
+	}
 	private static final class RequestMapper implements RowMapper<Item> {
 
 		public Item mapRow(ResultSet rs, int rowNum) throws SQLException {
