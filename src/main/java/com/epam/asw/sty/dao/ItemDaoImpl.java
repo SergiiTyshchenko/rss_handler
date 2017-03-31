@@ -94,7 +94,7 @@ public class ItemDaoImpl implements ItemDao {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("user", user);
 		params.put("count", count);
-		String sql = "SELECT i.* FROM ITEM AS i JOIN CHANNEL AS c ON i.CHANNELID=c.SHORTID " +
+		String sql = "SELECT i.*,c.TITLE FROM ITEM AS i JOIN CHANNEL AS c ON i.CHANNELID=c.SHORTID " +
 				"WHERE c.USER=:user " +
 				"ORDER BY i.PUBDATE " +
 				"LIMIT :count";
@@ -103,6 +103,21 @@ public class ItemDaoImpl implements ItemDao {
 		return items;
 
 	}
+
+
+
+	@Override
+	public List<Item> findForUserByChannelID(long shortid, String user){
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("user", user);
+		params.put("shortid", shortid);
+		String sql = "SELECT i.*,c.TITLE AS channelTitle FROM ITEM AS i JOIN CHANNEL AS c ON i.CHANNELID=c.SHORTID " +
+				"WHERE c.USER=:user and i.CHANNELID=:shortid";
+
+		List<Item> items = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
+		return items;
+	}
+
 	private static final class RequestMapper implements RowMapper<Item> {
 
 		public Item mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -115,6 +130,7 @@ public class ItemDaoImpl implements ItemDao {
 			item.setDescription(itemDescription);
 			item.setLink(rs.getString("link"));
 			item.setPubDate(rs.getTimestamp("pubDate"));
+			item.setChannelTitle(rs.getString("channelTitle"));
 
 			return item;
 

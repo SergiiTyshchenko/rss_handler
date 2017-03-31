@@ -19,9 +19,11 @@ App.factory('ItemService', ['$http', '$q', function($http, $q){
         ,
 
         fetchAllItemsForChannel: function(channelID) {
-                return $http.get('http://localhost:8888/rss_handler_sb/item/')//channel='+channelID
+                var requestURL="item/channel="+channelID;
+                return $http.get(requestURL)//channel='+channelID
                                           .then(
                         function(response){
+                            console.info('You are redirected to', requestURL);
                             return response.data;
                         },
                         function(errResponse){

@@ -35,7 +35,7 @@ public class ItemsRestController {
     public ResponseEntity<List<Item>> listAllItems(Principal user, Model model) {
         //List<Item> items = itemService.populateItemsFromDB();
         int count = Integer.MAX_VALUE;
-        String logDebugMessage = "Getting all items user " + user.getName();
+        String logDebugMessage = "Getting all items for user: " + user.getName();
         logger.debug("{}.", logDebugMessage);
         List<Item> items = itemService.findItemsForUserByDate(user.getName(), count);
         logger.info("Total Items count {}.",  items.size());
@@ -64,30 +64,24 @@ public class ItemsRestController {
 
 
     @RequestMapping(value = "/item/channel={channelID}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String getChannelForUser(@PathVariable("channelID") long channelID, Model model) {
+    public ResponseEntity<List<Item>> getChannelForUser(@PathVariable("channelID") long channelID, Model model, Principal user) {
 
-        String logDebugMessage = "Getting items for channel with short ID " + channelID;
+        String logDebugMessage = "Getting items for user: " + user.getName() + " for channel with short ID " + channelID;
         logger.debug("{}.", logDebugMessage);
-        List<Item> items = itemService.findByChannelLink(channelID);
+        List<Item> items = itemService.findItemsForUserByChannelID(channelID, user.getName());
         String msg = "There are " + items.size() + " items for channel with short ID=" + channelID;
         logger.info("Items count {}.",  items.size());
-        model.addAttribute("channelID", channelID);
+        model.addAttribute("channelTitle", items.get(0).getChannelTitle());
         model.addAttribute("message", msg);
         model.addAttribute("item", items);
 
-        JSONObject json = new JSONObject();
-        json.put("channelID", channelID);
-        //JSONArray array = new JSONArray();
-        //JSONObject item = new JSONObject();
-        //item.put("information", "test");
-        //array.put(items);
-        //json.put("item", array);
-        //String n = "ddddd".replaceAll("\"", "\&\quot;");
 
-        model.addAttribute("newItemJson", json);
         //return "dbItemViewPage";
-        return "dbItemViewNew";
-        //return model;
+        //return "dbItemViewNew";
+        if(items.isEmpty()){
+            return new ResponseEntity<List<Item>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
+        }
+        return new ResponseEntity<List<Item>>(items, HttpStatus.OK);
 
     }
 

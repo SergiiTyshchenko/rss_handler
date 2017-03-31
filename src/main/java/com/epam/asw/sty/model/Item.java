@@ -10,15 +10,18 @@ public class Item extends com.sun.syndication.feed.rss.Item {
 
     private long channelID;
 
+    private String channelTitle;
+
 
     public Item(){
         id=UUID.randomUUID().toString();
     }
 
 
-    public Item(String id, long channelID) {
+    public Item(String id, long channelID, String channelTitle) {
         this.id = id;
         this.channelID = channelID;
+        this.channelTitle = channelTitle;
     }
 
 
@@ -38,6 +41,13 @@ public class Item extends com.sun.syndication.feed.rss.Item {
         this.channelID = channelID;
     }
 
+    public String getChannelTitle() {
+        return channelTitle;
+    }
+
+    public void setChannelTitle(String channelTitle) {
+        this.channelTitle = channelTitle;
+    }
 
     @Override
     public int hashCode() {

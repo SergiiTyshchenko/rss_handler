@@ -1,6 +1,9 @@
 package com.epam.asw.sty.controller;
 
 
+import com.epam.asw.sty.model.Item;
+import com.epam.asw.sty.service.item.ItemService;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -8,21 +11,26 @@ import org.springframework.security.web.authentication.logout.CookieClearingLogo
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.authentication.rememberme.AbstractRememberMeServices;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.security.Principal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 
 @Controller
 public class IndexPagesController {
+
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -31,6 +39,9 @@ public class IndexPagesController {
     private static final String ITEM_FOR_CHANNEL_VIEW = "itemsForChannelView";
     private static final String HELLO_PAGE = "helloPage";
     private static final String ACCESS_DENIED = "accessDenied";
+
+    @Resource(name="itemServiceImpl")
+    private ItemService itemService;
 
 
     @RequestMapping(value="/", method = RequestMethod.GET)
@@ -50,8 +61,22 @@ public class IndexPagesController {
         return CHANNEL_MANAGEMENT_ADMIN;
     }
 
-    @RequestMapping(value="/itemsForChannel", method = RequestMethod.GET)
-    public String getItemsForChannelIndexPage() {
+    @RequestMapping(value="/itemsForChannel", method = RequestMethod.GET, params={"channelID"})
+    public String getItemsForChannelIndexPage(@RequestParam("channelID") int channelID, Model model) {
+        String logDebugMessage = "Getting items for channel with short ID " + channelID;
+        logger.debug("{}.", logDebugMessage);
+/*        List<Item> items = itemService.findByChannelLink(channelID);
+        String msg = "There are " + items.size() + " items for channel with short ID=" + channelID;
+        logger.info("Items count {}.",  items.size());
+        model.addAttribute("channelID", channelID);
+        model.addAttribute("message", msg);
+        model.addAttribute("item", items);*/
+
+        JSONObject json = new JSONObject();
+        json.put("channelID", channelID);
+        String formattedJson = StringEscapeUtils.escapeHtml4(json.toString());
+        model.addAttribute("newItemJson", formattedJson);
+
         return ITEM_FOR_CHANNEL_VIEW;
     }
 

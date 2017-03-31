@@ -15,6 +15,8 @@ public interface ItemDao {
 
 	List<Item> findForUserByDate(String user, int count);
 
+	List<Item> findForUserByChannelID(long shortid, String user);
+
 	Object insertNewEntry(Item items);
 
 	Object removeEntryByChannelID(long id);

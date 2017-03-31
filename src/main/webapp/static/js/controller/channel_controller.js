@@ -86,4 +86,22 @@ App.controller('ChannelController', ['$scope', 'ChannelService', function($scope
         $scope.myForm.$setPristine(); //reset Form
     };
 
+    /**** ITEMS ****/
+
+        self.item={id:null,channelID:'',title:'',description:'',link:'',pubDate:''};
+        self.items=[];
+
+             self.fetchAllItemsForChannel = function(channelID){
+                ChannelService.fetchAllItemsForChannel(channelID)
+                    .then(
+                        function(d) {
+                            console.info('Fetching Items for channel ID ' + channelID);
+                            self.items = d;
+                        },
+                        function(errResponse){
+                            console.error('Error while fetching Items for Channel');
+                        }
+                    );
+            };
+
 }]);

@@ -20,13 +20,13 @@
     <link href="<c:url value='/static/css/app.css' />" rel="stylesheet">
 </head>
 <body ng-app="myApp" class="ng-cloak">
-<div class="generic-container" ng-controller="ChannelController as ctrl">
+<div class="generic-container" ng-controller="ChannelController as ctrl" ng-controller="ItemController as ctrli">
     <div class="panel panel-default">
         <div class="panel-heading"><span class="lead">Channel Registration Form </span>
-        <div class="span2 pull-right">
-                	<input id="button-continue" type="button" onclick="closeAndSubmit();"
-                		class="btn-submit"
-                		value="Logout"/>
+                <div class="span2 pull-right">
+                	    <input id="button-continue" type="button" onclick="closeAndSubmit();"
+                		    class="btn-submit"
+                		    value="Logout"/>
                 </div>
         </div>
 
@@ -86,7 +86,12 @@
     </div>
     <div class="panel panel-default">
         <!-- Default panel contents -->
-        <div class="panel-heading"><span class="lead">Channels List </span></div>
+        <div class="panel-heading"><span class="lead">Channels List </span>
+
+            <div class="span3 pull-right">
+                <button type="button" ng-click="ctrli.fetchAllItems()" class="btn btn-info custom-width">Show All Items</button>
+            </div>
+        </div>
         <div class="tablecontainer">
             <table class="table table-hover">
                 <thead>
@@ -111,7 +116,9 @@
                     <td><span>{{u.pubDate | date:'dd-MM-yyyy'}}</span></td>
                     <td><span ng-bind="u.itemsCount"></span></td>
                     <td>
-                        <button type="button" ng-click="ctrl.edit(u.id)" class="btn btn-success custom-width">Edit</button>  <button type="button" ng-click="ctrl.remove(u.id)" class="btn btn-danger custom-width">Remove</button>
+                        <button type="button" ng-click="ctrl.edit(u.id)" class="btn btn-success custom-width">Edit</button>
+                        <button type="button" ng-click="ctrl.remove(u.id)" class="btn btn-danger custom-width">Remove</button>
+                        <button type="button" ng-click="ctrl.fetchAllItemsForChannel(u.shortid)" class="btn btn-info custom-width">View Items</button>
                     </td>
                 </tr>
                 </tbody>
@@ -130,6 +137,8 @@
 <script src="<c:url value='/static/js/app.js' />"></script>
 <script src="<c:url value='/static/js/service/channel_service.js' />"></script>
 <script src="<c:url value='/static/js/controller/channel_controller.js' />"></script>
+<script src="<c:url value='/static/js/service/item_service.js' />"></script>
+<script src="<c:url value='/static/js/controller/item_controller.js' />"></script>
 <script type="text/javascript">
      var myURL="logout";
      function closeAndSubmit(urlTo) {

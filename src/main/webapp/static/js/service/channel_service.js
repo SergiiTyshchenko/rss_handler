@@ -56,6 +56,24 @@ App.factory('ChannelService', ['$http', '$q', function($http, $q){
                     }
                 );
         }
+        ,
+
+        fetchAllItemsForChannel: function(channelID) {
+                        console.info('Test redirect');
+                        var requestURL="itemsForChannel?channelID="+channelID;
+                        return $http.get(requestURL)//
+                                                  .then(
+                                function(response){
+                                    window.location = requestURL;
+                                    console.info('Fetching All items for channel', channelID);
+                                    return response.data;
+                                },
+                                function(errResponse){
+                                    console.error('Error while fetching items for channel', channelID);
+                                    return $q.reject(errResponse);
+                                }
+                            );
+        }
 
     };
 

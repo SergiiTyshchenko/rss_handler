@@ -57,13 +57,8 @@ public class ItemServiceImpl implements ItemService {
         return items;
     }
 
-    public List<Item> findByChannelLink(long shortid) {
-        List<Item> items = new ArrayList<Item>();
-        for(Item item : populateItemsFromDB()){
-            if(item.getChannelID() == shortid){
-                items.add(item);
-            }
-        }
+    public List<Item> findItemsForUserByChannelID(long shortid, String user) {
+        List<Item> items = itemDao.findForUserByChannelID(shortid, user);
         return items;
     }
 

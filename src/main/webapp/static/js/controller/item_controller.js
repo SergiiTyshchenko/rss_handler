@@ -2,19 +2,29 @@
 
 App.controller('ItemController', ['$scope', 'ItemService', function($scope, ItemService) {
     var self = this;
-    self.item={id:null,channelID:'',title:'',description:'',link:'',pubDate:''};
+    self.item={id:null,channelID:'',title:'',description:'',link:'',pubDate:'',channelTitle:''};
     self.items=[];
 
 
     self.newItem = {};
+
     self.getNewItemData = function(newItemJson){
     console.info('Input JSON',newItemJson);
     self.newItem = JSON.parse(newItemJson);
-    console.info('Parsed JSON',self.newItem);
+    //console.log("Original JSON: " + JSON.stringify(self.newItem))
+    var keys = [];
+       for(var k in self.newItem) keys.push(k);
+    console.debug('Parsed JSON keys are:',keys);
+    console.info('Parsed JSON ' + keys[0] + ' field is:',self.newItem.channelID);
+    return self.newItem.channelID;
     };
 
+   self.test = function(){
+    console.info('TESTING TEST');
+    };
 
    self.fetchAllItems = function(){
+        console.info('TEST Fetching All Items');
         ItemService.fetchAllItems()
             .then(
                 function(d) {
@@ -26,7 +36,9 @@ App.controller('ItemController', ['$scope', 'ItemService', function($scope, Item
             );
     };
 
-     self.fetchAllItemsForChannel = function(channelID){
+     self.fetchAllItemsForChannel = function(channelIDJson){
+        var channelID =  self.getNewItemData(channelIDJson);
+        console.info('Start Fetching Items for channel ID ' + channelID);
         ItemService.fetchAllItemsForChannel(channelID)
             .then(
                 function(d) {
@@ -41,6 +53,6 @@ App.controller('ItemController', ['$scope', 'ItemService', function($scope, Item
 
     //self.getNewItemData(self.newItem);
     //self.fetchAllItemsForChannel(self.channelID);
-    self.fetchAllItems();
+    //self.fetchAllItems();
 
 }]);

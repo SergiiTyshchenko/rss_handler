@@ -39,8 +39,18 @@ public class ChannelRestController {
     //-------------------Retrieve All Channels--------------------------------------------------------
 
     @RequestMapping(value = "/channel/", method = RequestMethod.GET)
-    public ResponseEntity<List<Channel>> listAllChannelss() {
-        List<Channel> channels = channelService.populateChannelsFromDB();
+    public ResponseEntity<List<Channel>> listAllChannels(Principal user) {
+        List<Channel> channels = new ArrayList<Channel>();
+        String currentUser = user.getName();
+        String logDebugMessage = "Getting channel for user: " + currentUser;
+        logger.debug("{}.", logDebugMessage);
+        if (!currentUser.equals("admin")) {
+            channels = channelService.findByUser(currentUser);
+        } else {
+            channels = channelService.populateChannelsFromDB();
+        }
+        logger.info("{}.",  channels);
+        String msg = "There are " + channels.size() + " channels found for user: " + currentUser;
         if(channels.isEmpty()){
             return new ResponseEntity<List<Channel>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
         }
@@ -54,7 +64,7 @@ public class ChannelRestController {
     public String getChannelForCurrentUser(Model model, Principal user) {
 
         String currentUser = user.getName();
-        String logDebugMessage = "Getting channel for user " + currentUser;
+        String logDebugMessage = "Getting channel for user: " + currentUser;
         logger.debug("{}.", logDebugMessage);
         List<Channel> channel = channelService.findByUser(currentUser);
         logger.info("{}.",  channel);
@@ -71,7 +81,7 @@ public class ChannelRestController {
     @RequestMapping(value = "/user={currentUser}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public String getChannelForSpecificUser(@PathVariable("currentUser") String currentUser, Model model, Principal user) {
 
-        String logDebugMessage = "Getting channel for user " + currentUser;
+        String logDebugMessage = "Getting channel for user: " + currentUser;
         logger.debug("{}.", logDebugMessage);
         List<Channel> channel = channelService.findByUser(currentUser);
         logger.info("{}.",  channel);

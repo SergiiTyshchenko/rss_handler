@@ -19,7 +19,7 @@ public interface ItemService {
 
     List<Item> findItemsForUserByDate(String user, int count);
 
-    List<Item> findByChannelLink(long shortid);
+    List<Item> findItemsForUserByChannelID(long shortid, String user);
 
     List<Item> populateItemsFromDB();
 
