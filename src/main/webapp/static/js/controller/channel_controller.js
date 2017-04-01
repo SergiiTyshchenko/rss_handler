@@ -78,28 +78,43 @@ App.controller('ChannelController', ['$scope', 'ChannelService', function($scope
         self.deleteChannel(id);
     };
 
-/*    self.parseDate = function(){
-                         return Date.parse(new Date());
-                         }*/
     self.reset = function(){
     self.channel={id:null,shortid:'',user:'',title:'',description:'',link:'',language:'',pubDate:'',itemsCount:''};
-        $scope.myForm.$setPristine(); //reset Form
+       // $scope.myForm.$setPristine(); //reset Form
     };
 
-    /**** ITEMS ****/
 
-        self.item={id:null,channelID:'',title:'',description:'',link:'',pubDate:''};
+     self.logout = function() {
+        var myURL="logout";
+        window.location = myURL;
+     };
+
+/**** ITEMS ****/
+
+        self.item={id:null,channelID:'',title:'',description:'',link:'',pubDate:'',channelTitle:''};
         self.items=[];
 
              self.fetchAllItemsForChannel = function(channelID){
                 ChannelService.fetchAllItemsForChannel(channelID)
                     .then(
                         function(d) {
-                            console.info('Fetching Items for channel ID ' + channelID);
                             self.items = d;
                         },
                         function(errResponse){
                             console.error('Error while fetching Items for Channel');
+                        }
+                    );
+            };
+
+             self.fetchAllItems = function(){
+                ChannelService.fetchAllItems()
+                    .then(
+                        function(d) {
+                            self.items = d;
+                            //self.items[0].channelTitle = "All channels";
+                        },
+                        function(errResponse){
+                            console.error('Error while fetching All Items for Channel');
                         }
                     );
             };

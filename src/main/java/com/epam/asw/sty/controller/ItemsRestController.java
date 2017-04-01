@@ -37,8 +37,14 @@ public class ItemsRestController {
         int count = Integer.MAX_VALUE;
         String logDebugMessage = "Getting all items for user: " + user.getName();
         logger.debug("{}.", logDebugMessage);
-        List<Item> items = itemService.findItemsForUserByDate(user.getName(), count);
+        //String orderItemField = "channelID";
+        String orderItemField = "pubDate";
+        List<Item> items = itemService.findItemsForUserByCountSortedByDate(user.getName(), count, orderItemField);
+        String msg = "There are " + items.size() + " items for All channels for user: " + user.getName();
         logger.info("Total Items count {}.",  items.size());
+        model.addAttribute("channelTitle", "All channels");
+        model.addAttribute("message", msg);
+        model.addAttribute("item", items);
         if(items.isEmpty()){
             return new ResponseEntity<List<Item>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
         }
@@ -46,21 +52,8 @@ public class ItemsRestController {
     }
 
 
-    //-------------------Retrieve Limited Items sorted by pubDate for current user--------------------------------------------------------
 
-    @RequestMapping(value = "/item/count={itemsCount}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Item>> listLimitedSortedItemsforUser(@PathVariable("itemsCount") int itemsCount, Principal user, Model model) {
-        String logDebugMessage = "Getting last " + itemsCount + " items for user " + user.getName();
-        logger.debug("{}.", logDebugMessage);
-        List<Item> items = itemService.findItemsForUserByDate(user.getName(), itemsCount);
-        logger.info("Received Items count {}.",  items.size());
-        if(items.isEmpty()){
-            return new ResponseEntity<List<Item>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
-        }
-        return new ResponseEntity<List<Item>>(items, HttpStatus.OK);
-    }
-
-    //-------------------Retrieve Items For Channel by Link--------------------------------------------------------
+    //-------------------Retrieve Items by User For Channel by ChannelID--------------------------------------------------------
 
 
     @RequestMapping(value = "/item/channel={channelID}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -84,6 +77,22 @@ public class ItemsRestController {
         return new ResponseEntity<List<Item>>(items, HttpStatus.OK);
 
     }
+
+    //-------------------Retrieve Limited Items sorted by pubDate for current user--------------------------------------------------------
+
+    @RequestMapping(value = "/item/count={itemsCount}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Item>> listLimitedSortedItemsforUser(@PathVariable("itemsCount") int itemsCount, Principal user, Model model) {
+        String logDebugMessage = "Getting last " + itemsCount + " items for user " + user.getName();
+        logger.debug("{}.", logDebugMessage);
+        String orderItemField = "pubDate";
+        List<Item> items = itemService.findItemsForUserByCountSortedByDate(user.getName(), itemsCount, orderItemField);
+        logger.info("Received Items count {}.",  items.size());
+        if(items.isEmpty()){
+            return new ResponseEntity<List<Item>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
+        }
+        return new ResponseEntity<List<Item>>(items, HttpStatus.OK);
+    }
+
 
 
 

@@ -58,14 +58,36 @@ App.factory('ChannelService', ['$http', '$q', function($http, $q){
         }
         ,
 
+/**** ITEMS ****/
+
+        fetchAllItems: function() {
+                        console.info('ChannelService: Start fetchAllItems');
+                        var requestURL="itemsForChannel?channelID=1000";
+                        return $http.get(requestURL)//
+                                                  .then(
+                                function(response){
+                                    console.info('ChannelService: fetchAllItems Redirecting to URL ',requestURL);
+                                    window.location = requestURL;
+                                    console.info('ChannelService: Finish fetchAllItems');
+                                    return response.data;
+                                },
+                                function(errResponse){
+                                    console.error('Error while fetching All items');
+                                    return $q.reject(errResponse);
+                                }
+                            );
+        }
+        ,
+
         fetchAllItemsForChannel: function(channelID) {
-                        console.info('Test redirect');
+                        console.info('ChannelService: Start fetchAllItemsForChannel for channelID ',channelID);
                         var requestURL="itemsForChannel?channelID="+channelID;
                         return $http.get(requestURL)//
                                                   .then(
                                 function(response){
+                                    console.info('ChannelService: fetchAllItemsForChannel Redirecting to URL ',requestURL);
                                     window.location = requestURL;
-                                    console.info('Fetching All items for channel', channelID);
+                                    console.info('ChannelService: Finish fetchAllItemsForChannel for channelID ', channelID);
                                     return response.data;
                                 },
                                 function(errResponse){

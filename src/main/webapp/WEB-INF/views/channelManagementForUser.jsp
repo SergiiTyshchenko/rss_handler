@@ -20,13 +20,12 @@
     <link href="<c:url value='/static/css/app.css' />" rel="stylesheet">
 </head>
 <body ng-app="myApp" class="ng-cloak">
-<div class="generic-container" ng-controller="ChannelController as ctrl" ng-controller="ItemController as ctrli">
+<div class="generic-container" ng-controller="ChannelController as ctrl">
+ <div class="generic-container" ng-controller="ItemController as ctrli">
     <div class="panel panel-default">
         <div class="panel-heading"><span class="lead">Channel Registration Form </span>
                 <div class="span2 pull-right">
-                	    <input id="button-continue" type="button" onclick="closeAndSubmit();"
-                		    class="btn-submit"
-                		    value="Logout"/>
+                	    <button type="button" ng-click="ctrl.logout()" class="btn btn-danger custom-width">Logout</button>
                 </div>
         </div>
 
@@ -89,7 +88,8 @@
         <div class="panel-heading"><span class="lead">Channels List </span>
 
             <div class="span3 pull-right">
-                <button type="button" ng-click="ctrli.fetchAllItems()" class="btn btn-info custom-width">Show All Items</button>
+                <button type="button" ng-click="ctrl.fetchAllItems()" class="btn btn-info custom-width">Show All Items</button>
+                <!--<button type="button" ng-click="ctrli.fetchAllItems()" class="btn btn-info custom-width">Show All Items</button>-->
             </div>
         </div>
         <div class="tablecontainer">
@@ -127,6 +127,7 @@
     </div>
    <!--<div ng-bind="ctrl.parseDate()">DDDD</div>-->
    <!--<div>{{ctrl.parseDate() | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>-->
+ </div>
 </div>
 
 
@@ -139,16 +140,6 @@
 <script src="<c:url value='/static/js/controller/channel_controller.js' />"></script>
 <script src="<c:url value='/static/js/service/item_service.js' />"></script>
 <script src="<c:url value='/static/js/controller/item_controller.js' />"></script>
-<script type="text/javascript">
-     var myURL="logout";
-     function closeAndSubmit(urlTo) {
-        window.location = myURL;
-        /*$form=$("<form>").attr({"action":"${pageContext.request.contextPath}"+"/logout","method":"post"})
-            .append($("<input>").attr({"type":"hidden","name":"${_csrf.parameterName}","value":"${_csrf.token}"}))
-            $("#Logout").append($form);
-            $form.submit();*/
-     }
-</script>
 
 </body>
 </html>

@@ -13,7 +13,9 @@ public interface ItemDao {
 	
 	List<Item> findAll();
 
-	List<Item> findForUserByDate(String user, int count);
+	List<Item> findForUserByCountSortedByDate(String user, int count, String orderItemField);
+
+	List<Item> findForUserbyChannelByCountSortedbyTitle(long shortid, String user, int count, String orderItemField);
 
 	List<Item> findForUserByChannelID(long shortid, String user);
 

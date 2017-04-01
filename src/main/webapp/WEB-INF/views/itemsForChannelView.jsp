@@ -8,13 +8,14 @@
 </head>
 <body ng-app="myApp" class="ng-cloak">
 <!--'${newItemJson}'={&quot;channelID&quot;:2}-->
-<div class="generic-container" ng-controller="ItemController as ctrl" ng-init="ctrl.fetchAllItemsForChannel('${newItemJson}')">
+<!--<div class="generic-container" ng-controller="ItemController as ctrl" ng-init="ctrl.fetchAllItemsForChannel('${newItemJson}')">-->
+<div class="generic-container" ng-controller="ItemController as ctrl" ng-init="ctrl.getNewItemData('${newItemJson}')">
 <!--<span>TEST: {{ctrl.newItem.channelID}}</span>-->
     <div class="panel panel-default">
         <!-- Default panel contents -->
-        <div class="panel-heading"><span class="lead">Items List for channel {{ctrl.items[0].channelTitle}}</span>
+        <div class="panel-heading"><span class="lead">Items List for {{ctrl.items[0].channelTitle}}</span>
             <div class="span3 pull-right">
-                <button type="button" ng-click="ctrl.fetchAllItems()" class="btn btn-info custom-width">Show Last 10 Items</button>
+                <button type="button" ng-click="ctrl.fetchItemsNumber()" class="btn btn-info custom-width">Show Last 10 Items</button>
             </div>
         </div>
         <div class="tablecontainer">

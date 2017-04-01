@@ -17,7 +17,9 @@ public interface ItemService {
 
     List<Item> findAllItems();
 
-    List<Item> findItemsForUserByDate(String user, int count);
+    List<Item> findItemsForUserByCountSortedByDate(String user, int count, String orderItemField);
+
+    List<Item> findItemsForUserbyChannelByCountSortedbyTitle(long shortid, String user, int count, String orderItemField);
 
     List<Item> findItemsForUserByChannelID(long shortid, String user);
 

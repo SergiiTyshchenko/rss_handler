@@ -62,21 +62,19 @@ public class IndexPagesController {
     }
 
     @RequestMapping(value="/itemsForChannel", method = RequestMethod.GET, params={"channelID"})
-    public String getItemsForChannelIndexPage(@RequestParam("channelID") int channelID, Model model) {
+    public String getItemsForChannelIndexPage(@RequestParam(value="channelID", required=false) int channelID, Model model) {
+
         String logDebugMessage = "Getting items for channel with short ID " + channelID;
         logger.debug("{}.", logDebugMessage);
-/*        List<Item> items = itemService.findByChannelLink(channelID);
-        String msg = "There are " + items.size() + " items for channel with short ID=" + channelID;
-        logger.info("Items count {}.",  items.size());
-        model.addAttribute("channelID", channelID);
-        model.addAttribute("message", msg);
-        model.addAttribute("item", items);*/
 
-        JSONObject json = new JSONObject();
-        json.put("channelID", channelID);
-        String formattedJson = StringEscapeUtils.escapeHtml4(json.toString());
-        model.addAttribute("newItemJson", formattedJson);
-
+        if (channelID!=1000) {
+            JSONObject json = new JSONObject();
+            json.put("channelID", channelID);
+            String formattedJson = StringEscapeUtils.escapeHtml4(json.toString());
+            model.addAttribute("newItemJson", formattedJson);
+        } else {
+            model.addAttribute("channelTitle", "All channels");
+        }
         return ITEM_FOR_CHANNEL_VIEW;
     }
 

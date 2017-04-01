@@ -64,7 +64,7 @@ public class ItemServiceImplTest {
         Object result = itemDao.insertNewEntry(itemTest);
         List<Item> items = itemDao.findAll();
         Assert.assertNotNull(result);
-        Assert.assertEquals("TEST_ITEM_DESCRIPTION", items.get(1).getDescription().getValue());
+        Assert.assertEquals("TEST_ITEM_DESCRIPTION", items.get(2).getDescription().getValue());
 
     }
 

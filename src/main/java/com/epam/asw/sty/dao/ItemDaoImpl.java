@@ -90,21 +90,38 @@ public class ItemDaoImpl implements ItemDao {
 	}
 
 	@Override
-	public List<Item> findForUserByDate(String user, int count){
+	public List<Item> findForUserByCountSortedByDate(String user, int count, String orderItemField){
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("user", user);
 		params.put("count", count);
-		String sql = "SELECT i.*,c.TITLE FROM ITEM AS i JOIN CHANNEL AS c ON i.CHANNELID=c.SHORTID " +
+		params.put("orderItemField", orderItemField);
+		String sql = "SELECT i.*,c.TITLE AS channelTitle FROM ITEM AS i JOIN CHANNEL AS c ON i.CHANNELID=c.SHORTID " +
 				"WHERE c.USER=:user " +
-				"ORDER BY i.PUBDATE " +
-				"LIMIT :count";
+				"ORDER BY i.PUBDATE DESC " +
+				" LIMIT :count";
 
 		List<Item> items = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
 		return items;
 
 	}
 
+	@Override
+	public List<Item> findForUserbyChannelByCountSortedbyTitle(long shortid, String user, int count, String orderItemField){
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("user", user);
+		params.put("count", count);
+		params.put("shortid", shortid);
+		params.put("orderItemField", orderItemField);
 
+		String sql = "SELECT i.*,c.TITLE AS channelTitle FROM ITEM AS i JOIN CHANNEL AS c ON i.CHANNELID=c.SHORTID " +
+				"WHERE c.USER=:user " +
+				"ORDER BY i.CHANNELID DESC " +
+				" LIMIT :count";
+
+		List<Item> items = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
+		return items;
+
+	}
 
 	@Override
 	public List<Item> findForUserByChannelID(long shortid, String user){
@@ -120,6 +137,8 @@ public class ItemDaoImpl implements ItemDao {
 
 	private static final class RequestMapper implements RowMapper<Item> {
 
+
+
 		public Item mapRow(ResultSet rs, int rowNum) throws SQLException {
 			Item item = new Item();
 			item.setId(rs.getString("id"));
@@ -130,8 +149,10 @@ public class ItemDaoImpl implements ItemDao {
 			item.setDescription(itemDescription);
 			item.setLink(rs.getString("link"));
 			item.setPubDate(rs.getTimestamp("pubDate"));
-			item.setChannelTitle(rs.getString("channelTitle"));
-
+			final int itemTableColumnCount = 6;
+			if(rs.getMetaData().getColumnCount() != 6) {
+				item.setChannelTitle(rs.getString("channelTitle"));
+			}
 			return item;
 
 		}
