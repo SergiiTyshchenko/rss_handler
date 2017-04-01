@@ -80,7 +80,7 @@ App.controller('ChannelController', ['$scope', 'ChannelService', function($scope
 
     self.reset = function(){
     self.channel={id:null,shortid:'',user:'',title:'',description:'',link:'',language:'',pubDate:'',itemsCount:''};
-       // $scope.myForm.$setPristine(); //reset Form
+    $scope.form.myForm.$setPristine(); //reset Form
     };
 
 

@@ -4,6 +4,7 @@ package com.epam.asw.sty.controller;
 import com.epam.asw.sty.model.Item;
 import com.epam.asw.sty.service.item.ItemService;
 import com.epam.asw.sty.service.rss.RSSfeedSavertoDB;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -24,6 +25,8 @@ import java.util.Map;
 public class ItemsRestController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    private static final String ITEM_FOR_CHANNEL_VIEW = "itemsForChannelView";
 
     @Resource(name="itemServiceImpl")
     private ItemService itemService;
@@ -95,7 +98,22 @@ public class ItemsRestController {
 
 
 
+    @RequestMapping(value="/itemsForChannel", method = RequestMethod.GET, params={"channelID"})
+    public String getItemsForChannelIndexPage(@RequestParam(value="channelID", required=false) int channelID, Model model) {
 
+        String logDebugMessage = "Getting items for channel with short ID " + channelID;
+        logger.debug("{}.", logDebugMessage);
+
+        if (channelID!=1000) {
+            JSONObject json = new JSONObject();
+            json.put("channelID", channelID);
+            String formattedJson = StringEscapeUtils.escapeHtml4(json.toString());
+            model.addAttribute("newItemJson", formattedJson);
+        } else {
+            model.addAttribute("channelTitle", "All channels");
+        }
+        return ITEM_FOR_CHANNEL_VIEW;
+    }
 
 
 

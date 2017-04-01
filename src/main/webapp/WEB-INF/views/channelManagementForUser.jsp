@@ -21,7 +21,7 @@
 </head>
 <body ng-app="myApp" class="ng-cloak">
 <div class="generic-container" ng-controller="ChannelController as ctrl">
- <div class="generic-container" ng-controller="ItemController as ctrli">
+ <!--<div class="generic-container" ng-controller="ItemController as ctrli">-->
     <div class="panel panel-default">
         <div class="panel-heading"><span class="lead">Channel Registration Form </span>
                 <div class="span2 pull-right">
@@ -31,7 +31,7 @@
 
 
         <div class="formcontainer">
-            <form ng-submit="ctrl.submit()" name="myForm" class="form-horizontal">
+            <form ng-submit="ctrl.submit()" name="form.myForm" class="form-horizontal">
                 <input type="hidden" ng-model="ctrl.channel.id" />
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
                 <!--<span>CSRF - "${_csrf.parameterName}" - "${_csrf.token}"</span> -->
@@ -96,7 +96,6 @@
             <table class="table table-hover">
                 <thead>
                 <tr>
-                    <th>ShortID</th>
                     <th>Title</th>
                     <th>Description</th>
                     <th>Link</th>
@@ -108,7 +107,6 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="u in ctrl.channels">
-                    <td><span ng-bind="u.shortid"></span></td>
                     <td><span ng-bind="u.title"></span></td>
                     <td><span ng-bind="u.description"></span></td>
                     <td><span ng-bind="u.link"></span></td>
@@ -127,7 +125,7 @@
     </div>
    <!--<div ng-bind="ctrl.parseDate()">DDDD</div>-->
    <!--<div>{{ctrl.parseDate() | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>-->
- </div>
+ <!--</div>-->
 </div>
 
 

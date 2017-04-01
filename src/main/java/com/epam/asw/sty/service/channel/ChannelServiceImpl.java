@@ -112,15 +112,18 @@ public class ChannelServiceImpl implements ChannelService {
         } catch (FeedException e) {
             e.printStackTrace();
         }
-        channel.setDescription(rssFeed.getDescription());
+        if(channel.getDescription().equals("")) {
+            channel.setDescription(rssFeed.getDescription());
+        }
+        if(channel.getTitle().equals("")) {
+            channel.setTitle(rssFeed.getTitle());
+        }
         channel.setLanguage(rssFeed.getLanguage());
         channel.setPubDate(rssFeed.getPublishedDate());
         channel.setLastBuildDate(rssFeed.getPublishedDate());
-        //channel.setItems(rssFeed.getEntries());
-        //channel.setUser("Sergii");
 
 
-            String url = channel.getLink();
+/*            String url = channel.getLink();
             RSSFeedReader singleRSSFeedReader = new RSSFeedReader(url);
             RSSfeedSavertoDB singleRssFeedSavertoDB = new RSSfeedSavertoDB();
         rssFeed = null;
@@ -138,7 +141,7 @@ public class ChannelServiceImpl implements ChannelService {
         channel.setLanguage(rssFeed.getLanguage());
         channel.setPubDate(rssFeed.getPublishedDate());
         //channel.setUser("Sergii");
-        channel.setLastBuildDate(rssFeed.getPublishedDate());
+        channel.setLastBuildDate(rssFeed.getPublishedDate());*/
         List<SyndEntryImpl> items = rssFeed.getEntries();
         channel.setItemsCount(items.size());
         channelDao.insertNewEntry(channel);

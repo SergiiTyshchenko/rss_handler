@@ -3,7 +3,6 @@ package com.epam.asw.sty.configuration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDeniedException;
@@ -11,7 +10,6 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.annotation.web.servlet.configuration.EnableWebMvcSecurity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -41,6 +39,7 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
+
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Bean
@@ -80,6 +79,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("*//**", "/admin").hasRole("ADMIN")
                 .antMatchers("*//**").hasAnyRole("USER", "ADMIN")
                 .and().formLogin()
+                //.defaultSuccessUrl("/channelsForUser")
                 .defaultSuccessUrl("/channelsForUser")
                 .failureUrl("/403")
                 .and().csrf()

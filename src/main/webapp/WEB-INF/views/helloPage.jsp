@@ -3,35 +3,18 @@
 
 <html>
 <body>
-<h1>Hello at Sergii RSS Parser site!</h1>
-
-
+<h1>Hello at Sergii's RSS Parser site!</h1>
 	<div class="span1">
 		<input id="button-continue" type="button" onclick="closeAndSubmit();"
 			class="btn-submit"
 			value="Login to the site"/>
 	</div>
-
 </body>
 </html>
 
 <script type="text/javascript">
-    var contents= [{"id":1,"user":"Me"}];
-    //var jsonfile={json:JSON.stringify(contents)};
     var myURL="login";
-	function closeAndSubmit(urlTo) {
-	window.location = myURL;
-    /*	$.ajax({
-        type: 'GET',
-        url: myURL,
-        //data: jsonfile,
-        dataType: "json",
-        success: function(data) {
-        location.href = myURL;
-        },
-            failure: function(errMsg) {
-             alert("FAILURE");
-        }
-    });*/
+	function closeAndSubmit() {
+	    window.location = myURL;
     }
 </script>

@@ -19,3 +19,34 @@ security:
         console:
           enabled: true
           path: /console
+
+spring.mvc.view:
+  prefix: /WEB-INF/views/
+  suffix: .jsp
+
+
+my:
+   servers:
+       - dev.bar.com
+       - foo.bar.com
+
+#server:
+#  contextPath: helloPage
+
+
+spring:
+  profiles.active: default
+---
+spring:
+  profiles: default
+
+ymlImport:
+  wow: 10
+  such: so
+  very: true
+
+---
+spring:
+   profiles: unit-test
+ymlImport:
+  wow: 6

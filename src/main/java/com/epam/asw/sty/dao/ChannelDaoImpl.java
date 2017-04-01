@@ -52,7 +52,7 @@ public class ChannelDaoImpl implements ChannelDao {
 
 		Map<String, Object> params = new HashMap<String, Object>();
 
-		String sql = "SELECT * FROM channel";
+		String sql = "SELECT * FROM channel ORDER BY SHORTID";
 
 		List<Channel> channels = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
 

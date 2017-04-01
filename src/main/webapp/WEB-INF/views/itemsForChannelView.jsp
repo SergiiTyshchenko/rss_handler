@@ -50,7 +50,7 @@
 <script src="<c:url value='/static/js/app.js' />"></script>
 <script src="<c:url value='/static/js/service/item_service.js' />"></script>
 <script src="<c:url value='/static/js/controller/item_controller.js' />"></script>
-
+ <!-- SCRIPT TO SHOW RSS BY DOWNLOADING <script src="//rss.bloople.net/?url=https%3A%2F%2Fdou.ua%2Ffeed%2F&limit=10&showtitle=false&type=js"> -->
 
 </body>
 </html>
