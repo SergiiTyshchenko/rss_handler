@@ -91,7 +91,7 @@ App.controller('ChannelController', ['$scope', 'ChannelService', function($scope
 
 /**** ITEMS ****/
 
-        self.item={id:null,channelID:'',title:'',description:'',link:'',pubDate:'',channelTitle:''};
+/*        self.item={id:null,channelID:'',title:'',description:'',link:'',pubDate:'',channelTitle:''};
         self.items=[];
 
              self.fetchAllItemsForChannel = function(channelID){
@@ -102,19 +102,6 @@ App.controller('ChannelController', ['$scope', 'ChannelService', function($scope
                         },
                         function(errResponse){
                             console.error('Error while fetching Items for Channel');
-                        }
-                    );
-            };
-
-/*             self.fetchAllItems = function(){
-                ChannelService.fetchAllItems()
-                    .then(
-                        function(d) {
-                            self.items = d;
-                            //self.items[0].channelTitle = "All channels";
-                        },
-                        function(errResponse){
-                            console.error('Error while fetching All Items for Channel');
                         }
                     );
             };*/

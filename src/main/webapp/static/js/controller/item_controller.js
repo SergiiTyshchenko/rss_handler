@@ -23,10 +23,6 @@ App.controller('ItemController', ['$scope', 'ItemService', function($scope, Item
             }
     };
 
-   self.test = function(){
-    console.info('TESTING TEST');
-    };
-
    self.fetchAllItems = function(){
         ItemService.fetchAllItems()
             .then(
@@ -40,7 +36,6 @@ App.controller('ItemController', ['$scope', 'ItemService', function($scope, Item
     };
 
      self.fetchAllItemsForChannel = function(channelID){
-        //var channelID =  self.getNewItemData(channelIDJson);
         ItemService.fetchAllItemsForChannel(channelID)
             .then(
                 function(d) {

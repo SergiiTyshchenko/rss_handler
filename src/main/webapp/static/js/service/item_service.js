@@ -23,20 +23,28 @@ App.factory('ItemService', ['$http', '$q', function($http, $q){
         ,
 
         fetchAllItemsForChannel: function(channelID) {
-                console.info('ItemService: Start fetchAllItemsForChannel for channelID ', channelID);
-                var requestURL="item/channel="+channelID;
-                return $http.get(requestURL)
-                                          .then(
-                        function(response){
-                            console.info('ItemService: fetchAllItemsForChannel Called URL ', requestURL);
-                            console.info('ItemService: Finished fetchAllItemsForChannel for channelID ', channelID);
-                            return response.data;
-                        },
-                        function(errResponse){
-                            console.error('Error while fetching items');
-                            return $q.reject(errResponse);
-                        }
-                    );
+                        console.info('ChannelService: Start fetchAllItemsForChannel for channelID ',channelID);
+                        var requestURL="itemsForChannel?channelID="+channelID;
+                        console.info('ChannelService: fetchAllItemsForChannel Redirecting to URL ',requestURL);
+                        //var requestURL="item/channel="+channelID;
+                        //return $http.get(requestURL)
+                        return this.redirectTo(requestURL)
+                                                  .then(
+                                function(response){
+                                    console.info('ChannelService: Finish fetchAllItemsForChannel for channelID ', channelID);
+                                    return response.data;
+                                },
+                                function(errResponse){
+                                    console.error('Error while fetching items for channel', channelID);
+                                    return $q.reject(errResponse);
+                                }
+                            );
+        }
+        ,
+
+        redirectTo: function(url) {
+            window.location.href=url;
+            return true;
         }
         ,
 

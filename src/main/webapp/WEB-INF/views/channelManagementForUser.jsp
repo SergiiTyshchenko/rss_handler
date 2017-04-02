@@ -21,7 +21,6 @@
 </head>
 <body ng-app="myApp" class="ng-cloak">
 <div class="generic-container" ng-controller="ChannelController as ctrl">
- <!--<div class="generic-container" ng-controller="ItemController as ctrli">-->
     <div class="panel panel-default">
         <div class="panel-heading"><span class="lead">Channel Registration Form </span>
                 <div class="span2 pull-right">
@@ -63,7 +62,7 @@
                     <div class="form-group col-md-12">
                         <label class="col-md-2 control-lable" for="link">Link</label>
                         <div class="col-md-7">
-                            <input type="link" ng-model="ctrl.channel.link" id="link" class="link form-control input-sm" placeholder="Enter RSS channel Link redirecting to rss xml View" required/>
+                            <input type="url"  ng-model="ctrl.channel.link" id="link" class="link form-control input-sm" placeholder="Enter RSS channel Link redirecting to rss xml View" required/>
                             <div class="has-error" ng-show="myForm.$dirty">
                                 <span ng-show="myForm.link.$error.required">This is a required field</span>
                                 <span ng-show="myForm.link.$invalid">This field is invalid </span>
@@ -83,13 +82,14 @@
             </form>
         </div>
     </div>
+ <div ng-controller="ItemController as ctrli">
     <div class="panel panel-default">
         <!-- Default panel contents -->
         <div class="panel-heading"><span class="lead">Channels List </span>
 
             <div class="span3 pull-right">
-                <button type="button" ng-click="ctrl.fetchAllItemsForChannel(-1)" class="btn btn-info custom-width">Show All Items</button>
-                <!--<button type="button" ng-click="ctrli.fetchAllItems()" class="btn btn-info custom-width">Show All Items</button>-->
+                <!--<button type="button" ng-click="ctrl.fetchAllItemsForChannel(-1)" class="btn btn-info custom-width">Show All Items</button>-->
+                <button type="button" ng-click="ctrli.fetchAllItemsForChannel(-1)" class="btn btn-info custom-width">Show All Items</button>
             </div>
         </div>
         <div class="tablecontainer">
@@ -125,7 +125,7 @@
     </div>
    <!--<div ng-bind="ctrl.parseDate()">DDDD</div>-->
    <!--<div>{{ctrl.parseDate() | date:'yyyy-MM-dd HH:mm:ss Z'}}</div>-->
- <!--</div>-->
+ </div>
 </div>
 
 

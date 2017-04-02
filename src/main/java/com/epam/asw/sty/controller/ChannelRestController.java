@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.annotation.Resource;
@@ -61,7 +62,7 @@ public class ChannelRestController {
 
 
     @RequestMapping(value = "/channel/my", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String getChannelForCurrentUser(Model model, Principal user) {
+    public ModelAndView getChannelForCurrentUser(ModelAndView model, Principal user) {
 
         String currentUser = user.getName();
         String logDebugMessage = "Getting channel for user: " + currentUser;
@@ -69,9 +70,9 @@ public class ChannelRestController {
         List<Channel> channel = channelService.findByUser(currentUser);
         logger.info("{}.",  channel);
         String msg = "There are " + channel.size() + " channels found for user: " + currentUser;
-        model.addAttribute("message", msg);
-        model.addAttribute("channel", channel);
-        return "dbChannelViewPage";
+        model.addObject("message", msg);
+        model.addObject("channel", channel);
+        return model;
 
     }
 
@@ -79,7 +80,7 @@ public class ChannelRestController {
 
 
     @RequestMapping(value = "/user={currentUser}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String getChannelForSpecificUser(@PathVariable("currentUser") String currentUser, Model model, Principal user) {
+    public ResponseEntity<Model> getChannelForSpecificUser(@PathVariable("currentUser") String currentUser, Model model, Principal user) {
 
         String logDebugMessage = "Getting channel for user: " + currentUser;
         logger.debug("{}.", logDebugMessage);
@@ -88,7 +89,7 @@ public class ChannelRestController {
         String msg = "There are " + channel.size() + " channels found for user: " + currentUser;
         model.addAttribute("message", msg);
         model.addAttribute("channel", channel);
-        return "dbChannelViewPage";
+        return new ResponseEntity<Model>(model, HttpStatus.OK);
 
     }
 
