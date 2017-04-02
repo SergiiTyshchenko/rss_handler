@@ -88,13 +88,13 @@ public class ItemServiceImpl implements ItemService {
         }
     }
 
-    public List<Item> findItemsForUserByCountSortedByDate(String user, int count, String orderItemField) {
-        List<Item> items = itemDao.findForUserByCountSortedByDate(user, count, orderItemField);
+    public List<Item> findItemsForUserByCountSortedByDate(String user, int count, String orderItemField, long shortid) {
+        List<Item> items = itemDao.findForUserByCountSortedByDate(user, count, orderItemField,  shortid);
         return items;
     }
 
-    public List<Item> findItemsForUserbyChannelByCountSortedbyTitle(long shortid, String user, int count, String orderItemField) {
-        List<Item> items = itemDao.findForUserbyChannelByCountSortedbyTitle(shortid, user, count, orderItemField);
+    public List<Item> findItemsForUserbyChannelByCountSortedbyTitle(String user, int count, String orderItemField) {
+        List<Item> items = itemDao.findForUserbyChannelByCountSortedbyTitle(user, count, orderItemField);
         return items;
     }
 

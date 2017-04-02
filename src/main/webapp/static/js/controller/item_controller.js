@@ -53,7 +53,7 @@ App.controller('ItemController', ['$scope', 'ItemService', function($scope, Item
     };
 
        self.fetchItemsNumber = function(){
-            ItemService.fetchItemsNumber()
+            ItemService.fetchItemsNumber(self.newItem.channelID)
                 .then(
                     function(d) {
                         self.items = d;

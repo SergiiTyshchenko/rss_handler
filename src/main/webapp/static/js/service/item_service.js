@@ -40,10 +40,12 @@ App.factory('ItemService', ['$http', '$q', function($http, $q){
         }
         ,
 
-        fetchItemsNumber: function() {
+        fetchItemsNumber: function(channelID) {
             console.info('ItemService: Start fetchItemsNumber');
-            //window.location.href;
-            var requestURL="item/count=10";
+            if (!channelID) {
+                channelID=-1;
+            }
+            var requestURL="item/count=10?channelID="+channelID;
             return $http.get(requestURL)
                                       .then(
                     function(response){

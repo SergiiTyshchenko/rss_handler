@@ -106,7 +106,7 @@ App.controller('ChannelController', ['$scope', 'ChannelService', function($scope
                     );
             };
 
-             self.fetchAllItems = function(){
+/*             self.fetchAllItems = function(){
                 ChannelService.fetchAllItems()
                     .then(
                         function(d) {
@@ -117,6 +117,6 @@ App.controller('ChannelController', ['$scope', 'ChannelService', function($scope
                             console.error('Error while fetching All Items for Channel');
                         }
                     );
-            };
+            };*/
 
 }]);

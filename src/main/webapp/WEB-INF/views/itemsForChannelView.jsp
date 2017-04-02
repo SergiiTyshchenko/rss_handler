@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-5" pageEncoding="ISO-8859-5"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
@@ -13,7 +13,7 @@
 <!--<span>TEST: {{ctrl.newItem.channelID}}</span>-->
     <div class="panel panel-default">
         <!-- Default panel contents -->
-        <div class="panel-heading"><span class="lead">Items List for {{ctrl.items[0].channelTitle}}</span>
+        <div class="panel-heading"><span class="lead">Items List for ${channelTitle}</span>
             <div class="span3 pull-right">
                 <button type="button" ng-click="ctrl.fetchItemsNumber()" class="btn btn-info custom-width">Show Last 10 Items</button>
             </div>
@@ -31,7 +31,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="u in ctrl.items">
+                <tr ng-repeat="u in ctrl.items"> <!--| limitTo:-5 -->
                     <td><span ng-bind="u.channelTitle"></span></td>
                     <td><span ng-bind="u.title"></span></td>
                     <td><span ng-bind="u.description.value"></span></td>

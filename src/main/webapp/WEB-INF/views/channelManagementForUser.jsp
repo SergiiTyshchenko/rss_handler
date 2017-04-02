@@ -63,7 +63,7 @@
                     <div class="form-group col-md-12">
                         <label class="col-md-2 control-lable" for="link">Link</label>
                         <div class="col-md-7">
-                            <input type="link" ng-model="ctrl.channel.link" id="link" class="link form-control input-sm" placeholder="Enter channel Link" required/>
+                            <input type="link" ng-model="ctrl.channel.link" id="link" class="link form-control input-sm" placeholder="Enter RSS channel Link redirecting to rss xml View" required/>
                             <div class="has-error" ng-show="myForm.$dirty">
                                 <span ng-show="myForm.link.$error.required">This is a required field</span>
                                 <span ng-show="myForm.link.$invalid">This field is invalid </span>
@@ -88,7 +88,7 @@
         <div class="panel-heading"><span class="lead">Channels List </span>
 
             <div class="span3 pull-right">
-                <button type="button" ng-click="ctrl.fetchAllItems()" class="btn btn-info custom-width">Show All Items</button>
+                <button type="button" ng-click="ctrl.fetchAllItemsForChannel(-1)" class="btn btn-info custom-width">Show All Items</button>
                 <!--<button type="button" ng-click="ctrli.fetchAllItems()" class="btn btn-info custom-width">Show All Items</button>-->
             </div>
         </div>

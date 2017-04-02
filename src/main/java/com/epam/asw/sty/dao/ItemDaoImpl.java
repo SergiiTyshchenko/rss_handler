@@ -90,13 +90,19 @@ public class ItemDaoImpl implements ItemDao {
 	}
 
 	@Override
-	public List<Item> findForUserByCountSortedByDate(String user, int count, String orderItemField){
+	public List<Item> findForUserByCountSortedByDate(String user, int count, String orderItemField, long shortid){
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("user", user);
 		params.put("count", count);
 		params.put("orderItemField", orderItemField);
+		String additionalConditionWhere = "";
+		if (shortid != -1) {
+			params.put("shortid", shortid);
+			additionalConditionWhere = "AND i.CHANNELID=:shortid ";
+		}
+
 		String sql = "SELECT i.*,c.TITLE AS channelTitle FROM ITEM AS i JOIN CHANNEL AS c ON i.CHANNELID=c.SHORTID " +
-				"WHERE c.USER=:user " +
+				"WHERE c.USER=:user " + additionalConditionWhere +
 				"ORDER BY i.PUBDATE DESC " +
 				" LIMIT :count";
 
@@ -106,16 +112,15 @@ public class ItemDaoImpl implements ItemDao {
 	}
 
 	@Override
-	public List<Item> findForUserbyChannelByCountSortedbyTitle(long shortid, String user, int count, String orderItemField){
+	public List<Item> findForUserbyChannelByCountSortedbyTitle(String user, int count, String orderItemField){
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("user", user);
 		params.put("count", count);
-		params.put("shortid", shortid);
 		params.put("orderItemField", orderItemField);
 
 		String sql = "SELECT i.*,c.TITLE AS channelTitle FROM ITEM AS i JOIN CHANNEL AS c ON i.CHANNELID=c.SHORTID " +
 				"WHERE c.USER=:user " +
-				"ORDER BY i.CHANNELID DESC " +
+				"ORDER BY i.CHANNELID ASC " +
 				" LIMIT :count";
 
 		List<Item> items = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
