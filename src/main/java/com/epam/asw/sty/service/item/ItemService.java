@@ -21,7 +21,7 @@ public interface ItemService {
 
     List<Item> findItemsForUserbyChannelByCountSortedbyTitle(String user, int count, String orderItemField);
 
-    List<Item> findItemsForUserByChannelID(long shortid, String user);
+    List<Item> findItemsForUserByChannelID(long shortid, String user,  int count);
 
     List<Item> populateItemsFromDB();
 

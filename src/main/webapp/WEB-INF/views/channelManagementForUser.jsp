@@ -20,7 +20,7 @@
     <link href="<c:url value='/static/css/app.css' />" rel="stylesheet">
 </head>
 <body ng-app="myApp" class="ng-cloak">
-<div class="generic-container" ng-controller="ChannelController as ctrl">
+<div class="generic-container" ng-controller="ChannelController as ctrl" ng-init="ctrl.fetchAllChannels()">
     <div class="panel panel-default">
         <div class="panel-heading"><span class="lead">Channel Registration Form </span>
                 <div class="span2 pull-right">
@@ -88,7 +88,6 @@
         <div class="panel-heading"><span class="lead">Channels List </span>
 
             <div class="span3 pull-right">
-                <!--<button type="button" ng-click="ctrl.fetchAllItemsForChannel(-1)" class="btn btn-info custom-width">Show All Items</button>-->
                 <button type="button" ng-click="ctrli.fetchAllItemsForChannel(-1)" class="btn btn-info custom-width">Show All Items</button>
             </div>
         </div>
@@ -116,7 +115,7 @@
                     <td>
                         <button type="button" ng-click="ctrl.edit(u.id)" class="btn btn-success custom-width">Edit</button>
                         <button type="button" ng-click="ctrl.remove(u.id)" class="btn btn-danger custom-width">Remove</button>
-                        <button type="button" ng-click="ctrl.fetchAllItemsForChannel(u.shortid)" class="btn btn-info custom-width">View Items</button>
+                        <button type="button" ng-click="ctrli.fetchAllItemsForChannel(u.shortid)" class="btn btn-info custom-width">View Items</button>
                     </td>
                 </tr>
                 </tbody>

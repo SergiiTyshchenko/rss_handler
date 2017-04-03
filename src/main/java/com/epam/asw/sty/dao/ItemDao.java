@@ -17,7 +17,7 @@ public interface ItemDao {
 
 	List<Item> findForUserbyChannelByCountSortedbyTitle(String user, int count, String orderItemField);
 
-	List<Item> findForUserByChannelID(long shortid, String user);
+	List<Item> findForUserByChannelID(long shortid, String user,  int count);
 
 	Object insertNewEntry(Item items);
 

@@ -56,33 +56,6 @@ App.factory('ChannelService', ['$http', '$q', function($http, $q){
                     }
                 );
         }
-        ,
-
-/**** ITEMS ****/
-
-
-/*        fetchAllItemsForChannel: function(channelID) {
-                        console.info('ChannelService: Start fetchAllItemsForChannel for channelID ',channelID);
-                        var requestURL="itemsForChannel?channelID="+channelID;
-                        console.info('ChannelService: fetchAllItemsForChannel Redirecting to URL ',requestURL);
-                        return this.redirectTo(requestURL)
-                                                  .then(
-                                function(response){
-                                    console.info('ChannelService: Finish fetchAllItemsForChannel for channelID ', channelID);
-                                    return response.data;
-                                },
-                                function(errResponse){
-                                    console.error('Error while fetching items for channel', channelID);
-                                    return $q.reject(errResponse);
-                                }
-                            );
-        }
-        ,
-
-        redirectTo: function(url) {
-            window.location.href=url;
-            return true;
-          }*/
 
     };
 

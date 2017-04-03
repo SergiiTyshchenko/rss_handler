@@ -57,8 +57,8 @@ public class ItemServiceImpl implements ItemService {
         return items;
     }
 
-    public List<Item> findItemsForUserByChannelID(long shortid, String user) {
-        List<Item> items = itemDao.findForUserByChannelID(shortid, user);
+    public List<Item> findItemsForUserByChannelID(long shortid, String user,  int count) {
+        List<Item> items = itemDao.findForUserByChannelID(shortid, user, count);
         return items;
     }
 
