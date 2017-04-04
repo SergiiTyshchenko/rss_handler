@@ -5,7 +5,6 @@ import com.epam.asw.sty.dao.ItemDao;
 import com.epam.asw.sty.dao.ItemDaoImpl;
 import com.epam.asw.sty.model.Channel;
 import com.epam.asw.sty.model.Item;
-import com.epam.asw.sty.service.rss.RSSfeedSavertoDB;
 import com.sun.syndication.feed.synd.Converter;
 import org.junit.*;
 import org.junit.runner.RunWith;
@@ -18,7 +17,6 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -30,9 +28,6 @@ public class ItemDaoTest {
 
 	@Mock(name="itemDaoImpl")
 	ItemDao itemDao;
-
-	@InjectMocks
-	RSSfeedSavertoDB RSSfeedSavertoDB;
 
 	@Mock
 	Converter converter;

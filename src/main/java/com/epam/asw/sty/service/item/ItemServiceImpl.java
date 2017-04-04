@@ -1,19 +1,13 @@
 package com.epam.asw.sty.service.item;
 
-import com.epam.asw.sty.dao.ChannelDao;
 import com.epam.asw.sty.dao.ItemDao;
-import com.epam.asw.sty.model.Channel;
 import com.epam.asw.sty.model.Item;
-import com.epam.asw.sty.service.channel.ChannelRulesChecker;
-import com.epam.asw.sty.service.channel.ChannelService;
-import com.epam.asw.sty.service.rss.RSSFeedReader;
-import com.sun.syndication.feed.synd.SyndFeed;
-import com.sun.syndication.io.FeedException;
+import com.sun.syndication.feed.rss.Description;
+import com.sun.syndication.feed.synd.SyndEntryImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -75,6 +69,22 @@ public class ItemServiceImpl implements ItemService {
         itemDao.insertNewEntry(item);
     }
 
+
+    public void convertSyndEntryToItem(List<SyndEntryImpl>items, long shortid) {
+        for (SyndEntryImpl item: items) {
+            Item customizedItem = new Item();
+            customizedItem.setChannelID(shortid);
+            customizedItem.setPubDate(item.getPublishedDate());
+            Description itemDescription = new Description();
+            itemDescription.setValue(item.getDescription().getValue());
+            customizedItem.setDescription(itemDescription);
+            customizedItem.setTitle(item.getTitle());
+            customizedItem.setLink(item.getLink());
+
+            saveItem(customizedItem);
+        }
+
+    }
     public void deleteItemByChannelID(long  id) {
 
         items = populateItemsFromDB();

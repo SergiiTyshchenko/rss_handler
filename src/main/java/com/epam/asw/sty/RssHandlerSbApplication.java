@@ -1,6 +1,8 @@
 package com.epam.asw.sty;
 
 import com.epam.asw.sty.service.YmlImportService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -25,6 +27,8 @@ import java.util.List;
 @SpringBootApplication
 public class RssHandlerSbApplication extends SpringBootServletInitializer {
 
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
 	public static void main(String[] args) {
 		SpringApplication.run(RssHandlerSbApplication.class, args);
 	}
@@ -44,20 +48,20 @@ public class RssHandlerSbApplication extends SpringBootServletInitializer {
 	public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
 		return args -> {
 
-			System.out.println("Let's inspect the beans provided by Spring Boot:");
+			logger.info("Let's inspect the beans provided by Spring Boot:");
 
 			String[] beanNames = ctx.getBeanDefinitionNames();
 			Arrays.sort(beanNames);
 			for (String beanName : beanNames) {
-				System.out.println(beanName);
+				logger.info(beanName);
 			}
 
-			System.out.println("AutoConfiguration should have wired up our stuff");
-			System.out.println("Let's see if we are yml-based...");
+			logger.info("AutoConfiguration should have wired up our stuff");
+			logger.info("Let's see if we are yml-based...");
 			if (ymlImportService.requiresYml()) {
-				System.out.println(ymlImportService.gettingYml());
+				logger.info(ymlImportService.gettingYml());
 			} else {
-				System.out.println("No Yml for us :(");
+				logger.info("No Yml for us :(");
 			}
 
 		};

@@ -2,15 +2,11 @@ package com.epam.asw.sty.service.channel;
 
 import com.epam.asw.sty.dao.ChannelDao;
 
-import com.epam.asw.sty.dao.ItemDao;
 import com.epam.asw.sty.model.Channel;
 import com.epam.asw.sty.model.Item;
 import com.epam.asw.sty.service.item.ItemService;
-import com.epam.asw.sty.service.rss.RSSFeedReader;
-import com.epam.asw.sty.service.rss.RSSfeedSavertoDB;
+import com.epam.asw.sty.service.rss.RssFeedReader;
 import com.sun.syndication.feed.rss.Description;
-import com.sun.syndication.feed.synd.SyndContent;
-import com.sun.syndication.feed.synd.SyndContentImpl;
 import com.sun.syndication.feed.synd.SyndEntryImpl;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.FeedException;
@@ -31,9 +27,6 @@ public class ChannelServiceImpl implements ChannelService {
     @Resource(name="channelDaoImpl")
     ChannelDao channelDao;
 
-    //@Resource(name="converterForRSS090")
-    //Converter converter;
-
     @Resource(name="itemServiceImpl")
     ItemService itemService;
 
@@ -43,7 +36,6 @@ public class ChannelServiceImpl implements ChannelService {
     public ChannelServiceImpl() {
         this.channels = new ArrayList<Channel>();
     }
-
 
     public List<Channel> findAllChannels() {
         return populateChannelsFromDB();
@@ -88,8 +80,8 @@ public class ChannelServiceImpl implements ChannelService {
         return null;
     }
 
-    public void saveChannel(Channel channel) {
-        ChannelRulesChecker checker = new ChannelRulesChecker();
+    public void saveChannel(Channel channel, String user) {
+
         channel.setId(new Channel().getId());
         channels = populateChannelsFromDB();
         if (channels.size() == 0) {
@@ -100,62 +92,23 @@ public class ChannelServiceImpl implements ChannelService {
         }
         channel.setShortid((int) counter.incrementAndGet());
 
-        channel = checker.superChannelCheck(channel);
+        SyndFeed rssFeed = new RssFeedReader().obtainRSSFeed(channel.getLink());
 
-        RSSFeedReader RSSFeedReader = new RSSFeedReader(channel.getLink());
-
-        SyndFeed rssFeed = null;
-        try {
-            rssFeed = RSSFeedReader.obtainRSSFeed(channel.getLink());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (FeedException e) {
-            e.printStackTrace();
-        }
         if(channel.getDescription().equals("")) {
             channel.setDescription(rssFeed.getDescription());
         }
         if(channel.getTitle().equals("")) {
             channel.setTitle(rssFeed.getTitle());
         }
+
         channel.setLanguage(rssFeed.getLanguage());
         channel.setPubDate(rssFeed.getPublishedDate());
         channel.setLastBuildDate(rssFeed.getPublishedDate());
 
-
-/*            String url = channel.getLink();
-            RSSFeedReader singleRSSFeedReader = new RSSFeedReader(url);
-            RSSfeedSavertoDB singleRssFeedSavertoDB = new RSSfeedSavertoDB();
-        rssFeed = null;
-        try {
-            rssFeed = singleRSSFeedReader.obtainRSSFeed(url);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (FeedException e) {
-            e.printStackTrace();
-        }
-
-        //channel = (Channel) converter.createRealFeed(rssFeed);
-        channel.setDescription(rssFeed.getDescription());
-        channel.setTitle(rssFeed.getTitle());
-        channel.setLanguage(rssFeed.getLanguage());
-        channel.setPubDate(rssFeed.getPublishedDate());
-        //channel.setUser("Sergii");
-        channel.setLastBuildDate(rssFeed.getPublishedDate());*/
         List<SyndEntryImpl> items = rssFeed.getEntries();
         channel.setItemsCount(items.size());
         channelDao.insertNewEntry(channel);
-        for (SyndEntryImpl item: items) {
-            Item customizedItem = new Item();
-            customizedItem.setChannelID(channel.getShortid());
-            customizedItem.setPubDate(item.getPublishedDate());
-            Description itemDescription = new Description();
-            itemDescription.setValue(item.getDescription().getValue());
-            customizedItem.setDescription(itemDescription);
-            customizedItem.setTitle(item.getTitle());
-            customizedItem.setLink(item.getLink());
-            itemService.saveItem(customizedItem);
-        }
+        itemService.convertSyndEntryToItem(items, channel.getShortid());
     }
 
     public void updateChannel(Channel channel) {
@@ -188,16 +141,5 @@ public class ChannelServiceImpl implements ChannelService {
         List<Channel> channels = channelDao.findAll();
         return channels;
     }
-
-    @Override
-    public Object insertEntrytoDB(Channel channel) {
-        channels = populateChannelsFromDB();
-        //channel.setId(new Channel().getId());
-        counter.set(channels.get(channels.size()-1).getShortid());
-        channel.setShortid((int) counter.incrementAndGet());
-        Object result = channelDao.insertNewEntry(channel);
-        return result;
-    }
-
 
 }

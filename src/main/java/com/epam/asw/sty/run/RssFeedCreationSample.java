@@ -1,31 +1,31 @@
 package com.epam.asw.sty.run;
 
 
-import com.epam.asw.sty.service.rss.RSSFeedReader;
-import static com.epam.asw.sty.service.rss.RSSfeedSavertoFile.saveRssFeed;
-
+import com.epam.asw.sty.service.rss.RssFeedReader;
 
 import com.sun.syndication.feed.synd.*;
-import com.sun.syndication.io.*;
+import com.sun.syndication.io.FeedException;
+import com.sun.syndication.io.SyndFeedOutput;
 
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 
-public class SimpleRSSFeed {
-    public static void main(String[] args) throws IOException, FeedException {
+public class RssFeedCreationSample {
+    public static void main(String[] args)  {
 
         //KB
         //http://www.javaworld.com/article/2077795/java-se/manage-rss-feeds-with-the-rome-api.html?page=2
 
         String url = "https://dou.ua/feed/";
-        RSSFeedReader RSSFeedReader = new RSSFeedReader(url);
+        RssFeedReader RssFeedReader = new RssFeedReader(url);
         List <SyndEntry> entries;
-        entries = RSSFeedReader.readRSSFeed();
-        System.out.println(entries);
-        saveRssFeed(RSSFeedReader.obtainRSSFeed(url));
+        entries = RssFeedReader.readRSSFeed();
+        saveRssFeed(RssFeedReader.obtainRSSFeed(url));
 
 /*       SyndFeed feed = createFeed();
         List <SyndEntry> entries = feed.getEntries();
@@ -35,8 +35,7 @@ public class SimpleRSSFeed {
             entries.add(createEntry());
         }
 
-        feed.setEntries(entries);
-        //System.out.println(feed.getEntries());*/
+        feed.setEntries(entries);*/
 
 
     }
@@ -51,8 +50,6 @@ public class SimpleRSSFeed {
         feed.setDescription("Continuous build results for the MyProject project");
         //feed.setCategory("MyProject");
         feedCategories.add(0,"MyProject");
-        //feed.setCategories(feedCategories);
-        //System.out.println(feed.getDescription());
         return feed;
     }
 
@@ -82,6 +79,33 @@ public class SimpleRSSFeed {
         category.setName("MyProject");
         categories.add(category);
         return categories;
+    }
+
+    public static void saveRssFeed(SyndFeed rssFeed)  {
+        String feedFileName = rssFeed.getLink();
+        feedFileName = feedFileName.replaceAll("/", "~").replaceAll("https:","");
+        Writer writer = null;
+        try {
+            writer = new FileWriter("feedFiles/" + feedFileName + ".xml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        finally {
+            SyndFeedOutput output = new SyndFeedOutput();
+            try {
+                output.output(rssFeed,writer);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (FeedException e) {
+                e.printStackTrace();
+            }
+            try {
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 
 

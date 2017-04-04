@@ -45,7 +45,7 @@ public class ItemServiceImplTest {
     }
 
     @Test
-    public void saveItemTest() throws Exception {
+    public void saveItemTest() {
 
         NamedParameterJdbcTemplate template = new NamedParameterJdbcTemplate(db);
         ItemDaoImpl itemDao = new ItemDaoImpl();

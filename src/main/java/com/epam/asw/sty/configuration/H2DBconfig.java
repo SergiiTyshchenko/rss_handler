@@ -2,6 +2,8 @@ package com.epam.asw.sty.configuration;
 
 
 import org.h2.jdbcx.JdbcConnectionPool;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -19,6 +21,8 @@ import org.h2.tools.Server;
 
 @Configuration
 public class H2DBconfig {
+
+    private final static Logger logger = LoggerFactory.getLogger(H2DBconfig.class);
 
     private static final String DBNAME = "mytest";
 
@@ -39,7 +43,7 @@ public class H2DBconfig {
 
         Server webServer = Server.createWebServer("-webAllowOthers","-webPort","8088"); // (4a)
         Server server = Server.createTcpServer("-tcpAllowOthers","-tcpPort","9088");
-        System.out.println("H2 DB Web Server URL: jdbc:h2:" + webServer.getURL() + "/mem:" + DBNAME);
+        logger.info("H2 DB Web Server URL: jdbc:h2:" + webServer.getURL() + "/mem:" + DBNAME);
         return Server.createPgServer();
     }
 }

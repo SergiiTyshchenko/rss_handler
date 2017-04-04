@@ -26,13 +26,13 @@ public class YmlTest extends AbstractTestNGSpringContextTests {
 
 	@Test
     @Ignore
-	public void testDogeService() throws Exception {
+	public void testYmlService() {
         Assert.assertTrue(ymlImportService.requiresYml());
 	}
 
     @Test
     @Ignore
-    public void testDogeRepository() throws Exception {
+    public void testYmlRepository()  {
         Assert.assertEquals("wow", ymlImportRepository.getYmlImportData(), "Test Repository was not injected");
     }
 }

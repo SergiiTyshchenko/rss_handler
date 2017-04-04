@@ -5,6 +5,7 @@ package com.epam.asw.sty.service.item;
 
 import com.epam.asw.sty.model.Channel;
 import com.epam.asw.sty.model.Item;
+import com.sun.syndication.feed.synd.SyndEntryImpl;
 
 import java.util.List;
 
@@ -26,6 +27,8 @@ public interface ItemService {
     List<Item> populateItemsFromDB();
 
     void saveItem(Item item);
+
+    public void convertSyndEntryToItem(List<SyndEntryImpl>items, long shortid);
 
     void deleteItemByChannelID(long id);
 

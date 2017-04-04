@@ -5,9 +5,7 @@ import com.epam.asw.sty.model.Channel;
 import com.epam.asw.sty.model.Item;
 import com.epam.asw.sty.service.channel.ChannelService;
 import com.epam.asw.sty.service.item.ItemService;
-import com.epam.asw.sty.service.rss.RSSfeedSavertoDB;
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.security.Principal;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class ItemsRestController {

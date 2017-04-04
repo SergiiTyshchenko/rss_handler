@@ -13,7 +13,7 @@ public interface ChannelService {
 
     List<Channel> findByUser(String user);
 
-    void saveChannel(Channel channel);
+    void saveChannel(Channel channel, String user);
 
     void updateChannel(Channel channel);
 
@@ -30,7 +30,5 @@ public interface ChannelService {
     public Channel findByLink(String link);
 
     List<Channel> populateChannelsFromDB();
-
-    Object insertEntrytoDB(Channel channel);
 
 }

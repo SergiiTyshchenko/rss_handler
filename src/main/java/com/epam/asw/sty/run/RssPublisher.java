@@ -4,6 +4,8 @@ import com.sun.syndication.feed.rss.Channel;
 import com.sun.syndication.feed.rss.Item;
 import com.sun.syndication.io.WireFeedInput;
 import com.sun.syndication.io.WireFeedOutput;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.Serializable;
@@ -12,6 +14,9 @@ import java.util.Iterator;
 import java.util.List;
 
 public class RssPublisher implements Serializable {
+
+    private final static Logger logger = LoggerFactory.getLogger(RssPublisher.class);
+
     private String rssFeedFilename = "rss/builds.xml";
     private int updateFrequency = 30;
     private String continuumXMLRPCUrl = "http://localhost:8080/continuum/xmlrpc";
@@ -22,9 +27,7 @@ public class RssPublisher implements Serializable {
     static Channel createChannel() {
 
         Channel channel = new Channel();
-
         channel.setFeedType("rss_2.0");
-
         channel.setTitle("Sumeet's RSS Channel");
         channel.setDescription("Test RSS Channel");
         channel.setLink("http://myIPAddress:portNo/WebAppName");
@@ -34,7 +37,6 @@ public class RssPublisher implements Serializable {
 
     static Item createItem() {
         Item item = new Item();
-
         item.setTitle("Article first");
 
         return item;
@@ -46,7 +48,6 @@ public class RssPublisher implements Serializable {
             items = new ArrayList();
         }
         items.add(item);
-        //channel.setItems(items);
         return channel;
     }
 
@@ -59,7 +60,7 @@ public class RssPublisher implements Serializable {
             WireFeedOutput wfo = new WireFeedOutput();
             wfo.output(channel, RSSDoc);
         } catch (Exception ee) {
-            System.out.println(ee);
+            logger.error("Exception", ee);
         }
         return true;
     }
@@ -70,7 +71,7 @@ public class RssPublisher implements Serializable {
             WireFeedInput wfi = new WireFeedInput();
             channel = (Channel) wfi.build(new File(url));
         } catch (Exception ee) {
-            System.out.println(ee);
+            logger.error("Exception", ee);
         }
         return channel;
     }
@@ -80,7 +81,7 @@ public class RssPublisher implements Serializable {
         Iterator itr = existingItems.iterator();
         while (itr.hasNext()) {
             Item item = (Item) itr.next();
-            System.out.println(item.getTitle());
+            logger.info(item.getTitle());
         }
     }
 }

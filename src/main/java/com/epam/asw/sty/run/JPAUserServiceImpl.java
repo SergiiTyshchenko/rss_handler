@@ -29,14 +29,14 @@ import java.util.Map;
 @Configuration
 @ComponentScan
 @EnableAutoConfiguration
-public class UsersByJPA  extends SpringBootServletInitializer {
+public class JPAUserServiceImpl extends SpringBootServletInitializer {
 
-    private static final Logger log = LoggerFactory.getLogger(UsersByJPA.class);
+    private static final Logger log = LoggerFactory.getLogger(JPAUserServiceImpl.class);
 
 
     public static void main(String[] args) {
-        //SpringApplication.run(UsersByJPA.class, args);
-        SpringApplication app = new SpringApplication(UsersByJPA.class);
+        //SpringApplication.run(JPAUserServiceImpl.class, args);
+        SpringApplication app = new SpringApplication(JPAUserServiceImpl.class);
         addDefaultProfile(app);
         Environment env = app.run(args).getEnvironment();
         try {
@@ -55,7 +55,7 @@ public class UsersByJPA  extends SpringBootServletInitializer {
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(UsersByJPA.class);
+        return application.sources(JPAUserServiceImpl.class);
     }
 
     protected static void addDefaultProfile(SpringApplication app) {
