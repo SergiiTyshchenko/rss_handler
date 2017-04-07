@@ -48,6 +48,90 @@ public class ChannelDaoImpl implements ChannelDao {
 	}
 
 	@Override
+	public Channel findByLink(String link) {
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("link", link);
+
+		String sql = "SELECT * FROM channel WHERE LINK=:link";
+
+		List<Channel> channels = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
+		if(channels.size() == 0 ) {
+			return null;
+		} else {
+			return channels.get(0);
+		}
+
+	}
+
+	@Override
+	public Channel findByShortID(long shortid) {
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("shortid", shortid);
+
+		String sql = "SELECT * FROM channel WHERE SHORTID=:shortid";
+
+		List<Channel> channels = namedParameterJdbcTemplate.query(
+				sql,
+				params,
+				new RequestMapper());
+
+		//new BeanPropertyRowMapper(Customer.class));
+
+		if(channels.size() == 0 ) {
+			return null;
+		} else {
+			return channels.get(0);
+		}
+
+	}
+
+	@Override
+	public Channel findLastAddedChannel() {
+
+
+
+		String sql = "SELECT * FROM channel ORDER BY SHORTID DESC LIMIT 1";
+
+		List<Channel> channels = namedParameterJdbcTemplate.query(
+				sql,
+				new RequestMapper());
+
+		//new BeanPropertyRowMapper(Customer.class));
+
+		if(channels.size() == 0 ) {
+			return null;
+		} else {
+			return channels.get(0);
+		}
+
+	}
+
+	@Override
+	public Channel findByID(String id) {
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("id", id);
+
+		String sql = "SELECT * FROM channel WHERE ID=:id";
+
+		List<Channel> channels = namedParameterJdbcTemplate.query(
+				sql,
+				params,
+				new RequestMapper());
+
+		//new BeanPropertyRowMapper(Customer.class));
+
+		if(channels.size() == 0 ) {
+			return null;
+		} else {
+			return channels.get(0);
+		}
+
+	}
+
+	@Override
 	public List<Channel> findAll() {
 
 		Map<String, Object> params = new HashMap<String, Object>();

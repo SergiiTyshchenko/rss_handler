@@ -41,13 +41,13 @@ public class ItemServiceImpl implements ItemService {
 
 
     public List<Item> findByChannel(long  channelID) {
-        List<Item> items = new ArrayList<Item>();
+        List<Item> items = itemDao.findByChannelID(channelID);
+/*        List<Item> items = new ArrayList<Item>();
         for(Item item : populateItemsFromDB()){
-            //if(item.getChannelID().equals(channelID)){
             if(item.getChannelID() == channelID){
                 items.add(item);
             }
-        }
+        }*/
         return items;
     }
 
@@ -59,13 +59,6 @@ public class ItemServiceImpl implements ItemService {
     public void saveItem(Item item) {
 
         item.setId(new Item().getId());
-     //   items = populateItemsFromDB();
-/*        if (items.size() == 0) {
-            counter.set(0);
-        } else {
-            counter.set(items.get(items.size() - 1).getId());
-        }
-        item.setId((int) counter.incrementAndGet());*/
         itemDao.insertNewEntry(item);
     }
 
@@ -80,21 +73,24 @@ public class ItemServiceImpl implements ItemService {
             customizedItem.setDescription(itemDescription);
             customizedItem.setTitle(item.getTitle());
             customizedItem.setLink(item.getLink());
-
             saveItem(customizedItem);
         }
 
     }
-    public void deleteItemByChannelID(long  id) {
+    public void deleteItemByChannelID(long  shortid) {
 
-        items = populateItemsFromDB();
+/*        items = populateItemsFromDB();
         for (Iterator<Item> iterator = items.iterator(); iterator.hasNext(); ) {
             Item item = iterator.next();
-            //if (item.getChannelID().equals(id)) {
             if (item.getChannelID() == id) {
                 itemDao.removeEntryByChannelID(id);
                 break;
             }
+        }*/
+
+        List<Item> items = itemDao.findByChannelID(shortid);
+        for (Item item: items){
+            itemDao.removeEntryByChannelID(shortid);
         }
     }
 

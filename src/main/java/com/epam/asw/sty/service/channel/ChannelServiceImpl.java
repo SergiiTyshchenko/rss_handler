@@ -3,18 +3,14 @@ package com.epam.asw.sty.service.channel;
 import com.epam.asw.sty.dao.ChannelDao;
 
 import com.epam.asw.sty.model.Channel;
-import com.epam.asw.sty.model.Item;
 import com.epam.asw.sty.service.item.ItemService;
 import com.epam.asw.sty.service.rss.RssFeedReader;
-import com.sun.syndication.feed.rss.Description;
 import com.sun.syndication.feed.synd.SyndEntryImpl;
 import com.sun.syndication.feed.synd.SyndFeed;
-import com.sun.syndication.io.FeedException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -43,53 +39,69 @@ public class ChannelServiceImpl implements ChannelService {
 
 
     public Channel findById(String id) {
-        for(Channel channel : populateChannelsFromDB()){
+        Channel channel = channelDao.findByID(id);
+/*        for(Channel channel : populateChannelsFromDB()){
             if(channel.getId().equals(id)){
                 return channel;
             }
         }
-        return null;
+        return null;*/
+        return channel;
     }
 
     public List<Channel> findByUser(String user) {
-        List<Channel> channels = new ArrayList<Channel>();
+        List<Channel> channels = channelDao.findByUser(user);
+/*        List<Channel> channels = new ArrayList<Channel>();
         for(Channel channel : populateChannelsFromDB()){
             if(channel.getUser().equalsIgnoreCase(user)){
                 channels.add(channel);
             }
-        }
+        }*/
         return channels;
     }
 
     public Channel findByShortID(long shortid) {
-        for(Channel channel : populateChannelsFromDB()){
+        Channel channel = channelDao.findByShortID(shortid);
+/*        for(Channel channel : populateChannelsFromDB()){
             if(channel.getShortid() == shortid){
                 return channel;
             }
         }
-        return null;
+        return null;*/
+        return channel;
     }
 
 
     public Channel findByLink(String link) {
-        for(Channel channel : populateChannelsFromDB()){
+        Channel channel = channelDao.findByLink(link);
+/*        for(Channel channel : populateChannelsFromDB()){
             if(channel.getLink().equalsIgnoreCase(link)){
                 return channel;
             }
         }
-        return null;
+        return null;*/
+        return channel;
     }
 
     public void saveChannel(Channel channel, String user) {
 
         channel.setId(new Channel().getId());
-        channels = populateChannelsFromDB();
+/*        channels = populateChannelsFromDB();
         if (channels.size() == 0) {
             counter.set(0);
         }
         else {
             counter.set(channels.get(channels.size()-1).getShortid());
+        }*/
+
+        Channel channelForCompare = channelDao.findLastAddedChannel();
+        if (channelForCompare == null) {
+            counter.set(0);
         }
+        else {
+            counter.set(channelForCompare.getShortid());
+        }
+
         channel.setShortid((int) counter.incrementAndGet());
 
         SyndFeed rssFeed = new RssFeedReader().obtainRSSFeed(channel.getLink());
@@ -118,14 +130,16 @@ public class ChannelServiceImpl implements ChannelService {
     public void deleteChannelById(String id) {
 
         channels = populateChannelsFromDB();
-        for (Iterator<Channel> iterator = channels.iterator(); iterator.hasNext(); ) {
-            Channel channel = iterator.next();
-            if (channel.getId().equals(id)) {
+/*        for (Iterator<Channel> iterator = channels.iterator(); iterator.hasNext(); ) {
+            Channel channel = iterator.next();*/
+           // if (channel.getId().equals(id)) {
+                Channel channel = channelDao.findByID(id);
+                if (channel.getId().equals(id)) {
                 itemService.deleteItemByChannelID(channel.getShortid());
                 channelDao.removeEntryByID(id);
-                break;
+                //break;
             }
-        }
+        //}
     }
 
     public boolean isChannelExist(Channel channel) {

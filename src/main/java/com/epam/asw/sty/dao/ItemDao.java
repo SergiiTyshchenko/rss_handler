@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ItemDao {
 
-	List<Item> findByChannel(Channel channel);
+	List<Item> findByChannelID(long shortid);
 	
 	List<Item> findAll();
 
@@ -21,7 +21,7 @@ public interface ItemDao {
 
 	Object insertNewEntry(Item items);
 
-	Object removeEntryByChannelID(long id);
+	Object removeEntryByChannelID(long shortid);
 
 }
 

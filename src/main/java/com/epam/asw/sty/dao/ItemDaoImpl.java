@@ -29,6 +29,7 @@ public class ItemDaoImpl implements ItemDao {
 	}
 
 
+/*
 	@Override
 	public List<Item> findByChannel(Channel channel) {
 
@@ -44,6 +45,7 @@ public class ItemDaoImpl implements ItemDao {
 		return items;
 
 	}
+*/
 
 	@Override
 	public List<Item> findAll() {
@@ -56,6 +58,19 @@ public class ItemDaoImpl implements ItemDao {
 
 		return items;
 
+	}
+
+	@Override
+	public List<Item> findByChannelID(long shortid){
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("shortid", shortid);
+
+
+		String sql = "SELECT * FROM ITEM WHERE CHANNELID=:shortid";
+
+		List<Item> items = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
+
+		return items;
 	}
 
 	@Override
@@ -78,10 +93,10 @@ public class ItemDaoImpl implements ItemDao {
 
 
 	@Override
-	public Object removeEntryByChannelID(long  id) {
+	public Object removeEntryByChannelID(long  shortid) {
 
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("channelID", id);
+		params.put("channelID", shortid);
 		String sql = "DELETE FROM ITEM " +
 				"WHERE CHANNELID=:channelID";
 

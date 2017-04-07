@@ -5,6 +5,7 @@ import com.epam.asw.sty.dao.ItemDao;
 import com.epam.asw.sty.dao.ItemDaoImpl;
 import com.epam.asw.sty.model.Channel;
 import com.epam.asw.sty.model.Item;
+
 import com.sun.syndication.feed.synd.Converter;
 import org.junit.*;
 import org.junit.runner.RunWith;
@@ -60,7 +61,7 @@ public class ItemDaoTest {
 		itemTest.setChannelID(channel.getShortid());
 		itemsTest.add(itemTest);
 		channel.setItems(itemsTest);*/
-		List<Item> item = itemDao.findByChannel(channel);
+		List<Item> item = itemDao.findByChannelID(channel.getShortid());
 
 		Assert.assertNotNull(item);
 		Assert.assertEquals("dou lenta_Item", item.get(0).getLink());
