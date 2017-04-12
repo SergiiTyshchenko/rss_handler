@@ -14,7 +14,7 @@
         <!-- Default panel contents -->
         <div class="panel-heading"><span class="lead">Items List for ${channelTitle}</span>
             <div class="span3 pull-right">
-                <button type="button" ng-click="ctrl.getAllItemsForChannel(ctrl.newItem.channelID,10)" class="btn btn-info custom-width">Show Last 10 Items</button>
+                <button type="button" ng-click="ctrl.getLimitedItemsForChannel(ctrl.newItem.channelID,10)" class="btn btn-info custom-width">Show Last 10 Items</button>
             </div>
         </div>
         <div class="tablecontainer">

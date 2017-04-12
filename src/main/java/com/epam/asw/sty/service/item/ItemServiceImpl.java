@@ -94,8 +94,13 @@ public class ItemServiceImpl implements ItemService {
         }
     }
 
-    public List<Item> findItemsForUserByCountSortedByDate(String user, int count, String orderItemField, long shortid) {
+/*    public List<Item> findItemsForUserByCountSortedByDate(String user, int count, String orderItemField, long shortid) {
         List<Item> items = itemDao.findForUserByCountSortedByDate(user, count, orderItemField,  shortid);
+        return items;
+    }*/
+
+    public List<Item> findAllItemsForAllChannelsSortedByChannelID(String user) {
+        List<Item> items = itemDao.findAllItemsForAllChannelsSortedByChannelID(user);
         return items;
     }
 
@@ -104,13 +109,20 @@ public class ItemServiceImpl implements ItemService {
         return items;
     }
 
+    public List<Item> findLimitedItemsForAllChannelsSortedByPubDate(String user, int count) {
+        List<Item> items = itemDao.findLimitedItemsForAllChannelsSortedByPubDate(user, count);
+        return items;
+    }
 
+    public List<Item> findAllItemsForOneChannelSortedByChannelID(String user, long shortid) {
+        List<Item> items = itemDao.findAllItemsForOneChannelSortedByChannleID(user, shortid);
+        return items;
+    }
 
-
-
-
-
-
+    public List<Item> findLimitedItemsForOneChannelSortedByPubDate(String user, int count, long shortid) {
+        List<Item> items = itemDao.findLimitedItemsForOneChannelSortedByPubDate(user, count, shortid);
+        return items;
+    }
 
 
 

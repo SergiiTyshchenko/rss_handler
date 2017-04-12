@@ -88,7 +88,7 @@
         <div class="panel-heading"><span class="lead">Channels List </span>
 
             <div class="span3 pull-right">
-                <button type="button" ng-click="ctrli.fetchAllItemsForChannel(-1)" class="btn btn-info custom-width">Show All Items</button>
+                <button type="button" ng-click="ctrli.fetchAllItemsForAllChannels()" class="btn btn-info custom-width">Show All Items</button>
             </div>
         </div>
         <div class="tablecontainer">

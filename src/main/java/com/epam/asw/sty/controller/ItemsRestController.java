@@ -34,63 +34,91 @@ public class ItemsRestController {
     private ChannelService channelService;
 
 
-    //-------------------Retrieve Items by User For Channel by ChannelID--------------------------------------------------------
+    //-------------------Show JSP With All Items For Specific Channel --------------------------------------------------------
 
-
-    @RequestMapping(value = "/item/channel={channelID}", method = RequestMethod.GET, params={"itemsCount"})
-    public ResponseEntity<List<Item>> getChannelForUser(@RequestParam(value="itemsCount", required=false) int itemsCount,
-                                                        @PathVariable("channelID") long channelID, Model model, Principal user) {
-
-        String logDebugMessage ="";
-        if (itemsCount == -1){
-            int count = Integer.MAX_VALUE;
-            logDebugMessage = "Getting items for user: " + user.getName() + " for channel with short ID " + channelID;
-        } else{
-            logDebugMessage = "Getting last " + itemsCount + " items for user " + user.getName() + " for channel with short ID " + channelID;
-        }
-        logger.debug("{}.", logDebugMessage);
-
-        String orderItemField = "";
-        if ((channelID == -1) && (itemsCount == -1)){
-            orderItemField = "channelID";
-        } else{
-            orderItemField = "pubDate";
-        }
-        logDebugMessage = "Selected order is: " + orderItemField;
-        logger.debug("{}.", logDebugMessage);
-
-        List<Item> items = itemService.findItemsForUserByCountSortedByDate(user.getName(), itemsCount, orderItemField, channelID);
-        String msg = "There are " + items.size() + " items for channel with short ID=" + channelID;
-        logger.info("Items count {}.",  items.size());
-        if(items.isEmpty()){
-            return new ResponseEntity<List<Item>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
-        }
-        return new ResponseEntity<List<Item>>(items, HttpStatus.OK);
-
-    }
-
-    @RequestMapping(value="/itemsForChannel", method = RequestMethod.GET, params={"channelID"}, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String getItemsForChannelIndexPage(@RequestParam(value="channelID", required=false) int channelID, Model model, Principal user) {
+    @RequestMapping(value="/itemsForChannel", method = RequestMethod.GET, params={"channelID"},
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public String getAllItemsForChannelPage(@RequestParam(value="channelID", required=false) int channelID, Model model) {
 
         String logDebugMessage = "Getting items for channel with short ID " + channelID;
         logger.debug("{}.", logDebugMessage);
-
         JSONObject json = new JSONObject();
         json.put("channelID", channelID);
         String formattedJson = StringEscapeUtils.escapeHtml4(json.toString());
         model.addAttribute("newItemJson", formattedJson);
-
-        if (channelID!=-1) {
-            Channel channel = channelService.findByShortID(channelID);
-            model.addAttribute("channelTitle", channel.getTitle());
-        } else {
-            model.addAttribute("channelTitle", "All Channels");
-        }
+        Channel channel = channelService.findByShortID(channelID);
+        model.addAttribute("channelTitle", channel.getTitle());
 
         return ITEM_FOR_CHANNEL_VIEW;
     }
 
+    //-------------------Show JSP With All Items For All Channels --------------------------------------------------------
+
+    @RequestMapping(value="/itemsForChannel/allChannels", method = RequestMethod.GET)
+    public String getAllItemsForAllChannelsPage(Model model) {
+
+        String logDebugMessage = "Getting items for All Channels";
+        logger.debug("{}.", logDebugMessage);
+        model.addAttribute("channelTitle", "All Channels");
+
+        return ITEM_FOR_CHANNEL_VIEW;
+    }
+
+    //-------------------Retrieve All Items For All Channels For Logged User --------------------------------------------------
+
+    @RequestMapping(value = "/item/allChannels", method = RequestMethod.GET)
+    public ResponseEntity<List<Item>> getAllItemsForAllChannelsForUserPage(Principal user) {
+
+        String logDebugMessage = "Getting All items for user: " + user.getName() + " for All channels";
+        logger.debug("{}.", logDebugMessage);
+        List<Item> items = itemService.findAllItemsForAllChannelsSortedByChannelID(user.getName());
+        return getResponseEntity(items);
+    }
+
+    //-------------------Retrieve All Items For Specific Channel For Logged User --------------------------------------------------
+
+    @RequestMapping(value = "/item/channel={channelID}", method = RequestMethod.GET)
+    public ResponseEntity<List<Item>> getAllItemsForChannelForUserPage(
+                                        @PathVariable("channelID") long channelID, Principal user) {
+
+        String logDebugMessage = "Getting All items for user: " + user.getName() + " for channel with short ID " + channelID;
+        logger.debug("{}.", logDebugMessage);
+        List<Item> items = itemService.findAllItemsForOneChannelSortedByChannelID(user.getName(), channelID);
+        return getResponseEntity(items);
+    }
+
+    //-------------------Retrieve Limited Items For All Channels For Logged User --------------------------------------------------
+
+    @RequestMapping(value = "/item/allChannels", method = RequestMethod.GET, params={"itemsCount"})
+    public ResponseEntity<List<Item>> getLimitedItemsForAllChannelsForUserPage(
+                                        @RequestParam(value="itemsCount", required=false) int itemsCount, Principal user) {
+
+        String logDebugMessage = "Getting last " + itemsCount + " items for user " + user.getName() + " for All channels";
+        logger.debug("{}.", logDebugMessage);
+        List<Item> items = itemService.findLimitedItemsForAllChannelsSortedByPubDate(user.getName(), itemsCount);
+        return getResponseEntity(items);
+    }
+
+    //-------------------Retrieve Limited Items For Specific Channel For Logged User --------------------------------------------------
+
+    @RequestMapping(value = "/item/channel={channelID}", method = RequestMethod.GET, params={"itemsCount"})
+    public ResponseEntity<List<Item>> getLimitedItemsForChannelForUserPage(
+                                        @RequestParam(value="itemsCount", required=false) int itemsCount,
+                                        @PathVariable("channelID") long channelID, Principal user) {
+
+        String logDebugMessage = "Getting last " + itemsCount + " items for user " + user.getName() + " for channel with short ID " + channelID;
+        logger.debug("{}.", logDebugMessage);
+        List<Item> items = itemService.findLimitedItemsForOneChannelSortedByPubDate(user.getName(), itemsCount, channelID);
+        return getResponseEntity(items);
+    }
 
 
+    public ResponseEntity<List<Item>> getResponseEntity (List<Item> items) {
+        logger.info("Items count {}.",  items.size());
+        if(items.isEmpty()){
+            return new ResponseEntity<List<Item>>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<List<Item>>(items, HttpStatus.OK);
+    }
 
 }

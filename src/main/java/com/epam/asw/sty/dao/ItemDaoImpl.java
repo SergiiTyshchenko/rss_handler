@@ -104,28 +104,76 @@ public class ItemDaoImpl implements ItemDao {
 		return result;
 	}
 
+
 	@Override
-	public List<Item> findForUserByCountSortedByDate(String user, int count, String orderItemField, long shortid){
+	public List<Item> findLimitedItemsForOneChannelSortedByPubDate(String user, int count, long shortid){
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("user", user);
 		params.put("count", count);
-		String additionalConditionWhere = "";
-		if (shortid != -1) {
-			params.put("shortid", shortid);
-			additionalConditionWhere = "AND i.CHANNELID=:shortid ";
-		}
-
-		String additionalConditionOrder = "ORDER BY i." + orderItemField.toUpperCase() + " DESC";
-
+		params.put("shortid", shortid);
 
 		String sql = "SELECT i.*,c.TITLE AS channelTitle FROM ITEM AS i JOIN CHANNEL AS c ON i.CHANNELID=c.SHORTID " +
-				"WHERE c.USER=:user " + additionalConditionWhere + additionalConditionOrder +
+				"WHERE c.USER=:user AND i.CHANNELID=:shortid " +
+				"ORDER BY i.PUBDATE DESC " +
 				" LIMIT :count";
 
 		List<Item> items = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
 		return items;
 
 	}
+
+
+	@Override
+	public List<Item> findAllItemsForOneChannelSortedByChannleID(String user, long shortid){
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("user", user);
+		params.put("shortid", shortid);
+
+		String sql = "SELECT i.*,c.TITLE AS channelTitle FROM ITEM AS i JOIN CHANNEL AS c ON i.CHANNELID=c.SHORTID " +
+				"WHERE c.USER=:user " +
+				"AND i.CHANNELID=:shortid " +
+				"ORDER BY i.CHANNELID DESC";
+
+		List<Item> items = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
+		return items;
+
+	}
+
+
+
+	@Override
+	public List<Item> findLimitedItemsForAllChannelsSortedByPubDate(String user, int count){
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("user", user);
+		params.put("count", count);
+
+		String sql = "SELECT i.*,c.TITLE AS channelTitle FROM ITEM AS i JOIN CHANNEL AS c ON i.CHANNELID=c.SHORTID " +
+				"WHERE c.USER=:user " +
+				"ORDER BY i.PUBDATE DESC " +
+				"LIMIT :count";
+
+		List<Item> items = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
+		return items;
+
+	}
+
+
+
+	@Override
+	public List<Item> findAllItemsForAllChannelsSortedByChannelID(String user){
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("user", user);
+
+		String sql = "SELECT i.*,c.TITLE AS channelTitle FROM ITEM AS i JOIN CHANNEL AS c ON i.CHANNELID=c.SHORTID " +
+				"WHERE c.USER=:user " +
+				"ORDER BY i.CHANNELID DESC";
+
+		List<Item> items = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
+		return items;
+
+	}
+
+
 
 	@Override
 	public List<Item> findForUserbyChannelByCountSortedbyTitle(String user, int count, String orderItemField){
