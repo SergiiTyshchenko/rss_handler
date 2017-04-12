@@ -54,7 +54,7 @@ public class ItemsRestController {
 
     //-------------------Show JSP With All Items For All Channels --------------------------------------------------------
 
-    @RequestMapping(value="/itemsForChannel/allChannels", method = RequestMethod.GET)
+    @RequestMapping(value="/itemsForAllChannels", method = RequestMethod.GET)
     public String getAllItemsForAllChannelsPage(Model model) {
 
         String logDebugMessage = "Getting items for All Channels";
@@ -66,7 +66,7 @@ public class ItemsRestController {
 
     //-------------------Retrieve All Items For All Channels For Logged User --------------------------------------------------
 
-    @RequestMapping(value = "/item/allChannels", method = RequestMethod.GET)
+    @RequestMapping(value = "/item/allChannels/", method = RequestMethod.GET)
     public ResponseEntity<List<Item>> getAllItemsForAllChannelsForUserPage(Principal user) {
 
         String logDebugMessage = "Getting All items for user: " + user.getName() + " for All channels";

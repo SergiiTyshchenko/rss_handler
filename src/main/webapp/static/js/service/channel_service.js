@@ -5,7 +5,7 @@ App.factory('ChannelService', ['$http', '$q', function($http, $q){
     return {
 
         fetchAllChannels: function() {
-            return $http.get('http://localhost:8888/rss_handler_sb/channel/')
+            return $http.get('channel/')
                                       .then(
                     function(response){
                         return response.data;
@@ -19,7 +19,7 @@ App.factory('ChannelService', ['$http', '$q', function($http, $q){
 
         createChannel: function(channel){
             console.log('Creating channel...', self.channel);
-            return $http.post('http://localhost:8888/rss_handler_sb/channel/', channel)
+            return $http.post('channel/', channel)
                 .then(
                     function(response){
                         return response.data;
@@ -32,7 +32,7 @@ App.factory('ChannelService', ['$http', '$q', function($http, $q){
         },
 
         updateChannel: function(channel, id){
-            return $http.put('http://localhost:8888/rss_handler_sb/channel/'+id, channel)
+            return $http.put('channel/'+id, channel)
                 .then(
                     function(response){
                         return response.data;
@@ -45,7 +45,7 @@ App.factory('ChannelService', ['$http', '$q', function($http, $q){
         },
 
         deleteChannel: function(id){
-            return $http.delete('http://localhost:8888/rss_handler_sb/channel/'+id)
+            return $http.delete('channel/'+id)
                 .then(
                     function(response){
                         return response.data;

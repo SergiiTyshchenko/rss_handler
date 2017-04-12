@@ -25,7 +25,7 @@ App.factory('ItemService', ['$http', '$q', function($http, $q){
         //function redirects to /itemsForChannel/allChannels and show JSP
         fetchAllItemsForAllChannels: function() {
                         console.info('ItemService: Start fetchAllItemsForAllChannels for All channels ');
-                        var requestURL="itemsForChannel/allChannels";
+                        var requestURL="itemsForAllChannels";
                         console.info('ItemService: fetchAllItemsForAllChannels Redirecting to URL ',requestURL);
                         return this.redirectTo(requestURL)
                                                   .then(
@@ -59,7 +59,7 @@ App.factory('ItemService', ['$http', '$q', function($http, $q){
 
         getLimitedItemsForChannel: function(channelID, itemsCount) {
                         if (!channelID) {
-                            var requestURL="/rss_handler_sb/item/allChannels?itemsCount="+itemsCount;
+                            var requestURL="item/allChannels?itemsCount="+itemsCount;
                         } else {
                             var requestURL="item/channel="+channelID + "?itemsCount="+itemsCount;
                         }
@@ -80,7 +80,7 @@ App.factory('ItemService', ['$http', '$q', function($http, $q){
 
         getAllItemsForAllChannels: function() {
                                 console.info('ItemService: Start getAllItemsForAllChannels for All channels ');
-                                var requestURL="/rss_handler_sb/item/allChannels";
+                                var requestURL="item/allChannels/";
                                 console.info('ItemService: getAllItemsForAllChannels Redirecting to URL ',requestURL);
                                 return $http.get(requestURL)
                                                           .then(
@@ -90,23 +90,6 @@ App.factory('ItemService', ['$http', '$q', function($http, $q){
                                         },
                                         function(errResponse){
                                             console.error('Error for getAllItemsForAllChannels', requestURL);
-                                            return $q.reject(errResponse);
-                                        }
-                                    );
-        },
-
-        getLimitedItemsForAllChannel: function(itemsCount) {
-                                console.info('ItemService: Start getLimitedItemsForAllChannel for All channels ',itemsCount);
-                                var requestURL="/rss_handler_sb/item/allChannels?itemsCount="+itemsCount;
-                                console.info('ItemService: getLimitedItemsForAllChannel Redirecting to URL ',requestURL);
-                                return $http.get(requestURL)
-                                                          .then(
-                                        function(response){
-                                            console.info('ItemService: Finish getLimitedItemsForAllChannel for All channels ', itemsCount);
-                                            return response.data;
-                                        },
-                                        function(errResponse){
-                                            console.error('Error for getLimitedItemsForAllChannel', itemsCount, requestURL);
                                             return $q.reject(errResponse);
                                         }
                                     );
