@@ -15,14 +15,40 @@ App.controller('ItemController', ['$scope', 'ItemService', function($scope, Item
                         for(var k in self.newItem) keys.push(k);
                      console.debug('Parsed JSON keys are:',keys);
                      console.info('Parsed JSON ' + keys[0] + ' field is:',self.newItem.channelID);
-                     return self.getAllItemsForChannel(self.newItem.channelID, null);
+                     return self.getAllItemsForChannel(self.newItem.channelID);
                   } else {
                      return self.getAllItemsForAllChannels();
                   }
     };
 
+    //function redirects to /itemsForChannel and show JSP
     self.fetchAllItemsForChannel = function(channelID){
         ItemService.fetchAllItemsForChannel(channelID)
+            .then(
+                function(d) {
+                    self.items = d;
+                },
+                function(errResponse){
+                    console.error('Error for fetchAllItemsForChannel while fetching All Items for Channel');
+                }
+            );
+    };
+
+    //function redirects to /itemsForChannel/allChannels and show JSP
+    self.fetchAllItemsForAllChannels = function(){
+                ItemService.fetchAllItemsForAllChannels()
+                    .then(
+                        function(d) {
+                            self.items = d;
+                        },
+                        function(errResponse){
+                            console.error('Error for fetchAllItemsForAllChannels while fetching All Items for All Channels');
+                        }
+                    );
+    };
+
+    self.getAllItemsForChannel = function(channelID){
+            ItemService.getAllItemsForChannel(channelID)
             .then(
                 function(d) {
                     self.items = d;
@@ -33,16 +59,16 @@ App.controller('ItemController', ['$scope', 'ItemService', function($scope, Item
             );
     };
 
-    self.fetchAllItemsForAllChannels = function(){
-                ItemService.fetchAllItemsForAllChannels()
-                    .then(
-                        function(d) {
-                            self.items = d;
-                        },
-                        function(errResponse){
-                            console.error('Error while fetching Items for Channel');
-                        }
-                    );
+    self.getAllItemsForAllChannels = function(){
+            ItemService.getAllItemsForAllChannels()
+                .then(
+                    function(d) {
+                        self.items = d;
+                    },
+                    function(errResponse){
+                        console.error('Error for getAllItemsForAllChannels');
+                    }
+                );
     };
 
     self.getLimitedItemsForChannel = function(channelID, itemsCount){
@@ -52,45 +78,9 @@ App.controller('ItemController', ['$scope', 'ItemService', function($scope, Item
                     self.items = d;
                 },
                 function(errResponse){
-                    console.error('Error while fetching Items for Channel');
+                    console.error('Error for getLimitedItemsForChannel');
                 }
             );
     };
-
-    self.getAllItemsForChannel = function(channelID, itemsCount){
-        if (itemsCount){
-            ItemService.getLimitedItemsForAllChannel(itemsCount)
-            .then(
-                function(d) {
-                    self.items = d;
-                },
-                function(errResponse){
-                    console.error('Error while fetching Items for Channel');
-                }
-            );
-        } else {
-            ItemService.getAllItemsForChannel(channelID, null)
-            .then(
-                function(d) {
-                    self.items = d;
-                },
-                function(errResponse){
-                    console.error('Error while fetching Items for Channel');
-                }
-            );
-        }
-    };
-
-        self.getAllItemsForAllChannels = function(){
-            ItemService.getAllItemsForAllChannels()
-                .then(
-                    function(d) {
-                        self.items = d;
-                    },
-                    function(errResponse){
-                        console.error('Error while fetching Items for Channel');
-                    }
-                );
-        };
 
 }]);
