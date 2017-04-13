@@ -26,28 +26,10 @@ public class ItemDaoImpl implements ItemDao {
 	}
 
 
-/*
-	@Override
-	public List<RssItem> findByChannel(RssChannel channel) {
-
-		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("channelID", channel.getShortid());
-
-		String sql = "SELECT * FROM item WHERE CHANNELID=:channelID";
-
-		List<RssItem> items = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
-
-		//new BeanPropertyRowMapper(Customer.class));
-
-		return items;
-
-	}
-*/
-
 	@Override
 	public List<RssItem> findAll() {
 
-		Map<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<>();
 
 		String sql = "SELECT * FROM item";
 
@@ -59,7 +41,7 @@ public class ItemDaoImpl implements ItemDao {
 
 	@Override
 	public List<RssItem> findByChannelID(long shortid){
-		Map<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<>();
 		params.put("shortid", shortid);
 
 
@@ -72,7 +54,7 @@ public class ItemDaoImpl implements ItemDao {
 
 	@Override
 	public Object insertNewEntry(RssItem rssItem) {
-		Map<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<>();
 		params.put("id", rssItem.getId());
 		params.put("channelID", rssItem.getChannelID());
 		params.put("title",  rssItem.getTitle());
@@ -92,7 +74,7 @@ public class ItemDaoImpl implements ItemDao {
 	@Override
 	public Object removeEntryByChannelID(long  shortid) {
 
-		Map<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<>();
 		params.put("channelID", shortid);
 		String sql = "DELETE FROM ITEM " +
 				"WHERE CHANNELID=:channelID";
@@ -104,7 +86,7 @@ public class ItemDaoImpl implements ItemDao {
 
 	@Override
 	public List<RssItem> findLimitedItemsForOneChannelSortedByPubDate(String user, int count, long shortid){
-		Map<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<>();
 		params.put("user", user);
 		params.put("count", count);
 		params.put("shortid", shortid);
@@ -122,7 +104,7 @@ public class ItemDaoImpl implements ItemDao {
 
 	@Override
 	public List<RssItem> findAllItemsForOneChannelSortedByChannleID(String user, long shortid){
-		Map<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<>();
 		params.put("user", user);
 		params.put("shortid", shortid);
 
@@ -140,7 +122,7 @@ public class ItemDaoImpl implements ItemDao {
 
 	@Override
 	public List<RssItem> findLimitedItemsForAllChannelsSortedByPubDate(String user, int count){
-		Map<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<>();
 		params.put("user", user);
 		params.put("count", count);
 
@@ -158,7 +140,7 @@ public class ItemDaoImpl implements ItemDao {
 
 	@Override
 	public List<RssItem> findAllItemsForAllChannelsSortedByChannelID(String user){
-		Map<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<>();
 		params.put("user", user);
 
 		String sql = "SELECT i.*,c.TITLE AS channelTitle FROM ITEM AS i JOIN CHANNEL AS c ON i.CHANNELID=c.SHORTID " +
@@ -174,7 +156,7 @@ public class ItemDaoImpl implements ItemDao {
 
 	@Override
 	public List<RssItem> findForUserbyChannelByCountSortedbyTitle(String user, int count, String orderItemField){
-		Map<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<>();
 		params.put("user", user);
 		params.put("count", count);
 		params.put("orderItemField", orderItemField);
@@ -191,7 +173,7 @@ public class ItemDaoImpl implements ItemDao {
 
 	@Override
 	public List<RssItem> findForUserByChannelID(long shortid, String user, int count){
-		Map<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<>();
 		params.put("user", user);
 		params.put("count", count);
 		String additionalConditionWhere = "";
@@ -222,7 +204,7 @@ public class ItemDaoImpl implements ItemDao {
 			rssItem.setLink(rs.getString("link"));
 			rssItem.setPubDate(rs.getTimestamp("pubDate"));
 			final int itemTableColumnCount = 6;
-			if(rs.getMetaData().getColumnCount() != 6) {
+			if(rs.getMetaData().getColumnCount() != itemTableColumnCount) {
 				rssItem.setChannelTitle(rs.getString("channelTitle"));
 			}
 			return rssItem;

@@ -20,8 +20,6 @@ public class ItemServiceImpl implements ItemService {
     @Resource(name="itemDaoImpl")
     ItemDao itemDao;
 
-    private static final AtomicLong counter = new AtomicLong();
-
 
     public List<RssItem> findAllItems() {
         return populateItemsFromDB();
@@ -65,11 +63,7 @@ public class ItemServiceImpl implements ItemService {
 
     }
     public void deleteItemByChannelID(long  shortid) {
-
-        List<RssItem> rssItems = itemDao.findByChannelID(shortid);
-        for (RssItem rssItem : rssItems){
-            itemDao.removeEntryByChannelID(shortid);
-        }
+     itemDao.removeEntryByChannelID(shortid);
     }
 
 

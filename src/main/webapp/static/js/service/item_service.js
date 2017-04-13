@@ -58,10 +58,11 @@ App.factory('ItemService', ['$http', '$q', function($http, $q){
         },
 
         getLimitedItemsForChannel: function(channelID, itemsCount) {
+                        var requestURL;
                         if (!channelID) {
-                            var requestURL="item/allChannels?itemsCount="+itemsCount;
+                            requestURL="item/allChannels?itemsCount="+itemsCount;
                         } else {
-                            var requestURL="item/channel="+channelID + "?itemsCount="+itemsCount;
+                            requestURL="item/channel="+channelID + "?itemsCount="+itemsCount;
                         }
                         console.info('ItemService: Start getLimitedItemsForChannel for channelID ',channelID, itemsCount);
                         console.info('ItemService: getLimitedItemsForChannel Redirecting to URL ',requestURL);

@@ -23,7 +23,10 @@ public class RssFeedCreationSample {
 
     private final static Logger logger = LoggerFactory.getLogger(RssFeedCreationSample.class);
 
-    public static void main(String[] args)  {
+    private RssFeedCreationSample() {
+    }
+
+    public static void main(String[] args) throws IOException {
 
         //KB
         //http://www.javaworld.com/article/2077795/java-se/manage-rss-feeds-with-the-rome-api.html?page=2
@@ -33,7 +36,7 @@ public class RssFeedCreationSample {
         try {
             saveRssFeed(RssFeedReader.obtainRSSFeed(url));
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new IOException(e);
         }
 
     }
@@ -69,7 +72,7 @@ public class RssFeedCreationSample {
     }
 
     private static  List<SyndCategory> createCategoies(){
-        List<SyndCategory> categories = new ArrayList<SyndCategory>();
+        List<SyndCategory> categories = new ArrayList<>();
         SyndCategory category = new SyndCategoryImpl();
         category.setName("MyProject");
         categories.add(category);
@@ -82,12 +85,10 @@ public class RssFeedCreationSample {
         String feedFileName = rssFeed.getLink();
         feedFileName = feedFileName.replaceAll("/", "~").replaceAll("https:","");
         final File file = new File("feedFiles/" + feedFileName + ".xml");
-        Writer writer = null;
-        try {
-            writer = new FileWriter(file);
-            SyndFeedOutput output = new SyndFeedOutput();
+        try (Writer writer = new FileWriter(file)){
+            SyndFeedOutput syndFeedOutput = new SyndFeedOutput();
             try {
-                output.output(rssFeed, writer);
+                syndFeedOutput.output(rssFeed, writer);
             } catch (IOException e) {
                 throw new IOException("IOException when try to create SyndFeedOutput", e);
             } catch (FeedException e) {
@@ -97,9 +98,9 @@ public class RssFeedCreationSample {
             throw new IOException("IOException when try to create writer for file " + file.getName() + " to a path "
                     + file.getPath(), e);
         }
-        finally {
+/*        finally {
             IOUtils.closeQuietly(writer);
-        }
+        }*/
     }
 
 

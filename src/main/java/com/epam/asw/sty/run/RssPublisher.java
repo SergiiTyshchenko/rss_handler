@@ -16,11 +16,11 @@ public class RssPublisher implements Serializable {
 
     private final static Logger logger = LoggerFactory.getLogger(RssPublisher.class);
 
-    private String rssFeedFilename = "rss/builds.xml";
+/*    private String rssFeedFilename = "rss/builds.xml";
     private int updateFrequency = 30;
     private String continuumXMLRPCUrl = "http://localhost:8080/continuum/xmlrpc";
     private String rssFormat = "rss_1.0";
-    private String rssFeedTitle = "Company Build Results";
+    private String rssFeedTitle = "Company Build Results";*/
 
     //https://compscipleslab.wordpress.com/2012/11/22/creating-rss-feeds-for-your-website-using-rome-api/
     static Channel createChannel() {

@@ -17,7 +17,6 @@ import java.util.*;
 @Repository
 public class ChannelDaoImpl implements ChannelDao {
 
-
 	NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
 	@Autowired
@@ -29,7 +28,7 @@ public class ChannelDaoImpl implements ChannelDao {
 	@Override
 	public List<RssChannel> findByUser(String user) {
 
-		Map<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<>();
 		params.put("user", user);
 
 		String sql = "SELECT * FROM channel WHERE USER=:user";
@@ -39,8 +38,6 @@ public class ChannelDaoImpl implements ChannelDao {
 				params,
 				new RequestMapper());
 
-		//new BeanPropertyRowMapper(Customer.class));
-
 		return rssChannels;
 
 	}
@@ -48,13 +45,13 @@ public class ChannelDaoImpl implements ChannelDao {
 	@Override
 	public RssChannel findByLink(String link) {
 
-		Map<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<>();
 		params.put("link", link);
 
 		String sql = "SELECT * FROM channel WHERE LINK=:link";
 
 		List<RssChannel> rssChannels = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
-		if(rssChannels.size() == 0 ) {
+		if(rssChannels.isEmpty() ) {
 			return null;
 		} else {
 			return rssChannels.get(0);
@@ -65,7 +62,7 @@ public class ChannelDaoImpl implements ChannelDao {
 	@Override
 	public RssChannel findByShortID(long shortid) {
 
-		Map<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<>();
 		params.put("shortid", shortid);
 
 		String sql = "SELECT * FROM channel WHERE SHORTID=:shortid";
@@ -77,7 +74,7 @@ public class ChannelDaoImpl implements ChannelDao {
 
 		//new BeanPropertyRowMapper(Customer.class));
 
-		if(rssChannels.size() == 0 ) {
+		if(rssChannels.isEmpty() ) {
 			return null;
 		} else {
 			return rssChannels.get(0);
@@ -96,9 +93,7 @@ public class ChannelDaoImpl implements ChannelDao {
 				sql,
 				new RequestMapper());
 
-		//new BeanPropertyRowMapper(Customer.class));
-
-		if(rssChannels.size() == 0 ) {
+		if(rssChannels.isEmpty() ) {
 			return null;
 		} else {
 			return rssChannels.get(0);
@@ -109,7 +104,7 @@ public class ChannelDaoImpl implements ChannelDao {
 	@Override
 	public RssChannel findByID(String id) {
 
-		Map<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<>();
 		params.put("id", id);
 
 		String sql = "SELECT * FROM channel WHERE ID=:id";
@@ -119,9 +114,7 @@ public class ChannelDaoImpl implements ChannelDao {
 				params,
 				new RequestMapper());
 
-		//new BeanPropertyRowMapper(Customer.class));
-
-		if(rssChannels.size() == 0 ) {
+		if(rssChannels.isEmpty() ) {
 			return null;
 		} else {
 			return rssChannels.get(0);
@@ -132,7 +125,7 @@ public class ChannelDaoImpl implements ChannelDao {
 	@Override
 	public List<RssChannel> findAll() {
 
-		Map<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<>();
 
 		String sql = "SELECT * FROM channel ORDER BY SHORTID";
 
@@ -144,7 +137,7 @@ public class ChannelDaoImpl implements ChannelDao {
 
 	@Override
 	public Object insertNewEntry(RssChannel rssChannel) {
-		Map<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<>();
 		params.put("id", rssChannel.getId());
 		params.put("shortid", rssChannel.getShortid());
 		params.put("user", rssChannel.getUser());
@@ -158,8 +151,6 @@ public class ChannelDaoImpl implements ChannelDao {
 		String sql = "INSERT INTO CHANNEL " +
 				"(ID, SHORTID, USER, TITLE, DESCRIPTION, LINK, LANGUAGE, PUBDATE, LASTBUILDDATE, ITEMS) VALUES " +
 				"(:id, :shortid, :user, :title, :description, :link, :language, :pubDate, :lastBuildDate, :items)";
-				//"(2, 's', 's', 's', 's', 's', '2017-03-03', '2017-03-03', '')";
-
 		Object result =  namedParameterJdbcTemplate.update(sql, params);
 
 		return result;
@@ -168,7 +159,7 @@ public class ChannelDaoImpl implements ChannelDao {
 	@Override
 	public Object removeEntryByID(String  id) {
 
-		Map<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<>();
 		params.put("id", id);
 		String sql = "DELETE FROM CHANNEL " +
 				"WHERE ID=:id";
@@ -179,7 +170,7 @@ public class ChannelDaoImpl implements ChannelDao {
 
 	@Override
 	public Object insertNewSiteEntry(SyndFeed rssfeed) {
-		Map<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<>();
 		params.put("id", 333);
 		params.put("shortid",0);
 		params.put("user", "RSS");
@@ -201,7 +192,7 @@ public class ChannelDaoImpl implements ChannelDao {
 	@Override
 	public Object updateEntry(RssChannel rssChannel) {
 
-		Map<String, Object> params = new HashMap<String, Object>();
+		Map<String, Object> params = new HashMap<>();
 		params.put("id", rssChannel.getId());
 		params.put("shortid", rssChannel.getShortid());
 		params.put("user", rssChannel.getUser());

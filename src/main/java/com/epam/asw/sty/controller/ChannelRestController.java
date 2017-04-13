@@ -41,7 +41,7 @@ public class ChannelRestController {
         String currentUser = user.getName();
         String logDebugMessage = "Getting channel for user: " + currentUser;
         logger.debug("{}.", logDebugMessage);
-        if (!currentUser.equals("admin")) {
+        if (!("admin").equals(currentUser)) {
             rssChannels = channelService.findByUser(currentUser);
         } else {
             rssChannels = channelService.populateChannelsFromDB();
@@ -85,7 +85,7 @@ public class ChannelRestController {
         String msg = "There are " + rssChannel.size() + " channels found for user: " + currentUser;
         model.addAttribute("message", msg);
         model.addAttribute("rssChannel", rssChannel);
-        return new ResponseEntity<Model>(model, HttpStatus.OK);
+        return new ResponseEntity<>(model, HttpStatus.OK);
 
     }
 
@@ -95,14 +95,14 @@ public class ChannelRestController {
     public ResponseEntity<RssChannel> getChannelbyID(@PathVariable("shortid") long shortid) {
 
         String logDebugMessage = "Fetching RssChannel with id " + shortid;
-        logger.debug("DEBUG message {}.", logDebugMessage);
+        logger.debug("{}.", logDebugMessage);
         RssChannel rssChannel = channelService.findByShortID(shortid);
         if (rssChannel == null) {
             logDebugMessage = "RssChannel with id " + shortid + " not found";
-            logger.debug("DEBUG message {}.", logDebugMessage);
-            return new ResponseEntity<RssChannel>(HttpStatus.NOT_FOUND);
+            logger.debug("{}.", logDebugMessage);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<RssChannel>(rssChannel, HttpStatus.OK);
+        return new ResponseEntity<>(rssChannel, HttpStatus.OK);
     }
 
 
@@ -119,14 +119,14 @@ public class ChannelRestController {
             logger.info(msg);
             model.addAttribute("msg", msg);
             headers.setLocation(ucBuilder.path("/alreadyExist").buildAndExpand(rssChannel.getId()).toUri());
-            return new ResponseEntity<Void>(headers, HttpStatus.CONFLICT);
+            return new ResponseEntity<>(headers, HttpStatus.CONFLICT);
         }
         rssChannel.setUser(user.getName());
         channelService.saveChannel(rssChannel, user.getName());
 
 
         headers.setLocation(ucBuilder.path("/rssChannel/{id}").buildAndExpand(rssChannel.getId()).toUri());
-        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
 
@@ -137,13 +137,13 @@ public class ChannelRestController {
     public ResponseEntity<RssChannel> updateChannel(@PathVariable("id") String  id, @RequestBody RssChannel rssChannel) {
 
         String logDebugMessage = "Updating RssChannel " + id;
-        logger.debug("DEBUG message {}.", logDebugMessage);
+        logger.debug("{}.", logDebugMessage);
         RssChannel currentRssChannel = channelService.findById(id);
 
         if (currentRssChannel ==null) {
             logDebugMessage = "RssChannel with id " + id + " not found";
-            logger.debug("DEBUG message {}.", logDebugMessage);
-            return new ResponseEntity<RssChannel>(HttpStatus.NOT_FOUND);
+            logger.debug("{}.", logDebugMessage);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
         currentRssChannel.setUser(rssChannel.getUser());
@@ -154,7 +154,7 @@ public class ChannelRestController {
         currentRssChannel.setLanguage(rssChannel.getLanguage());
 
         channelService.updateChannel(currentRssChannel);
-        return new ResponseEntity<RssChannel>(currentRssChannel, HttpStatus.OK);
+        return new ResponseEntity<>(currentRssChannel, HttpStatus.OK);
     }
 
 
@@ -166,17 +166,17 @@ public class ChannelRestController {
     public ResponseEntity<RssChannel> deleteChannel(@PathVariable("id") String id) {
 
         String logDebugMessage = "Fetching & Deleting RssChannel with id " + id;
-        logger.debug("DEBUG message {}.", logDebugMessage);
+        logger.debug("{}.", logDebugMessage);
         RssChannel rssChannel = channelService.findById(id);
         if (rssChannel == null) {
             logDebugMessage = "Unable to delete. RssChannel with id " + id + " not found";
-            logger.debug("DEBUG message {}.", logDebugMessage);
-            return new ResponseEntity<RssChannel>(HttpStatus.NOT_FOUND);
+            logger.debug("{}.", logDebugMessage);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
 
         channelService.deleteChannelById(id);
-        return new ResponseEntity<RssChannel>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 
@@ -187,9 +187,9 @@ public class ChannelRestController {
     public ResponseEntity<RssChannel> deleteAllChannels() {
 
         String logDebugMessage = "Deleting All Channels";
-        logger.debug("DEBUG message {}.", logDebugMessage);
+        logger.debug("{}.", logDebugMessage);
         channelService.deleteAllChannels();
-        return new ResponseEntity<RssChannel>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 
@@ -200,14 +200,14 @@ public class ChannelRestController {
 
         List<RssChannel> rssChannels = channelService.populateChannelsFromDB();
         if(rssChannels.isEmpty()){
-            return new ResponseEntity<Map<String,Object>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
         }
         else {
             ChannelStatsService statsTest = new ChannelStatsService();
             Map<String,Object> stats = new java.util.HashMap<>();
             stats.put("DB RssChannel count: ", rssChannels.size());
             stats.put("DB RssChannel count per user: ", statsTest.channelsPerUser(rssChannels, user.getName()));
-            return new ResponseEntity<Map<String,Object>>(stats, HttpStatus.OK);
+            return new ResponseEntity<>(stats, HttpStatus.OK);
         }
     }
 

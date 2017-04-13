@@ -209,7 +209,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
             Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
 
-            List<String> roles = new ArrayList<String>();
+            List<String> roles = new ArrayList<>();
 
             int i= 0;
             for (GrantedAuthority a : authorities) {
@@ -243,10 +243,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
             return false;
         }
 
+        @Override
         public void setRedirectStrategy(RedirectStrategy redirectStrategy) {
             this.redirectStrategy = redirectStrategy;
         }
 
+        @Override
         protected RedirectStrategy getRedirectStrategy() {
             return redirectStrategy;
         }

@@ -7,6 +7,8 @@ import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedInput;
 import com.sun.syndication.io.XmlReader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +21,8 @@ import java.util.List;
 @Transactional
 public class RssFeedReader {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     private SyndFeed rssFeed;
     private String feedURL;
 
@@ -27,6 +31,7 @@ public class RssFeedReader {
     }
 
     public RssFeedReader() {
+
     }
 
     public List<SyndEntry> readRSSFeed () {
@@ -40,15 +45,15 @@ public class RssFeedReader {
         try {
             feedSource = new URL(feedURL);
         } catch (MalformedURLException e) {
-            e.printStackTrace();
+            logger.error("MalformedURLException reaised", e);
         }
         SyndFeedInput input = new SyndFeedInput();
         try {
             rssFeed = input.build(new XmlReader(feedSource));
         } catch (FeedException e) {
-            e.printStackTrace();
+            logger.error("FeedException reaised", e);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("IOException reaised", e);
         }
         return rssFeed;
     }

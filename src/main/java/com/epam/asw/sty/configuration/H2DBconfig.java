@@ -39,7 +39,7 @@ public class H2DBconfig {
 
         Server webServer = Server.createWebServer("-webAllowOthers","-webPort","8088"); // (4a)
         //Server server = Server.createTcpServer("-tcpAllowOthers","-tcpPort","9088");
-        logger.info("H2 DB Web Server URL: jdbc:h2:" + webServer.getURL() + "/mem:" + DBNAME);
+        logger.debug("H2 DB Web Server URL: jdbc:h2:" + webServer.getURL() + "/mem:" + DBNAME);
         return Server.createPgServer();
     }
 }

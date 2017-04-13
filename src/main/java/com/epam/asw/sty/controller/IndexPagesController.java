@@ -28,7 +28,7 @@ public class IndexPagesController {
     @ResponseBody
     @RequestMapping(value="/admin", method = RequestMethod.GET)
     public Map<String,Object> adminIndex() {
-        Map<String,Object> model = new HashMap<String,Object>();
+        Map<String,Object> model = new HashMap<>();
         model.put("content", "Congratulation! You are admin!");
         return model;
     }
@@ -38,9 +38,8 @@ public class IndexPagesController {
     public String logoutIndex(HttpServletRequest request, HttpServletResponse response)
 
     {
-        HttpSession session = request.getSession(false);
         SecurityContextHolder.clearContext();
-        session= request.getSession(false);
+        HttpSession session = request.getSession(false);
         if(session != null) {
             session.invalidate();
         }

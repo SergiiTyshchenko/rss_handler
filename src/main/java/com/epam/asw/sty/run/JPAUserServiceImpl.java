@@ -49,7 +49,7 @@ public class JPAUserServiceImpl extends SpringBootServletInitializer {
                     InetAddress.getLocalHost().getHostAddress(),
                     env.getProperty("server.port"));
         } catch (UnknownHostException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -84,7 +84,7 @@ public class JPAUserServiceImpl extends SpringBootServletInitializer {
             log.info("User found with findAll():");
             log.info("-------------------------------");
             for (User item : repository.findAll()) {
-                log.info(item.toString());
+                log.debug("{}", item.toString());
             }
             log.info("");
 
@@ -92,14 +92,14 @@ public class JPAUserServiceImpl extends SpringBootServletInitializer {
             User user = repository.findOne(1L);
             log.info("User found with findOne(1L):");
             log.info("--------------------------------");
-            log.info(user.toString());
+            log.debug("{}", user.toString());
             log.info("");
 
             // fetch customers by last name
             log.info("User found with findByLastName('Bauer'):");
             log.info("--------------------------------------------");
             for (User bauer : repository.findByLastName("Bauer")) {
-                log.info(bauer.toString());
+                log.debug("{}", bauer.toString());
             }
             log.info("");
         };

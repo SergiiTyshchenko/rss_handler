@@ -12,8 +12,6 @@ public class YmlImportSettings {
     private String such;
     private boolean very;
 
-    public YmlImportSettings() {}
-
     public int getWow() {
         return wow;
     }

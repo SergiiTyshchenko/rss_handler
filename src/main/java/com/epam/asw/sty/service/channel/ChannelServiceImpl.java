@@ -75,10 +75,10 @@ public class ChannelServiceImpl implements ChannelService {
 
         SyndFeed rssFeed = new RssFeedReader().obtainRSSFeed(rssChannel.getLink());
 
-        if(rssChannel.getDescription().equals("")) {
+        if(("").equals(rssChannel.getDescription())) {
             rssChannel.setDescription(rssFeed.getDescription());
         }
-        if(rssChannel.getTitle().equals("")) {
+        if(("").equals(rssChannel.getTitle())) {
             rssChannel.setTitle(rssFeed.getTitle());
         }
 

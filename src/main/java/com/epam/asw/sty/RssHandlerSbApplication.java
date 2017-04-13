@@ -27,7 +27,7 @@ import java.util.List;
 @SpringBootApplication
 public class RssHandlerSbApplication extends SpringBootServletInitializer {
 
-	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	private final Logger slf4jLogger = LoggerFactory.getLogger(this.getClass());
 
 	public static void main(String[] args) {
 		SpringApplication.run(RssHandlerSbApplication.class, args);
@@ -48,20 +48,20 @@ public class RssHandlerSbApplication extends SpringBootServletInitializer {
 	public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
 		return args -> {
 
-			logger.info("Let's inspect the beans provided by Spring Boot:");
+			slf4jLogger.info("Let's inspect the beans provided by Spring Boot:");
 
 			String[] beanNames = ctx.getBeanDefinitionNames();
 			Arrays.sort(beanNames);
 			for (String beanName : beanNames) {
-				logger.info(beanName);
+				slf4jLogger.info(beanName);
 			}
 
-			logger.info("AutoConfiguration should have wired up our stuff");
-			logger.info("Let's see if we are yml-based...");
+			slf4jLogger.info("AutoConfiguration should have wired up our stuff");
+			slf4jLogger.info("Let's see if we are yml-based...");
 			if (ymlImportService.requiresYml()) {
-				logger.info(ymlImportService.gettingYml());
+				slf4jLogger.info(ymlImportService.gettingYml());
 			} else {
-				logger.info("No Yml for us :(");
+				slf4jLogger.info("No Yml for us :(");
 			}
 
 		};
@@ -103,7 +103,7 @@ public class RssHandlerSbApplication extends SpringBootServletInitializer {
 	@ConfigurationProperties(prefix = "my")
 	private static class Config {
 
-		private List<String> servers = new ArrayList<String>();
+		private List<String> servers = new ArrayList<>();
 
 		public List<String> getServers() {
 			return this.servers;
