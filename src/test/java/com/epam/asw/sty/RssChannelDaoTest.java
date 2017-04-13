@@ -4,11 +4,10 @@ package com.epam.asw.sty;
 
 import com.epam.asw.sty.dao.ChannelDao;
 import com.epam.asw.sty.dao.ChannelDaoImpl;
-import com.epam.asw.sty.model.Channel;
+import com.epam.asw.sty.model.RssChannel;
 import com.sun.syndication.feed.synd.Converter;
 import org.junit.*;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -19,7 +18,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ChannelDaoTest {
+public class RssChannelDaoTest {
 
     private EmbeddedDatabase db;
 
@@ -51,11 +50,11 @@ public class ChannelDaoTest {
 		ChannelDaoImpl channelDao = new ChannelDaoImpl();
 		channelDao.setNamedParameterJdbcTemplate(template);
 		String userTest = "user";
-		List<Channel> channel = channelDao.findByUser(userTest);
+		List<RssChannel> rssChannel = channelDao.findByUser(userTest);
 
-		Assert.assertNotNull(channel);
-		Assert.assertEquals(userTest, channel.get(0).getUser());
-		Assert.assertEquals("https://dou.ua/feed/", channel.get(0).getLink());
+		Assert.assertNotNull(rssChannel);
+		Assert.assertEquals(userTest, rssChannel.get(0).getUser());
+		Assert.assertEquals("https://dou.ua/feed/", rssChannel.get(0).getLink());
 
 	}
 
@@ -67,7 +66,7 @@ public class ChannelDaoTest {
 		ChannelDaoImpl channelDao = new ChannelDaoImpl();
 		channelDao.setNamedParameterJdbcTemplate(template);
 
-/*		Channel channelTest = new Channel();
+/*		RssChannel channelTest = new RssChannel();
 		channelTest.setId(111);
 		channelTest.setUser("TEST");
 		channelTest.setTitle("DOU");
@@ -82,12 +81,12 @@ public class ChannelDaoTest {
 		channelTest.setItems(list);
 
 		Object result = channelDao.insertNewEntry(channelTest);*/
-		List<Channel> channel = channelDao.findAll();
+		List<RssChannel> rssChannel = channelDao.findAll();
 
-		Assert.assertNotNull(channel);
-		//Assert.assertEquals(1, channel.get(0).getId());
-		Assert.assertEquals("DOU", channel.get(0).getTitle());
-		Assert.assertEquals("Developers", channel.get(0).getDescription());
+		Assert.assertNotNull(rssChannel);
+		//Assert.assertEquals(1, rssChannel.get(0).getId());
+		Assert.assertEquals("DOU", rssChannel.get(0).getTitle());
+		Assert.assertEquals("Developers", rssChannel.get(0).getDescription());
 
 	}
 

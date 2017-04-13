@@ -11,8 +11,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 
-import javax.annotation.Resource;
-
 
 @RunWith(MockitoJUnitRunner.class)
 public class YmlTest extends AbstractTestNGSpringContextTests {

@@ -100,8 +100,8 @@ public class RssHandlerSbApplication extends SpringBootServletInitializer {
 
 	}
 
-	@ConfigurationProperties(prefix="my")
-	public class Config {
+	@ConfigurationProperties(prefix = "my")
+	private static class Config {
 
 		private List<String> servers = new ArrayList<String>();
 

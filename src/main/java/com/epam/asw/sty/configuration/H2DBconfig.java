@@ -1,18 +1,14 @@
 package com.epam.asw.sty.configuration;
 
 
-import org.h2.jdbcx.JdbcConnectionPool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
-import org.springframework.jdbc.datasource.*;
 
-import javax.servlet.jsp.jstl.sql.Result;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.*;
@@ -42,7 +38,7 @@ public class H2DBconfig {
     public static Server startDBManager() throws SQLException, ClassNotFoundException, IOException {
 
         Server webServer = Server.createWebServer("-webAllowOthers","-webPort","8088"); // (4a)
-        Server server = Server.createTcpServer("-tcpAllowOthers","-tcpPort","9088");
+        //Server server = Server.createTcpServer("-tcpAllowOthers","-tcpPort","9088");
         logger.info("H2 DB Web Server URL: jdbc:h2:" + webServer.getURL() + "/mem:" + DBNAME);
         return Server.createPgServer();
     }

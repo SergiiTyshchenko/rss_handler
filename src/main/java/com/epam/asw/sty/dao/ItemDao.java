@@ -2,31 +2,30 @@ package com.epam.asw.sty.dao;
 
 
 
-import com.epam.asw.sty.model.Channel;
-import com.epam.asw.sty.model.Item;
+import com.epam.asw.sty.model.RssItem;
 
 import java.util.List;
 
 public interface ItemDao {
 
-	List<Item> findByChannelID(long shortid);
+	List<RssItem> findByChannelID(long shortid);
 	
-	List<Item> findAll();
+	List<RssItem> findAll();
 
 
-	List<Item> findLimitedItemsForOneChannelSortedByPubDate(String user, int count, long shortid);
+	List<RssItem> findLimitedItemsForOneChannelSortedByPubDate(String user, int count, long shortid);
 
-	List<Item> findForUserbyChannelByCountSortedbyTitle(String user, int count, String orderItemField);
+	List<RssItem> findForUserbyChannelByCountSortedbyTitle(String user, int count, String orderItemField);
 
-	List<Item> findAllItemsForOneChannelSortedByChannleID(String user, long shortid);
+	List<RssItem> findAllItemsForOneChannelSortedByChannleID(String user, long shortid);
 
-	List<Item> findLimitedItemsForAllChannelsSortedByPubDate(String user, int count);
+	List<RssItem> findLimitedItemsForAllChannelsSortedByPubDate(String user, int count);
 
-	List<Item> findAllItemsForAllChannelsSortedByChannelID(String user);
+	List<RssItem> findAllItemsForAllChannelsSortedByChannelID(String user);
 
-	List<Item> findForUserByChannelID(long shortid, String user,  int count);
+	List<RssItem> findForUserByChannelID(long shortid, String user, int count);
 
-	Object insertNewEntry(Item items);
+	Object insertNewEntry(RssItem items);
 
 	Object removeEntryByChannelID(long shortid);
 

@@ -1,17 +1,17 @@
 package com.epam.asw.sty.service.channel;
 
-import com.epam.asw.sty.model.Channel;
+import com.epam.asw.sty.model.RssChannel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ChannelStatsService {
 
-    public List<String> ChannelsPerUser(List<Channel> channels, String user){
-        List<String> stats = new ArrayList<String>();
+    public List<String> channelsPerUser(List<RssChannel> rssChannels, String user){
+        List<String> stats = new ArrayList<>();
         int countChannelsForUser = 0;
-        for (Channel channel : channels){
-            if (channel.getUser().equalsIgnoreCase(user)){
+        for (RssChannel rssChannel : rssChannels){
+            if (rssChannel.getUser().equalsIgnoreCase(user)){
                 countChannelsForUser++;
             }
         }

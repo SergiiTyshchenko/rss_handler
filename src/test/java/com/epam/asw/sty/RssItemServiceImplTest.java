@@ -1,10 +1,8 @@
 package com.epam.asw.sty;
 
-import com.epam.asw.sty.controller.ItemsRestController;
 import com.epam.asw.sty.dao.ItemDao;
 import com.epam.asw.sty.dao.ItemDaoImpl;
-import com.epam.asw.sty.model.Channel;
-import com.epam.asw.sty.model.Item;
+import com.epam.asw.sty.model.RssItem;
 import com.sun.syndication.feed.rss.Description;
 import org.junit.Assert;
 import org.junit.Before;
@@ -17,14 +15,15 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
-import static org.junit.Assert.*;
-
 @RunWith(MockitoJUnitRunner.class)
-public class ItemServiceImplTest {
+public class RssItemServiceImplTest {
 
 
     private EmbeddedDatabase db;
@@ -51,20 +50,21 @@ public class ItemServiceImplTest {
         ItemDaoImpl itemDao = new ItemDaoImpl();
         itemDao.setNamedParameterJdbcTemplate(template);
 
-        Item itemTest = new Item();
-        itemTest.setLink("https://dou.ua/feed/");
-        itemTest.setChannelID(0);
-        itemTest.setTitle("TEST_ITEM_TITLE");
+        RssItem rssItemTest = new RssItem();
+        rssItemTest.setLink("https://dou.ua/feed/");
+        rssItemTest.setChannelID(0);
+        rssItemTest.setTitle("TEST_ITEM_TITLE");
         Description description = new Description();
         description.setValue("TEST_ITEM_DESCRIPTION");
-        itemTest.setDescription(description);
-        Date testDate = new Date(2016, 03, 03, 01, 01, 01);
-        itemTest.setPubDate(testDate);
+        rssItemTest.setDescription(description);
+        Calendar calendar = Calendar.getInstance();
+        Date testDate =  calendar.getTime();
+        rssItemTest.setPubDate(testDate);
 
-        Object result = itemDao.insertNewEntry(itemTest);
-        List<Item> items = itemDao.findAll();
+        Object result = itemDao.insertNewEntry(rssItemTest);
+        List<RssItem> rssItems = itemDao.findAll();
         Assert.assertNotNull(result);
-        Assert.assertEquals("TEST_ITEM_DESCRIPTION", items.get(2).getDescription().getValue());
+        Assert.assertEquals("TEST_ITEM_DESCRIPTION", rssItems.get(2).getDescription().getValue());
 
     }
 

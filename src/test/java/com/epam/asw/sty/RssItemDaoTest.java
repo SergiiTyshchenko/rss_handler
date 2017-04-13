@@ -3,13 +3,12 @@ package com.epam.asw.sty;
 
 import com.epam.asw.sty.dao.ItemDao;
 import com.epam.asw.sty.dao.ItemDaoImpl;
-import com.epam.asw.sty.model.Channel;
-import com.epam.asw.sty.model.Item;
+import com.epam.asw.sty.model.RssChannel;
+import com.epam.asw.sty.model.RssItem;
 
 import com.sun.syndication.feed.synd.Converter;
 import org.junit.*;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -21,7 +20,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import java.util.List;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ItemDaoTest {
+public class RssItemDaoTest {
 
 	private EmbeddedDatabase db;
 
@@ -53,18 +52,18 @@ public class ItemDaoTest {
 		ItemDaoImpl itemDao = new ItemDaoImpl();
 		itemDao.setNamedParameterJdbcTemplate(template);
 
-		Channel channel = new Channel();
-		channel.setShortid(0);
-/*		List<Item> itemsTest = new ArrayList<Item>();
-		Item itemTest = new Item();
+		RssChannel rssChannel = new RssChannel();
+		rssChannel.setShortid(0);
+/*		List<RssItem> itemsTest = new ArrayList<RssItem>();
+		RssItem itemTest = new RssItem();
 		itemTest.setLink("https://dou.ua/feed/");
-		itemTest.setChannelID(channel.getShortid());
+		itemTest.setChannelID(rssChannel.getShortid());
 		itemsTest.add(itemTest);
-		channel.setItems(itemsTest);*/
-		List<Item> item = itemDao.findByChannelID(channel.getShortid());
+		rssChannel.setItems(itemsTest);*/
+		List<RssItem> rssItem = itemDao.findByChannelID(rssChannel.getShortid());
 
-		Assert.assertNotNull(item);
-		Assert.assertEquals("dou lenta_Item", item.get(0).getLink());
+		Assert.assertNotNull(rssItem);
+		Assert.assertEquals("dou lenta_Item", rssItem.get(0).getLink());
 
 	}
 
@@ -76,11 +75,11 @@ public class ItemDaoTest {
 		ItemDaoImpl itemDao = new ItemDaoImpl();
 		itemDao.setNamedParameterJdbcTemplate(template);
 
-		List<Item> item = itemDao.findAll();
+		List<RssItem> rssItem = itemDao.findAll();
 
-		Assert.assertNotNull(item);
-		Assert.assertEquals("DOU_Item", item.get(0).getTitle());
-		Assert.assertEquals("dou lenta_Item", item.get(0).getLink());
+		Assert.assertNotNull(rssItem);
+		Assert.assertEquals("DOU_Item", rssItem.get(0).getTitle());
+		Assert.assertEquals("dou lenta_Item", rssItem.get(0).getLink());
 
 	}
 

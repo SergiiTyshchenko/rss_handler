@@ -1,6 +1,7 @@
 package com.epam.asw.sty.service.rss;
 
 
+import com.epam.asw.sty.utils.RssCastList;
 import com.sun.syndication.feed.synd.SyndEntry;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.FeedException;
@@ -30,7 +31,7 @@ public class RssFeedReader {
 
     public List<SyndEntry> readRSSFeed () {
         rssFeed = obtainRSSFeed(getFeedURL());
-        List<SyndEntry> entries = rssFeed.getEntries();
+        List<SyndEntry> entries = RssCastList.castList(SyndEntry.class,rssFeed.getEntries());
         return entries;
     }
 

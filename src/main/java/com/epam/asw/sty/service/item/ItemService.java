@@ -3,8 +3,7 @@ package com.epam.asw.sty.service.item;
 
 
 
-import com.epam.asw.sty.model.Channel;
-import com.epam.asw.sty.model.Item;
+import com.epam.asw.sty.model.RssItem;
 import com.sun.syndication.feed.synd.SyndEntryImpl;
 
 import java.util.List;
@@ -14,26 +13,26 @@ public interface ItemService {
 
 
 
-    List<Item> findByChannel(long  channelID);
+    List<RssItem> findByChannel(long  channelID);
 
-    List<Item> findAllItems();
+    List<RssItem> findAllItems();
 
 
-    List<Item> findLimitedItemsForOneChannelSortedByPubDate(String user, int count, long shortid);
+    List<RssItem> findLimitedItemsForOneChannelSortedByPubDate(String user, int count, long shortid);
 
-    List<Item> findAllItemsForAllChannelsSortedByChannelID(String user);
+    List<RssItem> findAllItemsForAllChannelsSortedByChannelID(String user);
 
-    List<Item> findAllItemsForOneChannelSortedByChannelID(String user, long shortid);
+    List<RssItem> findAllItemsForOneChannelSortedByChannelID(String user, long shortid);
 
-    List<Item> findLimitedItemsForAllChannelsSortedByPubDate(String user, int count);
+    List<RssItem> findLimitedItemsForAllChannelsSortedByPubDate(String user, int count);
 
-    List<Item> findItemsForUserbyChannelByCountSortedbyTitle(String user, int count, String orderItemField);
+    List<RssItem> findItemsForUserbyChannelByCountSortedbyTitle(String user, int count, String orderItemField);
 
-    List<Item> findItemsForUserByChannelID(long shortid, String user,  int count);
+    List<RssItem> findItemsForUserByChannelID(long shortid, String user, int count);
 
-    List<Item> populateItemsFromDB();
+    List<RssItem> populateItemsFromDB();
 
-    void saveItem(Item item);
+    void saveItem(RssItem rssItem);
 
     public void convertSyndEntryToItem(List<SyndEntryImpl>items, long shortid);
 

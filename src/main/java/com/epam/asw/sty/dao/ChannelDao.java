@@ -2,33 +2,32 @@ package com.epam.asw.sty.dao;
 
 
 
-import com.epam.asw.sty.model.Channel;
+import com.epam.asw.sty.model.RssChannel;
 import com.sun.syndication.feed.synd.SyndFeed;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface ChannelDao {
 
-	List<Channel> findByUser(String user);
+	List<RssChannel> findByUser(String user);
 
-	Channel findByLink(String link);
+	RssChannel findByLink(String link);
 	
-	List<Channel> findAll();
+	List<RssChannel> findAll();
 
-	Channel findByShortID(long shortid);
+	RssChannel findByShortID(long shortid);
 
-	Channel findLastAddedChannel();
+	RssChannel findLastAddedChannel();
 
-	Channel findByID(String id);
+	RssChannel findByID(String id);
 
-	Object insertNewEntry(Channel channel);
+	Object insertNewEntry(RssChannel rssChannel);
 
 	Object removeEntryByID(String id);
 
 	Object insertNewSiteEntry(SyndFeed rssfeed);
 
-	Object updateEntry(Channel channel);
+	Object updateEntry(RssChannel rssChannel);
 }
 
 

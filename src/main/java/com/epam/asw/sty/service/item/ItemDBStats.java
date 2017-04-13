@@ -1,6 +1,6 @@
 package com.epam.asw.sty.service.item;
 
-import com.epam.asw.sty.model.Item;
+import com.epam.asw.sty.model.RssItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,15 +8,15 @@ import java.util.List;
 public class ItemDBStats {
 
 
-    public List<String> ItemsPerChannel(List<Item> items, long shortid){
-        List<String> stats = new ArrayList<String>();
+    public List<String> itemsPerChannel(List<RssItem> rssItems, long shortid){
+        List<String> stats = new ArrayList<>();
         Integer itemsCount=0;
-        for (Item item : items){
-            if (item.getChannelID() == shortid){
+        for (RssItem rssItem : rssItems){
+            if (rssItem.getChannelID() == shortid){
                 itemsCount++;
             }
         }
-        stats.add(0,"Items count per Channel with ID " + shortid  + " : " + itemsCount);
+        stats.add(0,"Items count per RssChannel with ID " + shortid  + " : " + itemsCount);
         return stats;
     }
 }

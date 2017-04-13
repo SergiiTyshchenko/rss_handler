@@ -2,33 +2,33 @@ package com.epam.asw.sty.service.channel;
 
 
 
-import com.epam.asw.sty.model.Channel;
+import com.epam.asw.sty.model.RssChannel;
 
 import java.util.List;
 
 
 public interface ChannelService {
 
-    Channel findById(String id);
+    RssChannel findById(String id);
 
-    List<Channel> findByUser(String user);
+    List<RssChannel> findByUser(String user);
 
-    void saveChannel(Channel channel, String user);
+    void saveChannel(RssChannel rssChannel, String user);
 
-    void updateChannel(Channel channel);
+    void updateChannel(RssChannel rssChannel);
 
     void deleteChannelById(String id);
 
-    List<Channel> findAllChannels();
+    List<RssChannel> findAllChannels();
 
-    Channel findByShortID(long shortid);
+    RssChannel findByShortID(long shortid);
 
     void deleteAllChannels();
 
-    public boolean isChannelExist(Channel channel);
+    public boolean isChannelExist(RssChannel rssChannel);
 
-    public Channel findByLink(String link);
+    public RssChannel findByLink(String link);
 
-    List<Channel> populateChannelsFromDB();
+    List<RssChannel> populateChannelsFromDB();
 
 }

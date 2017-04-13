@@ -6,7 +6,11 @@ import com.epam.asw.sty.service.rss.RssFeedReader;
 import com.sun.syndication.feed.synd.*;
 import com.sun.syndication.io.FeedException;
 import com.sun.syndication.io.SyndFeedOutput;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
@@ -16,6 +20,9 @@ import java.util.List;
 
 
 public class RssFeedCreationSample {
+
+    private final static Logger logger = LoggerFactory.getLogger(RssFeedCreationSample.class);
+
     public static void main(String[] args)  {
 
         //KB
@@ -23,33 +30,21 @@ public class RssFeedCreationSample {
 
         String url = "https://dou.ua/feed/";
         RssFeedReader RssFeedReader = new RssFeedReader(url);
-        List <SyndEntry> entries;
-        entries = RssFeedReader.readRSSFeed();
-        saveRssFeed(RssFeedReader.obtainRSSFeed(url));
-
-/*       SyndFeed feed = createFeed();
-        List <SyndEntry> entries = feed.getEntries();
-
-        if (entries == null) {
-            entries = new ArrayList<SyndEntry>();
-            entries.add(createEntry());
+        try {
+            saveRssFeed(RssFeedReader.obtainRSSFeed(url));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        feed.setEntries(entries);*/
-
 
     }
 
 
     public static SyndFeed createFeed(){
         SyndFeed feed = new SyndFeedImpl();
-        List feedCategories = new ArrayList<>();
         feed.setFeedType("rss_1.0");
         feed.setTitle("MyProject Build Results");
         feed.setLink("http://myproject.mycompany.com/continuum");
         feed.setDescription("Continuous build results for the MyProject project");
-        //feed.setCategory("MyProject");
-        feedCategories.add(0,"MyProject");
         return feed;
     }
 
@@ -65,7 +60,7 @@ public class RssFeedCreationSample {
         return entry;
     }
 
-    public static SyndContent createDescription(){
+    private static SyndContent createDescription(){
         SyndContent description = new SyndContentImpl();
         description.setType("text/html");
         description.setValue("The build was successful!");
@@ -73,7 +68,7 @@ public class RssFeedCreationSample {
         return description;
     }
 
-    public static  List<SyndCategory> createCategoies(){
+    private static  List<SyndCategory> createCategoies(){
         List<SyndCategory> categories = new ArrayList<SyndCategory>();
         SyndCategory category = new SyndCategoryImpl();
         category.setName("MyProject");
@@ -81,31 +76,30 @@ public class RssFeedCreationSample {
         return categories;
     }
 
-    public static void saveRssFeed(SyndFeed rssFeed)  {
+    private static void saveRssFeed(SyndFeed rssFeed) throws IOException {
+
+
         String feedFileName = rssFeed.getLink();
         feedFileName = feedFileName.replaceAll("/", "~").replaceAll("https:","");
+        final File file = new File("feedFiles/" + feedFileName + ".xml");
         Writer writer = null;
         try {
-            writer = new FileWriter("feedFiles/" + feedFileName + ".xml");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        finally {
+            writer = new FileWriter(file);
             SyndFeedOutput output = new SyndFeedOutput();
             try {
-                output.output(rssFeed,writer);
+                output.output(rssFeed, writer);
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new IOException("IOException when try to create SyndFeedOutput", e);
             } catch (FeedException e) {
-                e.printStackTrace();
+                logger.error("Exception raised", e);
             }
-            try {
-                writer.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        } catch (IOException e) {
+            throw new IOException("IOException when try to create writer for file " + file.getName() + " to a path "
+                    + file.getPath(), e);
         }
-
+        finally {
+            IOUtils.closeQuietly(writer);
+        }
     }
 
 

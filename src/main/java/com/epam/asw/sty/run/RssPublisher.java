@@ -1,5 +1,6 @@
 package com.epam.asw.sty.run;
 
+import com.epam.asw.sty.utils.RssCastList;
 import com.sun.syndication.feed.rss.Channel;
 import com.sun.syndication.feed.rss.Item;
 import com.sun.syndication.io.WireFeedInput;
@@ -9,8 +10,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class RssPublisher implements Serializable {
@@ -28,8 +27,8 @@ public class RssPublisher implements Serializable {
 
         Channel channel = new Channel();
         channel.setFeedType("rss_2.0");
-        channel.setTitle("Sumeet's RSS Channel");
-        channel.setDescription("Test RSS Channel");
+        channel.setTitle("Sumeet's RSS RssChannel");
+        channel.setDescription("Test RSS RssChannel");
         channel.setLink("http://myIPAddress:portNo/WebAppName");
 
         return channel;
@@ -43,11 +42,9 @@ public class RssPublisher implements Serializable {
     }
 
     static Channel addItemToChannel(Channel channel, Item item) {
-        List items = (List) channel.getItems();
-        if (items == null) {
-            items = new ArrayList();
-        }
+        List<Item> items =  RssCastList.castList(Item.class, channel.getItems());
         items.add(item);
+        channel.setItems(items);
         return channel;
     }
 
@@ -55,12 +52,14 @@ public class RssPublisher implements Serializable {
         try {
             File RSSDoc = new File("rssfeed.rss");
             if (!RSSDoc.exists()) {
-                RSSDoc.createNewFile();
+                if (RSSDoc.createNewFile()){
+                    WireFeedOutput wfo = new WireFeedOutput();
+                    wfo.output(channel, RSSDoc);
+                }
             }
-            WireFeedOutput wfo = new WireFeedOutput();
-            wfo.output(channel, RSSDoc);
         } catch (Exception ee) {
-            logger.error("Exception", ee);
+            logger.error("Exception raised", ee);
+            return false;
         }
         return true;
     }
@@ -77,11 +76,10 @@ public class RssPublisher implements Serializable {
     }
 
     static void displayItems(Channel channel) {
-        List existingItems = channel.getItems();
-        Iterator itr = existingItems.iterator();
-        while (itr.hasNext()) {
-            Item item = (Item) itr.next();
+        List<Item> existingItems = RssCastList.castList(Item.class, channel.getItems());
+        for(Item item: existingItems) {
             logger.info(item.getTitle());
         }
     }
+
 }

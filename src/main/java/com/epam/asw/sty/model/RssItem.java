@@ -1,9 +1,8 @@
 package com.epam.asw.sty.model;
 
-import java.util.Arrays;
 import java.util.UUID;
 
-public class Item extends com.sun.syndication.feed.rss.Item {
+public class RssItem extends com.sun.syndication.feed.rss.Item {
 
 
     private String id;
@@ -13,12 +12,12 @@ public class Item extends com.sun.syndication.feed.rss.Item {
     private String channelTitle;
 
 
-    public Item(){
+    public RssItem(){
         id=UUID.randomUUID().toString();
     }
 
 
-    public Item(String id, long channelID, String channelTitle) {
+    public RssItem(String id, long channelID, String channelTitle) {
         this.id = id;
         this.channelID = channelID;
         this.channelTitle = channelTitle;
@@ -63,17 +62,17 @@ public class Item extends com.sun.syndication.feed.rss.Item {
             return true;
         if (obj == null)
             return false;
-        if (!(obj instanceof Item))
+        if (!(obj instanceof RssItem))
             return false;
-        Item other = (Item) obj;
-        if (id != other.id)
+        RssItem other = (RssItem) obj;
+        if (!id.equals(other.id))
             return false;
         return true;
     }
 
     @Override
     public String toString() {
-        return "Item [id=" + id + ", channelID=" + channelID + ", description=" + super.getDescription()
+        return "RssItem [id=" + id + ", channelID=" + channelID + ", description=" + super.getDescription()
                 + ", link=" + super.getLink() + ", pubDate=" + super.getPubDate() + "]";
     }
 

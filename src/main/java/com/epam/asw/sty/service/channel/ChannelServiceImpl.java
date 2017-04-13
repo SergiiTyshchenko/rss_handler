@@ -2,9 +2,10 @@ package com.epam.asw.sty.service.channel;
 
 import com.epam.asw.sty.dao.ChannelDao;
 
-import com.epam.asw.sty.model.Channel;
+import com.epam.asw.sty.model.RssChannel;
 import com.epam.asw.sty.service.item.ItemService;
 import com.epam.asw.sty.service.rss.RssFeedReader;
+import com.epam.asw.sty.utils.RssCastList;
 import com.sun.syndication.feed.synd.SyndEntryImpl;
 import com.sun.syndication.feed.synd.SyndFeed;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -27,123 +28,85 @@ public class ChannelServiceImpl implements ChannelService {
     ItemService itemService;
 
     private static final AtomicLong counter = new AtomicLong();
-    private List<Channel> channels;
+    private List<RssChannel> rssChannels;
 
     public ChannelServiceImpl() {
-        this.channels = new ArrayList<Channel>();
+        this.rssChannels = new ArrayList<>();
     }
 
-    public List<Channel> findAllChannels() {
+    public List<RssChannel> findAllChannels() {
         return populateChannelsFromDB();
     }
 
 
-    public Channel findById(String id) {
-        Channel channel = channelDao.findByID(id);
-/*        for(Channel channel : populateChannelsFromDB()){
-            if(channel.getId().equals(id)){
-                return channel;
-            }
-        }
-        return null;*/
-        return channel;
+    public RssChannel findById(String id) {
+        RssChannel rssChannel = channelDao.findByID(id);
+        return rssChannel;
     }
 
-    public List<Channel> findByUser(String user) {
-        List<Channel> channels = channelDao.findByUser(user);
-/*        List<Channel> channels = new ArrayList<Channel>();
-        for(Channel channel : populateChannelsFromDB()){
-            if(channel.getUser().equalsIgnoreCase(user)){
-                channels.add(channel);
-            }
-        }*/
-        return channels;
+    public List<RssChannel> findByUser(String user) {
+        rssChannels = channelDao.findByUser(user);
+        return rssChannels;
     }
 
-    public Channel findByShortID(long shortid) {
-        Channel channel = channelDao.findByShortID(shortid);
-/*        for(Channel channel : populateChannelsFromDB()){
-            if(channel.getShortid() == shortid){
-                return channel;
-            }
-        }
-        return null;*/
-        return channel;
+    public RssChannel findByShortID(long shortid) {
+        RssChannel rssChannel = channelDao.findByShortID(shortid);
+        return rssChannel;
     }
 
 
-    public Channel findByLink(String link) {
-        Channel channel = channelDao.findByLink(link);
-/*        for(Channel channel : populateChannelsFromDB()){
-            if(channel.getLink().equalsIgnoreCase(link)){
-                return channel;
-            }
-        }
-        return null;*/
-        return channel;
+    public RssChannel findByLink(String link) {
+        RssChannel rssChannel = channelDao.findByLink(link);
+        return rssChannel;
     }
 
-    public void saveChannel(Channel channel, String user) {
+    public void saveChannel(RssChannel rssChannel, String user) {
 
-        channel.setId(new Channel().getId());
-/*        channels = populateChannelsFromDB();
-        if (channels.size() == 0) {
+        rssChannel.setId(new RssChannel().getId());
+        RssChannel rssChannelForCompare = channelDao.findLastAddedChannel();
+        if (rssChannelForCompare == null) {
             counter.set(0);
         }
         else {
-            counter.set(channels.get(channels.size()-1).getShortid());
-        }*/
-
-        Channel channelForCompare = channelDao.findLastAddedChannel();
-        if (channelForCompare == null) {
-            counter.set(0);
-        }
-        else {
-            counter.set(channelForCompare.getShortid());
+            counter.set(rssChannelForCompare.getShortid());
         }
 
-        channel.setShortid((int) counter.incrementAndGet());
+        rssChannel.setShortid((int) counter.incrementAndGet());
 
-        SyndFeed rssFeed = new RssFeedReader().obtainRSSFeed(channel.getLink());
+        SyndFeed rssFeed = new RssFeedReader().obtainRSSFeed(rssChannel.getLink());
 
-        if(channel.getDescription().equals("")) {
-            channel.setDescription(rssFeed.getDescription());
+        if(rssChannel.getDescription().equals("")) {
+            rssChannel.setDescription(rssFeed.getDescription());
         }
-        if(channel.getTitle().equals("")) {
-            channel.setTitle(rssFeed.getTitle());
+        if(rssChannel.getTitle().equals("")) {
+            rssChannel.setTitle(rssFeed.getTitle());
         }
 
-        channel.setLanguage(rssFeed.getLanguage());
-        channel.setPubDate(rssFeed.getPublishedDate());
-        channel.setLastBuildDate(rssFeed.getPublishedDate());
+        rssChannel.setLanguage(rssFeed.getLanguage());
+        rssChannel.setPubDate(rssFeed.getPublishedDate());
+        rssChannel.setLastBuildDate(rssFeed.getPublishedDate());
 
-        List<SyndEntryImpl> items = rssFeed.getEntries();
-        channel.setItemsCount(items.size());
-        channelDao.insertNewEntry(channel);
-        itemService.convertSyndEntryToItem(items, channel.getShortid());
+        List<SyndEntryImpl> items = RssCastList.castList(SyndEntryImpl.class, rssFeed.getEntries());
+        rssChannel.setItemsCount(items.size());
+        channelDao.insertNewEntry(rssChannel);
+        itemService.convertSyndEntryToItem(items, rssChannel.getShortid());
     }
 
-    public void updateChannel(Channel channel) {
-        channelDao.updateEntry(channel);
+    public void updateChannel(RssChannel rssChannel) {
+        channelDao.updateEntry(rssChannel);
     }
 
     public void deleteChannelById(String id) {
 
-        channels = populateChannelsFromDB();
-/*        for (Iterator<Channel> iterator = channels.iterator(); iterator.hasNext(); ) {
-            Channel channel = iterator.next();*/
-           // if (channel.getId().equals(id)) {
-                Channel channel = channelDao.findByID(id);
-                if (channel.getId().equals(id)) {
-                itemService.deleteItemByChannelID(channel.getShortid());
-                channelDao.removeEntryByID(id);
-                //break;
-            }
-        //}
+        RssChannel rssChannel = channelDao.findByID(id);
+        if (rssChannel.getId().equals(id)) {
+            itemService.deleteItemByChannelID(rssChannel.getShortid());
+            channelDao.removeEntryByID(id);
+        }
     }
 
-    public boolean isChannelExist(Channel channel) {
-        return findByLink(channel.getLink()) != null;
+    public boolean isChannelExist(RssChannel rssChannel) {
+        return findByLink(rssChannel.getLink()) != null;
     }
 
     public void deleteAllChannels(){
@@ -151,9 +114,9 @@ public class ChannelServiceImpl implements ChannelService {
     }
 
 
-    public List<Channel> populateChannelsFromDB(){
-        List<Channel> channels = channelDao.findAll();
-        return channels;
+    public List<RssChannel> populateChannelsFromDB(){
+        List<RssChannel> rssChannels = channelDao.findAll();
+        return rssChannels;
     }
 
 }

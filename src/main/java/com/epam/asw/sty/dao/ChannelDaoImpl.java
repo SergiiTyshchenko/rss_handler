@@ -2,8 +2,7 @@ package com.epam.asw.sty.dao;
 
 
 
-import com.epam.asw.sty.model.Channel;
-import com.epam.asw.sty.model.Item;
+import com.epam.asw.sty.model.RssChannel;
 import com.sun.syndication.feed.synd.SyndFeed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
@@ -14,7 +13,6 @@ import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Repository
 public class ChannelDaoImpl implements ChannelDao {
@@ -29,134 +27,134 @@ public class ChannelDaoImpl implements ChannelDao {
 
 
 	@Override
-	public List<Channel> findByUser(String user) {
+	public List<RssChannel> findByUser(String user) {
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("user", user);
 
 		String sql = "SELECT * FROM channel WHERE USER=:user";
 
-		List<Channel> channels = namedParameterJdbcTemplate.query(
+		List<RssChannel> rssChannels = namedParameterJdbcTemplate.query(
 				sql,
 				params,
 				new RequestMapper());
 
 		//new BeanPropertyRowMapper(Customer.class));
 
-		return channels;
+		return rssChannels;
 
 	}
 
 	@Override
-	public Channel findByLink(String link) {
+	public RssChannel findByLink(String link) {
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("link", link);
 
 		String sql = "SELECT * FROM channel WHERE LINK=:link";
 
-		List<Channel> channels = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
-		if(channels.size() == 0 ) {
+		List<RssChannel> rssChannels = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
+		if(rssChannels.size() == 0 ) {
 			return null;
 		} else {
-			return channels.get(0);
+			return rssChannels.get(0);
 		}
 
 	}
 
 	@Override
-	public Channel findByShortID(long shortid) {
+	public RssChannel findByShortID(long shortid) {
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("shortid", shortid);
 
 		String sql = "SELECT * FROM channel WHERE SHORTID=:shortid";
 
-		List<Channel> channels = namedParameterJdbcTemplate.query(
+		List<RssChannel> rssChannels = namedParameterJdbcTemplate.query(
 				sql,
 				params,
 				new RequestMapper());
 
 		//new BeanPropertyRowMapper(Customer.class));
 
-		if(channels.size() == 0 ) {
+		if(rssChannels.size() == 0 ) {
 			return null;
 		} else {
-			return channels.get(0);
+			return rssChannels.get(0);
 		}
 
 	}
 
 	@Override
-	public Channel findLastAddedChannel() {
+	public RssChannel findLastAddedChannel() {
 
 
 
 		String sql = "SELECT * FROM channel ORDER BY SHORTID DESC LIMIT 1";
 
-		List<Channel> channels = namedParameterJdbcTemplate.query(
+		List<RssChannel> rssChannels = namedParameterJdbcTemplate.query(
 				sql,
 				new RequestMapper());
 
 		//new BeanPropertyRowMapper(Customer.class));
 
-		if(channels.size() == 0 ) {
+		if(rssChannels.size() == 0 ) {
 			return null;
 		} else {
-			return channels.get(0);
+			return rssChannels.get(0);
 		}
 
 	}
 
 	@Override
-	public Channel findByID(String id) {
+	public RssChannel findByID(String id) {
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("id", id);
 
 		String sql = "SELECT * FROM channel WHERE ID=:id";
 
-		List<Channel> channels = namedParameterJdbcTemplate.query(
+		List<RssChannel> rssChannels = namedParameterJdbcTemplate.query(
 				sql,
 				params,
 				new RequestMapper());
 
 		//new BeanPropertyRowMapper(Customer.class));
 
-		if(channels.size() == 0 ) {
+		if(rssChannels.size() == 0 ) {
 			return null;
 		} else {
-			return channels.get(0);
+			return rssChannels.get(0);
 		}
 
 	}
 
 	@Override
-	public List<Channel> findAll() {
+	public List<RssChannel> findAll() {
 
 		Map<String, Object> params = new HashMap<String, Object>();
 
 		String sql = "SELECT * FROM channel ORDER BY SHORTID";
 
-		List<Channel> channels = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
+		List<RssChannel> rssChannels = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
 
-		return channels;
+		return rssChannels;
 
 	}
 
 	@Override
-	public Object insertNewEntry(Channel channel) {
+	public Object insertNewEntry(RssChannel rssChannel) {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("id",channel.getId());
-		params.put("shortid",channel.getShortid());
-		params.put("user", channel.getUser());
-		params.put("title",  channel.getTitle());
-		params.put("description", channel.getDescription());
-		params.put("link", channel.getLink());
-		params.put("language", channel.getLanguage());
-		params.put("pubDate", channel.getPubDate());
-		params.put("lastBuildDate", channel.getPubDate());
-		params.put("items", channel.getItemsCount());
+		params.put("id", rssChannel.getId());
+		params.put("shortid", rssChannel.getShortid());
+		params.put("user", rssChannel.getUser());
+		params.put("title",  rssChannel.getTitle());
+		params.put("description", rssChannel.getDescription());
+		params.put("link", rssChannel.getLink());
+		params.put("language", rssChannel.getLanguage());
+		params.put("pubDate", rssChannel.getPubDate());
+		params.put("lastBuildDate", rssChannel.getPubDate());
+		params.put("items", rssChannel.getItemsCount());
 		String sql = "INSERT INTO CHANNEL " +
 				"(ID, SHORTID, USER, TITLE, DESCRIPTION, LINK, LANGUAGE, PUBDATE, LASTBUILDDATE, ITEMS) VALUES " +
 				"(:id, :shortid, :user, :title, :description, :link, :language, :pubDate, :lastBuildDate, :items)";
@@ -201,19 +199,19 @@ public class ChannelDaoImpl implements ChannelDao {
 	}
 
 	@Override
-	public Object updateEntry(Channel channel) {
+	public Object updateEntry(RssChannel rssChannel) {
 
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("id",channel.getId());
-		params.put("shortid",channel.getShortid());
-		params.put("user", channel.getUser());
-		params.put("title",  channel.getTitle());
-		params.put("description", channel.getDescription());
-		params.put("link", channel.getLink());
-		params.put("language", channel.getLanguage());
-		params.put("pubDate", channel.getPubDate());
-		params.put("lastBuildDate", channel.getLastBuildDate());
-		params.put("items", channel.getItemsCount());
+		params.put("id", rssChannel.getId());
+		params.put("shortid", rssChannel.getShortid());
+		params.put("user", rssChannel.getUser());
+		params.put("title",  rssChannel.getTitle());
+		params.put("description", rssChannel.getDescription());
+		params.put("link", rssChannel.getLink());
+		params.put("language", rssChannel.getLanguage());
+		params.put("pubDate", rssChannel.getPubDate());
+		params.put("lastBuildDate", rssChannel.getLastBuildDate());
+		params.put("items", rssChannel.getItemsCount());
 		String sql = "UPDATE CHANNEL " +
 				"SET (SHORTID, USER, TITLE, DESCRIPTION, LINK, LANGUAGE, PUBDATE, LASTBUILDDATE, ITEMS) = " +
 				"(:shortid, :user, :title, :description, :link, :language, :pubDate, :lastBuildDate, :items) " +
@@ -224,28 +222,28 @@ public class ChannelDaoImpl implements ChannelDao {
 	}
 
 
-	private static final class RequestMapper implements RowMapper<Channel> {
+	private static final class RequestMapper implements RowMapper<RssChannel> {
 
-		public Channel mapRow(ResultSet rs, int rowNum) throws SQLException {
-			Channel channel = new Channel();
-			channel.setId(rs.getString("id"));
-			channel.setShortid(rs.getInt("shortid"));
-			channel.setUser(rs.getString("user"));
-			channel.setTitle(rs.getString("title"));
-			channel.setDescription(rs.getString("description"));
-			channel.setLink(rs.getString("link"));
-			channel.setLanguage(rs.getString("language"));
-			channel.setPubDate(rs.getTimestamp("pubDate"));
-			channel.setLastBuildDate(rs.getTimestamp("lastBuildDate"));
+		public RssChannel mapRow(ResultSet rs, int rowNum) throws SQLException {
+			RssChannel rssChannel = new RssChannel();
+			rssChannel.setId(rs.getString("id"));
+			rssChannel.setShortid(rs.getInt("shortid"));
+			rssChannel.setUser(rs.getString("user"));
+			rssChannel.setTitle(rs.getString("title"));
+			rssChannel.setDescription(rs.getString("description"));
+			rssChannel.setLink(rs.getString("link"));
+			rssChannel.setLanguage(rs.getString("language"));
+			rssChannel.setPubDate(rs.getTimestamp("pubDate"));
+			rssChannel.setLastBuildDate(rs.getTimestamp("lastBuildDate"));
 			Array rsItemsArray =  rs.getArray("items");
 			Object[] rsItemsStaringArray = (Object[])rsItemsArray.getArray();
 			List<String> list = new ArrayList<>();
 			for (Object i : rsItemsStaringArray) {
 				list.add(i.toString());
 			}
-			channel.setItems(list);
-			channel.setItemsCount(rs.getInt("items"));
-			return channel;
+			rssChannel.setItems(list);
+			rssChannel.setItemsCount(rs.getInt("items"));
+			return rssChannel;
 
 		}
 	}

@@ -1,7 +1,7 @@
 package com.epam.asw.sty.controller;
 
 
-import com.epam.asw.sty.model.Channel;
+import com.epam.asw.sty.model.RssChannel;
 import com.epam.asw.sty.service.channel.ChannelStatsService;
 import com.epam.asw.sty.service.channel.ChannelService;
 
@@ -35,23 +35,23 @@ public class ChannelRestController {
     //-------------------Retrieve All Channels--------------------------------------------------------
 
     @RequestMapping(value = "/channel/", method = RequestMethod.GET)
-    public ResponseEntity<List<Channel>> listAllChannels(Principal user) {
+    public ResponseEntity<List<RssChannel>> listAllChannels(Principal user) {
 
-        List<Channel> channels = new ArrayList<Channel>();
+        List<RssChannel> rssChannels;
         String currentUser = user.getName();
         String logDebugMessage = "Getting channel for user: " + currentUser;
         logger.debug("{}.", logDebugMessage);
         if (!currentUser.equals("admin")) {
-            channels = channelService.findByUser(currentUser);
+            rssChannels = channelService.findByUser(currentUser);
         } else {
-            channels = channelService.populateChannelsFromDB();
+            rssChannels = channelService.populateChannelsFromDB();
         }
-        logger.info("{}.",  channels);
-        String msg = "There are " + channels.size() + " channels found for user: " + currentUser;
-        if(channels.isEmpty()){
-            return new ResponseEntity<List<Channel>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
+        String msg = "There are " + rssChannels.size() + " rssChannels found for user: " + currentUser;
+        logger.info("{}  - {}.", msg, rssChannels);
+        if(rssChannels.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
         }
-        return new ResponseEntity<List<Channel>>(channels, HttpStatus.OK);
+        return new ResponseEntity<>(rssChannels, HttpStatus.OK);
     }
 
     //-------------------Retrieve Channels For Current User--------------------------------------------------------
@@ -61,13 +61,13 @@ public class ChannelRestController {
     public ModelAndView getChannelForCurrentUser(ModelAndView model, Principal user) {
 
         String currentUser = user.getName();
-        String logDebugMessage = "Getting channel for user: " + currentUser;
+        String logDebugMessage = "Getting rssChannel for user: " + currentUser;
         logger.debug("{}.", logDebugMessage);
-        List<Channel> channel = channelService.findByUser(currentUser);
-        logger.info("{}.",  channel);
-        String msg = "There are " + channel.size() + " channels found for user: " + currentUser;
+        List<RssChannel> rssChannel = channelService.findByUser(currentUser);
+        logger.info("{}.", rssChannel);
+        String msg = "There are " + rssChannel.size() + " channels found for user: " + currentUser;
         model.addObject("message", msg);
-        model.addObject("channel", channel);
+        model.addObject("rssChannel", rssChannel);
         return model;
 
     }
@@ -78,105 +78,105 @@ public class ChannelRestController {
     @RequestMapping(value = "/user={currentUser}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Model> getChannelForSpecificUser(@PathVariable("currentUser") String currentUser, Model model, Principal user) {
 
-        String logDebugMessage = "Getting channel for user: " + currentUser;
+        String logDebugMessage = "Getting rssChannel for user: " + currentUser;
         logger.debug("{}.", logDebugMessage);
-        List<Channel> channel = channelService.findByUser(currentUser);
-        logger.info("{}.",  channel);
-        String msg = "There are " + channel.size() + " channels found for user: " + currentUser;
+        List<RssChannel> rssChannel = channelService.findByUser(currentUser);
+        logger.info("{}.", rssChannel);
+        String msg = "There are " + rssChannel.size() + " channels found for user: " + currentUser;
         model.addAttribute("message", msg);
-        model.addAttribute("channel", channel);
+        model.addAttribute("rssChannel", rssChannel);
         return new ResponseEntity<Model>(model, HttpStatus.OK);
 
     }
 
-    //-------------------Retrieve Single Channel--------------------------------------------------------
+    //-------------------Retrieve Single RssChannel--------------------------------------------------------
 
     @RequestMapping(value = "/channel/{shortid}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Channel> getChannelbyID(@PathVariable("shortid") long shortid) {
+    public ResponseEntity<RssChannel> getChannelbyID(@PathVariable("shortid") long shortid) {
 
-        String logDebugMessage = "Fetching Channel with id " + shortid;
+        String logDebugMessage = "Fetching RssChannel with id " + shortid;
         logger.debug("DEBUG message {}.", logDebugMessage);
-        Channel channel = channelService.findByShortID(shortid);
-        if (channel == null) {
-            logDebugMessage = "Channel with id " + shortid + " not found";
+        RssChannel rssChannel = channelService.findByShortID(shortid);
+        if (rssChannel == null) {
+            logDebugMessage = "RssChannel with id " + shortid + " not found";
             logger.debug("DEBUG message {}.", logDebugMessage);
-            return new ResponseEntity<Channel>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<RssChannel>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<Channel>(channel, HttpStatus.OK);
+        return new ResponseEntity<RssChannel>(rssChannel, HttpStatus.OK);
     }
 
 
 
-    //-------------------Create Single Channel--------------------------------------------------------
+    //-------------------Create Single RssChannel--------------------------------------------------------
 
     @RequestMapping(value = "/channel/", method = RequestMethod.POST)
-    public ResponseEntity<Void> createChannel(@RequestBody Channel channel, UriComponentsBuilder ucBuilder, Model model, Principal user) {
-        logger.info("Creating Channel with url: " + channel.getLink());
+    public ResponseEntity<Void> createChannel(@RequestBody RssChannel rssChannel, UriComponentsBuilder ucBuilder, Model model, Principal user) {
+        logger.info("Creating RssChannel with url: " + rssChannel.getLink());
 
         HttpHeaders headers = new HttpHeaders();
-        if (channelService.isChannelExist(channel)) {
-            final String msg = "Channel with link " + channel.getLink() + " already exist";
+        if (channelService.isChannelExist(rssChannel)) {
+            final String msg = "RssChannel with link " + rssChannel.getLink() + " already exist";
             logger.info(msg);
             model.addAttribute("msg", msg);
-            headers.setLocation(ucBuilder.path("/alreadyExist").buildAndExpand(channel.getId()).toUri());
+            headers.setLocation(ucBuilder.path("/alreadyExist").buildAndExpand(rssChannel.getId()).toUri());
             return new ResponseEntity<Void>(headers, HttpStatus.CONFLICT);
         }
-        channel.setUser(user.getName());
-        channelService.saveChannel(channel, user.getName());
+        rssChannel.setUser(user.getName());
+        channelService.saveChannel(rssChannel, user.getName());
 
 
-        headers.setLocation(ucBuilder.path("/channel/{id}").buildAndExpand(channel.getId()).toUri());
+        headers.setLocation(ucBuilder.path("/rssChannel/{id}").buildAndExpand(rssChannel.getId()).toUri());
         return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
     }
 
 
 
-    //------------------- Update Single Channel --------------------------------------------------------
+    //------------------- Update Single RssChannel --------------------------------------------------------
 
     @RequestMapping(value = "/channel/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Channel> updateChannel(@PathVariable("id") String  id, @RequestBody Channel channel) {
+    public ResponseEntity<RssChannel> updateChannel(@PathVariable("id") String  id, @RequestBody RssChannel rssChannel) {
 
-        String logDebugMessage = "Updating Channel " + id;
+        String logDebugMessage = "Updating RssChannel " + id;
         logger.debug("DEBUG message {}.", logDebugMessage);
-        Channel currentChannel = channelService.findById(id);
+        RssChannel currentRssChannel = channelService.findById(id);
 
-        if (currentChannel==null) {
-            logDebugMessage = "Channel with id " + id + " not found";
+        if (currentRssChannel ==null) {
+            logDebugMessage = "RssChannel with id " + id + " not found";
             logger.debug("DEBUG message {}.", logDebugMessage);
-            return new ResponseEntity<Channel>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<RssChannel>(HttpStatus.NOT_FOUND);
         }
 
-        currentChannel.setUser(channel.getUser());
-        currentChannel.setDescription(channel.getDescription());
-        currentChannel.setLink(channel.getLink());
-        currentChannel.setDescription(channel.getDescription());
-        currentChannel.setPubDate(channel.getPubDate());
-        currentChannel.setLanguage(channel.getLanguage());
+        currentRssChannel.setUser(rssChannel.getUser());
+        currentRssChannel.setDescription(rssChannel.getDescription());
+        currentRssChannel.setLink(rssChannel.getLink());
+        currentRssChannel.setDescription(rssChannel.getDescription());
+        currentRssChannel.setPubDate(rssChannel.getPubDate());
+        currentRssChannel.setLanguage(rssChannel.getLanguage());
 
-        channelService.updateChannel(currentChannel);
-        return new ResponseEntity<Channel>(currentChannel, HttpStatus.OK);
+        channelService.updateChannel(currentRssChannel);
+        return new ResponseEntity<RssChannel>(currentRssChannel, HttpStatus.OK);
     }
 
 
 
 
-    //------------------- Delete Single Channel --------------------------------------------------------
+    //------------------- Delete Single RssChannel --------------------------------------------------------
 
     @RequestMapping(value = "/channel/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Channel> deleteChannel(@PathVariable("id") String id) {
+    public ResponseEntity<RssChannel> deleteChannel(@PathVariable("id") String id) {
 
-        String logDebugMessage = "Fetching & Deleting Channel with id " + id;
+        String logDebugMessage = "Fetching & Deleting RssChannel with id " + id;
         logger.debug("DEBUG message {}.", logDebugMessage);
-        Channel channel = channelService.findById(id);
-        if (channel == null) {
-            logDebugMessage = "Unable to delete. Channel with id " + id + " not found";
+        RssChannel rssChannel = channelService.findById(id);
+        if (rssChannel == null) {
+            logDebugMessage = "Unable to delete. RssChannel with id " + id + " not found";
             logger.debug("DEBUG message {}.", logDebugMessage);
-            return new ResponseEntity<Channel>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<RssChannel>(HttpStatus.NOT_FOUND);
         }
 
 
         channelService.deleteChannelById(id);
-        return new ResponseEntity<Channel>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<RssChannel>(HttpStatus.NO_CONTENT);
     }
 
 
@@ -184,12 +184,12 @@ public class ChannelRestController {
     //------------------- Delete All Channels --------------------------------------------------------
 
     @RequestMapping(value = "/channel/", method = RequestMethod.DELETE)
-    public ResponseEntity<Channel> deleteAllChannels() {
+    public ResponseEntity<RssChannel> deleteAllChannels() {
 
         String logDebugMessage = "Deleting All Channels";
         logger.debug("DEBUG message {}.", logDebugMessage);
         channelService.deleteAllChannels();
-        return new ResponseEntity<Channel>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<RssChannel>(HttpStatus.NO_CONTENT);
     }
 
 
@@ -198,15 +198,15 @@ public class ChannelRestController {
     @RequestMapping(value = "/channel/stats", method = RequestMethod.GET)
     public ResponseEntity<Map<String,Object>> DBChannelsStats(Principal user) {
 
-        List<Channel> channels = channelService.populateChannelsFromDB();
-        if(channels.isEmpty()){
+        List<RssChannel> rssChannels = channelService.populateChannelsFromDB();
+        if(rssChannels.isEmpty()){
             return new ResponseEntity<Map<String,Object>>(HttpStatus.NO_CONTENT);//You many decide to return HttpStatus.NOT_FOUND
         }
         else {
             ChannelStatsService statsTest = new ChannelStatsService();
             Map<String,Object> stats = new java.util.HashMap<>();
-            stats.put("DB Channel count: ", channels.size());
-            stats.put("DB Channel count per user: ", statsTest.ChannelsPerUser(channels, user.getName()));
+            stats.put("DB RssChannel count: ", rssChannels.size());
+            stats.put("DB RssChannel count per user: ", statsTest.channelsPerUser(rssChannels, user.getName()));
             return new ResponseEntity<Map<String,Object>>(stats, HttpStatus.OK);
         }
     }

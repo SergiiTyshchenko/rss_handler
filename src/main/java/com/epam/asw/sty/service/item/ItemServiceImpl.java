@@ -1,7 +1,7 @@
 package com.epam.asw.sty.service.item;
 
 import com.epam.asw.sty.dao.ItemDao;
-import com.epam.asw.sty.model.Item;
+import com.epam.asw.sty.model.RssItem;
 import com.sun.syndication.feed.rss.Description;
 import com.sun.syndication.feed.synd.SyndEntryImpl;
 import org.springframework.stereotype.Service;
@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -23,105 +22,80 @@ public class ItemServiceImpl implements ItemService {
 
     private static final AtomicLong counter = new AtomicLong();
 
-    private List<Item> items;
 
-    public ItemServiceImpl() {
-        this.items = new ArrayList<Item>();
-    }
-
-
-    public List<Item> findAllItems() {
+    public List<RssItem> findAllItems() {
         return populateItemsFromDB();
     }
 
-    public List<Item> populateItemsFromDB(){
-        List<Item> items = itemDao.findAll();
-        return items;
+    public List<RssItem> populateItemsFromDB(){
+        List<RssItem> rssItems = itemDao.findAll();
+        return rssItems;
     }
 
 
-    public List<Item> findByChannel(long  channelID) {
-        List<Item> items = itemDao.findByChannelID(channelID);
-/*        List<Item> items = new ArrayList<Item>();
-        for(Item item : populateItemsFromDB()){
-            if(item.getChannelID() == channelID){
-                items.add(item);
-            }
-        }*/
-        return items;
+    public List<RssItem> findByChannel(long  channelID) {
+        List<RssItem> rssItems = itemDao.findByChannelID(channelID);
+        return rssItems;
     }
 
-    public List<Item> findItemsForUserByChannelID(long shortid, String user,  int count) {
-        List<Item> items = itemDao.findForUserByChannelID(shortid, user, count);
-        return items;
+    public List<RssItem> findItemsForUserByChannelID(long shortid, String user, int count) {
+        List<RssItem> rssItems = itemDao.findForUserByChannelID(shortid, user, count);
+        return rssItems;
     }
 
-    public void saveItem(Item item) {
+    public void saveItem(RssItem rssItem) {
 
-        item.setId(new Item().getId());
-        itemDao.insertNewEntry(item);
+        rssItem.setId(new RssItem().getId());
+        itemDao.insertNewEntry(rssItem);
     }
 
 
     public void convertSyndEntryToItem(List<SyndEntryImpl>items, long shortid) {
         for (SyndEntryImpl item: items) {
-            Item customizedItem = new Item();
-            customizedItem.setChannelID(shortid);
-            customizedItem.setPubDate(item.getPublishedDate());
+            RssItem customizedRssItem = new RssItem();
+            customizedRssItem.setChannelID(shortid);
+            customizedRssItem.setPubDate(item.getPublishedDate());
             Description itemDescription = new Description();
             itemDescription.setValue(item.getDescription().getValue());
-            customizedItem.setDescription(itemDescription);
-            customizedItem.setTitle(item.getTitle());
-            customizedItem.setLink(item.getLink());
-            saveItem(customizedItem);
+            customizedRssItem.setDescription(itemDescription);
+            customizedRssItem.setTitle(item.getTitle());
+            customizedRssItem.setLink(item.getLink());
+            saveItem(customizedRssItem);
         }
 
     }
     public void deleteItemByChannelID(long  shortid) {
 
-/*        items = populateItemsFromDB();
-        for (Iterator<Item> iterator = items.iterator(); iterator.hasNext(); ) {
-            Item item = iterator.next();
-            if (item.getChannelID() == id) {
-                itemDao.removeEntryByChannelID(id);
-                break;
-            }
-        }*/
-
-        List<Item> items = itemDao.findByChannelID(shortid);
-        for (Item item: items){
+        List<RssItem> rssItems = itemDao.findByChannelID(shortid);
+        for (RssItem rssItem : rssItems){
             itemDao.removeEntryByChannelID(shortid);
         }
     }
 
-/*    public List<Item> findItemsForUserByCountSortedByDate(String user, int count, String orderItemField, long shortid) {
-        List<Item> items = itemDao.findForUserByCountSortedByDate(user, count, orderItemField,  shortid);
-        return items;
-    }*/
 
-    public List<Item> findAllItemsForAllChannelsSortedByChannelID(String user) {
-        List<Item> items = itemDao.findAllItemsForAllChannelsSortedByChannelID(user);
-        return items;
+    public List<RssItem> findAllItemsForAllChannelsSortedByChannelID(String user) {
+        List<RssItem> rssItems = itemDao.findAllItemsForAllChannelsSortedByChannelID(user);
+        return rssItems;
     }
 
-    public List<Item> findItemsForUserbyChannelByCountSortedbyTitle(String user, int count, String orderItemField) {
-        List<Item> items = itemDao.findForUserbyChannelByCountSortedbyTitle(user, count, orderItemField);
-        return items;
+    public List<RssItem> findItemsForUserbyChannelByCountSortedbyTitle(String user, int count, String orderItemField) {
+        List<RssItem> rssItems = itemDao.findForUserbyChannelByCountSortedbyTitle(user, count, orderItemField);
+        return rssItems;
     }
 
-    public List<Item> findLimitedItemsForAllChannelsSortedByPubDate(String user, int count) {
-        List<Item> items = itemDao.findLimitedItemsForAllChannelsSortedByPubDate(user, count);
-        return items;
+    public List<RssItem> findLimitedItemsForAllChannelsSortedByPubDate(String user, int count) {
+        List<RssItem> rssItems = itemDao.findLimitedItemsForAllChannelsSortedByPubDate(user, count);
+        return rssItems;
     }
 
-    public List<Item> findAllItemsForOneChannelSortedByChannelID(String user, long shortid) {
-        List<Item> items = itemDao.findAllItemsForOneChannelSortedByChannleID(user, shortid);
-        return items;
+    public List<RssItem> findAllItemsForOneChannelSortedByChannelID(String user, long shortid) {
+        List<RssItem> rssItems = itemDao.findAllItemsForOneChannelSortedByChannleID(user, shortid);
+        return rssItems;
     }
 
-    public List<Item> findLimitedItemsForOneChannelSortedByPubDate(String user, int count, long shortid) {
-        List<Item> items = itemDao.findLimitedItemsForOneChannelSortedByPubDate(user, count, shortid);
-        return items;
+    public List<RssItem> findLimitedItemsForOneChannelSortedByPubDate(String user, int count, long shortid) {
+        List<RssItem> rssItems = itemDao.findLimitedItemsForOneChannelSortedByPubDate(user, count, shortid);
+        return rssItems;
     }
 
 

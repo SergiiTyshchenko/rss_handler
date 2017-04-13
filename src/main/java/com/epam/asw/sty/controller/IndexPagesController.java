@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -26,18 +27,18 @@ public class IndexPagesController {
     //https://spring.io/blog/2015/01/12/spring-and-angular-js-a-secure-single-page-application
     @ResponseBody
     @RequestMapping(value="/admin", method = RequestMethod.GET)
-    public  String adminIndex() {
+    public Map<String,Object> adminIndex() {
         Map<String,Object> model = new HashMap<String,Object>();
         model.put("content", "Congratulation! You are admin!");
-        return model.get(0).toString();
+        return model;
     }
 
 
     @RequestMapping(value = "/logout", method = RequestMethod.GET)
-    public String LogoutIndex(HttpServletRequest request, HttpServletResponse response)
+    public String logoutIndex(HttpServletRequest request, HttpServletResponse response)
 
     {
-        HttpSession session= request.getSession(false);
+        HttpSession session = request.getSession(false);
         SecurityContextHolder.clearContext();
         session= request.getSession(false);
         if(session != null) {

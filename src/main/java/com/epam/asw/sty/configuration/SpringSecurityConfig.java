@@ -182,7 +182,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Component
-    public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+    private static class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
         private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 

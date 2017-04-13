@@ -1,18 +1,15 @@
 package com.epam.asw.sty.dao;
 
 
-import com.epam.asw.sty.model.Channel;
-import com.epam.asw.sty.model.Item;
+import com.epam.asw.sty.model.RssItem;
 import com.sun.syndication.feed.rss.Description;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,14 +28,14 @@ public class ItemDaoImpl implements ItemDao {
 
 /*
 	@Override
-	public List<Item> findByChannel(Channel channel) {
+	public List<RssItem> findByChannel(RssChannel channel) {
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("channelID", channel.getShortid());
 
 		String sql = "SELECT * FROM item WHERE CHANNELID=:channelID";
 
-		List<Item> items = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
+		List<RssItem> items = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
 
 		//new BeanPropertyRowMapper(Customer.class));
 
@@ -48,40 +45,40 @@ public class ItemDaoImpl implements ItemDao {
 */
 
 	@Override
-	public List<Item> findAll() {
+	public List<RssItem> findAll() {
 
 		Map<String, Object> params = new HashMap<String, Object>();
 
 		String sql = "SELECT * FROM item";
 
-		List<Item> items = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
+		List<RssItem> rssItems = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
 
-		return items;
+		return rssItems;
 
 	}
 
 	@Override
-	public List<Item> findByChannelID(long shortid){
+	public List<RssItem> findByChannelID(long shortid){
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("shortid", shortid);
 
 
 		String sql = "SELECT * FROM ITEM WHERE CHANNELID=:shortid";
 
-		List<Item> items = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
+		List<RssItem> rssItems = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
 
-		return items;
+		return rssItems;
 	}
 
 	@Override
-	public Object insertNewEntry(Item item) {
+	public Object insertNewEntry(RssItem rssItem) {
 		Map<String, Object> params = new HashMap<String, Object>();
-		params.put("id",item.getId());
-		params.put("channelID", item.getChannelID());
-		params.put("title",  item.getTitle());
-		params.put("description", item.getDescription().getValue());
-		params.put("link", item.getLink());
-		params.put("pubDate", item.getPubDate());
+		params.put("id", rssItem.getId());
+		params.put("channelID", rssItem.getChannelID());
+		params.put("title",  rssItem.getTitle());
+		params.put("description", rssItem.getDescription().getValue());
+		params.put("link", rssItem.getLink());
+		params.put("pubDate", rssItem.getPubDate());
 		String sql = "INSERT INTO ITEM " +
 				"(ID, CHANNELID, TITLE, DESCRIPTION, LINK, PUBDATE) VALUES " +
 				"(:id, :channelID, :title, :description, :link, :pubDate)";
@@ -106,7 +103,7 @@ public class ItemDaoImpl implements ItemDao {
 
 
 	@Override
-	public List<Item> findLimitedItemsForOneChannelSortedByPubDate(String user, int count, long shortid){
+	public List<RssItem> findLimitedItemsForOneChannelSortedByPubDate(String user, int count, long shortid){
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("user", user);
 		params.put("count", count);
@@ -117,14 +114,14 @@ public class ItemDaoImpl implements ItemDao {
 				"ORDER BY i.PUBDATE DESC " +
 				" LIMIT :count";
 
-		List<Item> items = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
-		return items;
+		List<RssItem> rssItems = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
+		return rssItems;
 
 	}
 
 
 	@Override
-	public List<Item> findAllItemsForOneChannelSortedByChannleID(String user, long shortid){
+	public List<RssItem> findAllItemsForOneChannelSortedByChannleID(String user, long shortid){
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("user", user);
 		params.put("shortid", shortid);
@@ -134,15 +131,15 @@ public class ItemDaoImpl implements ItemDao {
 				"AND i.CHANNELID=:shortid " +
 				"ORDER BY i.CHANNELID DESC";
 
-		List<Item> items = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
-		return items;
+		List<RssItem> rssItems = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
+		return rssItems;
 
 	}
 
 
 
 	@Override
-	public List<Item> findLimitedItemsForAllChannelsSortedByPubDate(String user, int count){
+	public List<RssItem> findLimitedItemsForAllChannelsSortedByPubDate(String user, int count){
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("user", user);
 		params.put("count", count);
@@ -152,15 +149,15 @@ public class ItemDaoImpl implements ItemDao {
 				"ORDER BY i.PUBDATE DESC " +
 				"LIMIT :count";
 
-		List<Item> items = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
-		return items;
+		List<RssItem> rssItems = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
+		return rssItems;
 
 	}
 
 
 
 	@Override
-	public List<Item> findAllItemsForAllChannelsSortedByChannelID(String user){
+	public List<RssItem> findAllItemsForAllChannelsSortedByChannelID(String user){
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("user", user);
 
@@ -168,15 +165,15 @@ public class ItemDaoImpl implements ItemDao {
 				"WHERE c.USER=:user " +
 				"ORDER BY i.CHANNELID DESC";
 
-		List<Item> items = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
-		return items;
+		List<RssItem> rssItems = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
+		return rssItems;
 
 	}
 
 
 
 	@Override
-	public List<Item> findForUserbyChannelByCountSortedbyTitle(String user, int count, String orderItemField){
+	public List<RssItem> findForUserbyChannelByCountSortedbyTitle(String user, int count, String orderItemField){
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("user", user);
 		params.put("count", count);
@@ -187,13 +184,13 @@ public class ItemDaoImpl implements ItemDao {
 				"ORDER BY i.CHANNELID ASC " +
 				" LIMIT :count";
 
-		List<Item> items = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
-		return items;
+		List<RssItem> rssItems = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
+		return rssItems;
 
 	}
 
 	@Override
-	public List<Item> findForUserByChannelID(long shortid, String user,  int count){
+	public List<RssItem> findForUserByChannelID(long shortid, String user, int count){
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("user", user);
 		params.put("count", count);
@@ -206,29 +203,29 @@ public class ItemDaoImpl implements ItemDao {
 		String sql = "SELECT i.*,c.TITLE AS channelTitle FROM ITEM AS i JOIN CHANNEL AS c ON i.CHANNELID=c.SHORTID " +
 				"WHERE c.USER=:user " + additionalConditionWhere;
 
-		List<Item> items = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
-		return items;
+		List<RssItem> rssItems = namedParameterJdbcTemplate.query(sql, params, new RequestMapper());
+		return rssItems;
 	}
 
-	private static final class RequestMapper implements RowMapper<Item> {
+	private static final class RequestMapper implements RowMapper<RssItem> {
 
 
 
-		public Item mapRow(ResultSet rs, int rowNum) throws SQLException {
-			Item item = new Item();
-			item.setId(rs.getString("id"));
-			item.setChannelID(rs.getLong("channelID"));
-			item.setTitle(rs.getString("title"));
+		public RssItem mapRow(ResultSet rs, int rowNum) throws SQLException {
+			RssItem rssItem = new RssItem();
+			rssItem.setId(rs.getString("id"));
+			rssItem.setChannelID(rs.getLong("channelID"));
+			rssItem.setTitle(rs.getString("title"));
 			Description itemDescription = new Description();
 			itemDescription.setValue(rs.getString("description"));;
-			item.setDescription(itemDescription);
-			item.setLink(rs.getString("link"));
-			item.setPubDate(rs.getTimestamp("pubDate"));
+			rssItem.setDescription(itemDescription);
+			rssItem.setLink(rs.getString("link"));
+			rssItem.setPubDate(rs.getTimestamp("pubDate"));
 			final int itemTableColumnCount = 6;
 			if(rs.getMetaData().getColumnCount() != 6) {
-				item.setChannelTitle(rs.getString("channelTitle"));
+				rssItem.setChannelTitle(rs.getString("channelTitle"));
 			}
-			return item;
+			return rssItem;
 
 		}
 	}

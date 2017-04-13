@@ -1,8 +1,8 @@
 package com.epam.asw.sty.controller;
 
 
-import com.epam.asw.sty.model.Channel;
-import com.epam.asw.sty.model.Item;
+import com.epam.asw.sty.model.RssChannel;
+import com.epam.asw.sty.model.RssItem;
 import com.epam.asw.sty.service.channel.ChannelService;
 import com.epam.asw.sty.service.item.ItemService;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -34,20 +34,20 @@ public class ItemsRestController {
     private ChannelService channelService;
 
 
-    //-------------------Show JSP With All Items For Specific Channel --------------------------------------------------------
+    //-------------------Show JSP With All Items For Specific RssChannel --------------------------------------------------------
 
     @RequestMapping(value="/itemsForChannel", method = RequestMethod.GET, params={"channelID"},
             produces = MediaType.APPLICATION_JSON_VALUE)
     public String getAllItemsForChannelPage(@RequestParam(value="channelID", required=false) int channelID, Model model) {
 
-        String logDebugMessage = "Getting items for channel with short ID " + channelID;
+        String logDebugMessage = "Getting items for rssChannel with short ID " + channelID;
         logger.debug("{}.", logDebugMessage);
         JSONObject json = new JSONObject();
         json.put("channelID", channelID);
         String formattedJson = StringEscapeUtils.escapeHtml4(json.toString());
         model.addAttribute("newItemJson", formattedJson);
-        Channel channel = channelService.findByShortID(channelID);
-        model.addAttribute("channelTitle", channel.getTitle());
+        RssChannel rssChannel = channelService.findByShortID(channelID);
+        model.addAttribute("channelTitle", rssChannel.getTitle());
 
         return ITEM_FOR_CHANNEL_VIEW;
     }
@@ -67,58 +67,58 @@ public class ItemsRestController {
     //-------------------Retrieve All Items For All Channels For Logged User --------------------------------------------------
 
     @RequestMapping(value = "/item/allChannels/", method = RequestMethod.GET)
-    public ResponseEntity<List<Item>> getAllItemsForAllChannelsForUserPage(Principal user) {
+    public ResponseEntity<List<RssItem>> getAllItemsForAllChannelsForUserPage(Principal user) {
 
-        String logDebugMessage = "Getting All items for user: " + user.getName() + " for All channels";
+        String logDebugMessage = "Getting All rssItems for user: " + user.getName() + " for All channels";
         logger.debug("{}.", logDebugMessage);
-        List<Item> items = itemService.findAllItemsForAllChannelsSortedByChannelID(user.getName());
-        return getResponseEntity(items);
+        List<RssItem> rssItems = itemService.findAllItemsForAllChannelsSortedByChannelID(user.getName());
+        return getResponseEntity(rssItems);
     }
 
-    //-------------------Retrieve All Items For Specific Channel For Logged User --------------------------------------------------
+    //-------------------Retrieve All Items For Specific RssChannel For Logged User --------------------------------------------------
 
     @RequestMapping(value = "/item/channel={channelID}", method = RequestMethod.GET)
-    public ResponseEntity<List<Item>> getAllItemsForChannelForUserPage(
+    public ResponseEntity<List<RssItem>> getAllItemsForChannelForUserPage(
                                         @PathVariable("channelID") long channelID, Principal user) {
 
-        String logDebugMessage = "Getting All items for user: " + user.getName() + " for channel with short ID " + channelID;
+        String logDebugMessage = "Getting All rssItems for user: " + user.getName() + " for channel with short ID " + channelID;
         logger.debug("{}.", logDebugMessage);
-        List<Item> items = itemService.findAllItemsForOneChannelSortedByChannelID(user.getName(), channelID);
-        return getResponseEntity(items);
+        List<RssItem> rssItems = itemService.findAllItemsForOneChannelSortedByChannelID(user.getName(), channelID);
+        return getResponseEntity(rssItems);
     }
 
     //-------------------Retrieve Limited Items For All Channels For Logged User --------------------------------------------------
 
     @RequestMapping(value = "/item/allChannels", method = RequestMethod.GET, params={"itemsCount"})
-    public ResponseEntity<List<Item>> getLimitedItemsForAllChannelsForUserPage(
+    public ResponseEntity<List<RssItem>> getLimitedItemsForAllChannelsForUserPage(
                                         @RequestParam(value="itemsCount", required=false) int itemsCount, Principal user) {
 
-        String logDebugMessage = "Getting last " + itemsCount + " items for user " + user.getName() + " for All channels";
+        String logDebugMessage = "Getting last " + itemsCount + " rssItems for user " + user.getName() + " for All channels";
         logger.debug("{}.", logDebugMessage);
-        List<Item> items = itemService.findLimitedItemsForAllChannelsSortedByPubDate(user.getName(), itemsCount);
-        return getResponseEntity(items);
+        List<RssItem> rssItems = itemService.findLimitedItemsForAllChannelsSortedByPubDate(user.getName(), itemsCount);
+        return getResponseEntity(rssItems);
     }
 
-    //-------------------Retrieve Limited Items For Specific Channel For Logged User --------------------------------------------------
+    //-------------------Retrieve Limited Items For Specific RssChannel For Logged User --------------------------------------------------
 
     @RequestMapping(value = "/item/channel={channelID}", method = RequestMethod.GET, params={"itemsCount"})
-    public ResponseEntity<List<Item>> getLimitedItemsForChannelForUserPage(
+    public ResponseEntity<List<RssItem>> getLimitedItemsForChannelForUserPage(
                                         @RequestParam(value="itemsCount", required=false) int itemsCount,
                                         @PathVariable("channelID") long channelID, Principal user) {
 
-        String logDebugMessage = "Getting last " + itemsCount + " items for user " + user.getName() + " for channel with short ID " + channelID;
+        String logDebugMessage = "Getting last " + itemsCount + " rssItems for user " + user.getName() + " for channel with short ID " + channelID;
         logger.debug("{}.", logDebugMessage);
-        List<Item> items = itemService.findLimitedItemsForOneChannelSortedByPubDate(user.getName(), itemsCount, channelID);
-        return getResponseEntity(items);
+        List<RssItem> rssItems = itemService.findLimitedItemsForOneChannelSortedByPubDate(user.getName(), itemsCount, channelID);
+        return getResponseEntity(rssItems);
     }
 
 
-    public ResponseEntity<List<Item>> getResponseEntity (List<Item> items) {
-        logger.info("Items count {}.",  items.size());
-        if(items.isEmpty()){
-            return new ResponseEntity<List<Item>>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<List<RssItem>> getResponseEntity (List<RssItem> rssItems) {
+        logger.info("Items count {}.",  rssItems.size());
+        if(rssItems.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<List<Item>>(items, HttpStatus.OK);
+        return new ResponseEntity<>(rssItems, HttpStatus.OK);
     }
 
 }
